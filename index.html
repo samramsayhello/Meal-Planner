@@ -45,33 +45,43 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 .navbtn.active .ni{opacity:1}
 .navbtn.active .nl{color:var(--terra)}
 .navbtn.active .nd{display:block}
+
+/* ── SHARED ── */
 .section-title{font-family:Georgia,serif;font-size:20px;color:var(--charcoal)}
 .eyebrow{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--light)}
-.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
-.sticky-hdr{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #F0EAE0}
+.card{background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
+.sticky-hdr{position:sticky;top:0;z-index:10;background:#fff;
+  border-bottom:1px solid #F0EAE0}
 .pill{display:inline-block;border-radius:20px;font-size:10px;font-weight:700;
   letter-spacing:.1em;padding:4px 11px;cursor:pointer;border:1.5px solid;
   white-space:nowrap;transition:all .15s}
+
+/* ── PLAN TAB ── */
 .day-strip{display:flex;overflow-x:auto;background:#fff;
   border-bottom:1px solid #EDE8E0;-webkit-overflow-scrolling:touch}
 .day-strip::-webkit-scrollbar{display:none}
 .day-btn{flex:0 0 calc(100%/7);border:none;background:transparent;cursor:pointer;
   padding:10px 2px 0;border-bottom:3px solid transparent;transition:all .15s}
 .day-btn.active{background:var(--charcoal);border-bottom-color:var(--terra)}
-.day-btn .dn{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--light)}
+.day-btn .dn{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--light)}
 .day-btn.active .dn{color:#fff}
 .day-btn .dot{width:6px;height:6px;border-radius:50%;margin:4px auto 6px;background:#DDD}
 .day-btn .dot.ok{background:var(--sage)}
 .day-btn .dot.warn{background:var(--terra)}
+
 .day-hdr{padding:14px 16px 10px;background:#fff;border-bottom:1px solid #F0EAE0}
 .macro-bars{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .mbar-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--mid);margin-bottom:4px}
 .mbar-track{height:5px;background:#EDE8E0;border-radius:3px;overflow:hidden}
 .mbar-fill{height:100%;border-radius:3px;transition:width .4s}
+
 .slots{padding:10px 12px;display:flex;flex-direction:column;gap:8px;padding-bottom:80px}
 .slot-card{background:#fff;border-radius:12px;overflow:hidden;
   box-shadow:0 1px 6px rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.04)}
-.slot-lbl{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 7px}
+.slot-lbl{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px 7px}
 .slot-lbl-left{display:flex;align-items:center;gap:5px;
   font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#CCC}
 .slot-change{font-size:11px;color:var(--mid);border:1px solid #E8E0D8;
@@ -84,9 +94,12 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 .slot-empty{padding:12px 14px;color:#CCC;font-style:italic;font-size:13px;
   display:flex;align-items:center;gap:6px;cursor:pointer;border:none;
   background:transparent;width:100%;text-align:left}
+
+/* ── RECIPES TAB ── */
 .search-bar{width:100%;padding:10px 14px;border:1px solid #E0DAD0;border-radius:10px;
   font-size:15px;outline:none;box-sizing:border-box;background:#fff}
-.cat-pills{display:flex;gap:6px;overflow-x:auto;padding:0 0 2px;-webkit-overflow-scrolling:touch}
+.cat-pills{display:flex;gap:6px;overflow-x:auto;padding:0 0 2px;
+  -webkit-overflow-scrolling:touch}
 .cat-pills::-webkit-scrollbar{display:none}
 .recipe-list{padding-bottom:80px}
 .recipe-item{display:flex;align-items:center;gap:12px;padding:13px 16px;
@@ -94,10 +107,13 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 .recipe-item:active{background:#F8F5F0}
 .recipe-icon{width:48px;height:48px;border-radius:12px;display:flex;
   align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.recipe-item-name{font-size:14px;font-weight:600;color:var(--charcoal);line-height:1.25;margin-bottom:3px}
+.recipe-item-name{font-size:14px;font-weight:600;color:var(--charcoal);
+  line-height:1.25;margin-bottom:3px}
 .recipe-item-meta{display:flex;gap:6px;align-items:center}
 .recipe-cat-badge{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
 .recipe-chevron{color:#CCC;font-size:20px;flex-shrink:0}
+
+/* ── SHOPPING TAB ── */
 .progress-bar{height:6px;background:#EDE8E0;border-radius:3px;overflow:hidden;flex:1}
 .progress-fill{height:100%;background:var(--sage);border-radius:3px;transition:width .3s}
 .cat-header{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
@@ -112,13 +128,17 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 .shop-cb.checked::after{content:'✓';color:#fff;font-size:13px;font-weight:800;line-height:1}
 .shop-name{flex:1;font-size:15px;font-weight:500;color:var(--charcoal)}
 .shop-item.checked .shop-name{text-decoration:line-through}
-.qty-pill{font-size:11px;font-weight:700;color:#777;background:#F0EBE3;padding:3px 9px;border-radius:6px;flex-shrink:0}
+.qty-pill{font-size:11px;font-weight:700;color:#777;background:#F0EBE3;
+  padding:3px 9px;border-radius:6px;flex-shrink:0}
+
+/* ── PREP TAB ── */
 .prep-section{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;
   box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
 .prep-hdr{padding:13px 16px;display:flex;align-items:center;justify-content:space-between}
 .prep-hdr-left{display:flex;align-items:center;gap:10px}
 .prep-hdr-title{font-family:Georgia,serif;font-size:16px;color:#fff}
-.prep-time{font-size:10px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.12);padding:3px 10px;border-radius:12px}
+.prep-time{font-size:10px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.12);
+  padding:3px 10px;border-radius:12px}
 .prep-body{padding:4px 16px 10px}
 .prep-step{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #F5F0E8}
 .prep-step:last-child{border-bottom:none}
@@ -132,9 +152,12 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 .golden-rule p{font-family:Georgia,serif;font-size:15px;color:#fff;line-height:1.55}
 .tip-box{background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:10px;
   padding:11px 14px;margin:8px 0 4px;font-size:12px;color:#7A4020;line-height:1.6}
-.dinner-item{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #F5F0E8}
+.dinner-item{display:flex;gap:10px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid #F5F0E8}
 .dinner-item:last-child{border-bottom:none}
 .dinner-note{font-size:11px;color:var(--terra);font-weight:600;margin-top:3px}
+
+/* ── SHEETS (modals) ── */
 .sheet-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);
   display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
 .sheet-overlay.open{opacity:1;pointer-events:all}
@@ -142,10 +165,13 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
   overflow:hidden;display:flex;flex-direction:column;
   transform:translateY(100%);transition:transform .3s ease}
 .sheet-overlay.open .sheet{transform:translateY(0)}
-.sheet-handle{width:40px;height:4px;border-radius:2px;background:#DDD;margin:10px auto 0;flex-shrink:0}
+.sheet-handle{width:40px;height:4px;border-radius:2px;background:#DDD;
+  margin:10px auto 0;flex-shrink:0}
 .sheet-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
 .sheet-sticky{position:sticky;top:0;background:#fff;z-index:10;
   border-bottom:1px solid #F0EAE0;padding:12px 16px 10px;flex-shrink:0}
+
+/* Recipe sheet */
 .recipe-hero{padding:20px 20px 16px;text-align:center}
 .recipe-emoji-big{font-size:56px;display:block;margin-bottom:8px}
 .recipe-h2{font-family:Georgia,serif;font-size:22px;margin-bottom:8px;line-height:1.2}
@@ -154,8 +180,10 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 .macro-chip{flex:1;border-radius:10px;padding:12px 8px;text-align:center}
 .macro-chip-val{font-family:Georgia,serif;font-size:20px;line-height:1}
 .macro-chip-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-top:3px}
-.person-note{font-size:11px;color:var(--mid);background:#F8F5F0;border-radius:8px;padding:8px 12px;margin:12px 16px}
-.ing-row{display:flex;align-items:baseline;gap:8px;padding:9px 0;border-bottom:1px solid #F5F0E8;font-size:14px;color:#444}
+.person-note{font-size:11px;color:var(--mid);background:#F8F5F0;
+  border-radius:8px;padding:8px 12px;margin:12px 16px}
+.ing-row{display:flex;align-items:baseline;gap:8px;padding:9px 0;
+  border-bottom:1px solid #F5F0E8;font-size:14px;color:#444}
 .ing-bullet{color:var(--sage);font-weight:700;font-size:16px;line-height:.8;flex-shrink:0}
 .method-step{display:flex;gap:12px;margin-bottom:12px;font-size:13px;color:var(--mid);line-height:1.65}
 .method-num{font-family:Georgia,serif;font-size:20px;flex-shrink:0;width:22px;line-height:1;margin-top:1px}
@@ -170,6 +198,7 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
       <button id="btn-sam" onclick="setPerson('Sam')">Sam</button>
     </div>
   </div>
+
   <div class="content">
     <div id="tab-plan" class="tab-panel active">
       <div class="sticky-hdr">
@@ -178,6 +207,7 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
       </div>
       <div class="slots" id="slots"></div>
     </div>
+
     <div id="tab-recipes" class="tab-panel">
       <div class="sticky-hdr" style="padding:12px 14px 10px">
         <input class="search-bar" id="recipe-search" placeholder="Search recipes…" oninput="renderRecipes()">
@@ -185,6 +215,7 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
       </div>
       <div class="recipe-list" id="recipe-list"></div>
     </div>
+
     <div id="tab-shopping" class="tab-panel">
       <div class="sticky-hdr" style="padding:14px 16px 12px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -192,18 +223,21 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
             <div class="section-title">Shopping List</div>
             <div id="shop-count" class="eyebrow" style="margin-top:2px"></div>
           </div>
-          <button onclick="clearChecked()" style="padding:7px 12px;border:1px solid #E0DAD0;border-radius:8px;background:#fff;font-size:12px;color:var(--mid);cursor:pointer">↺ Reset</button>
+          <button onclick="clearChecked()" style="padding:7px 12px;border:1px solid #E0DAD0;
+            border-radius:8px;background:#fff;font-size:12px;color:var(--mid);cursor:pointer">↺ Reset</button>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <div class="progress-bar"><div class="progress-fill" id="shop-progress"></div></div>
           <span id="shop-progress-txt" style="font-size:11px;color:var(--light);white-space:nowrap"></span>
         </div>
       </div>
-      <div style="margin:10px 14px 0;padding:10px 12px;background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:10px;font-size:12px;color:#7A4020;line-height:1.55">
+      <div style="margin:10px 14px 0;padding:10px 12px;background:var(--terra-lt);
+        border:1px solid #F0D0A0;border-radius:10px;font-size:12px;color:#7A4020;line-height:1.55">
         🛒 <strong>Pak'nSave tip:</strong> Rice 5kg ~$8.50 · Oats 1kg ~$3.50 · Chicken ~$13/kg · Mince ~$18.99/kg · Eggs ~$9.59/doz
       </div>
       <div id="shop-list" style="padding:0 14px 80px"></div>
     </div>
+
     <div id="tab-prep" class="tab-panel">
       <div class="sticky-hdr" style="padding:14px 16px 10px">
         <div class="section-title">Meal Prep Guide</div>
@@ -212,6 +246,7 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
       <div id="prep-content" style="padding:14px 14px 80px"></div>
     </div>
   </div>
+
   <div class="bottomnav">
     <button class="navbtn active" id="nav-plan" onclick="switchTab('plan')">
       <span class="ni">📅</span><span class="nl">Plan</span><span class="nd"></span>
@@ -227,6 +262,8 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
     </button>
   </div>
 </div>
+
+<!-- Recipe Sheet -->
 <div class="sheet-overlay" id="recipe-sheet-overlay" onclick="closeRecipeSheet(event)">
   <div class="sheet">
     <div class="sheet-handle"></div>
@@ -234,6 +271,8 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
     <div class="sheet-scroll" id="recipe-sheet-body"></div>
   </div>
 </div>
+
+<!-- Meal Picker Sheet -->
 <div class="sheet-overlay" id="picker-overlay" onclick="closePicker(event)">
   <div class="sheet">
     <div class="sheet-handle"></div>
@@ -246,8 +285,13 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
     <div class="sheet-scroll" id="picker-list"></div>
   </div>
 </div>
-<script>
 
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════════════════
+</script>
+<script id="data-script">
 const MEALS = [
   // BREAKFASTS
   { id: 1, name: "Classic Overnight Oats", cat: "Breakfast", emoji: "🫙",
@@ -600,44 +644,7 @@ const MEALS = [
     ingF: ["2 pears peeled and chopped","1 tsp cinnamon","5g honey","Splash water"],
     steps: ["Peel, core and chop pears into chunks.","Place in a small saucepan with cinnamon, honey and a splash of water.","Cook over medium heat 8-10 minutes stirring occasionally until soft.","Serve warm alone or with a spoonful of Greek yoghurt.","Keeps in fridge 4 days. Reheat 60 seconds in microwave."] },
 ];
-]
 
-const CATEGORIES = ["All","Breakfast","Smoothie","Lunch","Dinner","Snack"];
-const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-const SLOTS = ["Breakfast","Snack","Lunch","Dinner","Eve Snack"];
-
-const CAT_COLOR = {
-  Breakfast:{ bg:"#FEF3E2", accent:"#C17A55", dark:"#7A4020" },
-  Smoothie: { bg:"#E6F4EC", accent:"#4F7A62", dark:"#2A5040" },
-  Lunch:    { bg:"#E8F0FB", accent:"#3A6A9A", dark:"#1A3A5C" },
-  Dinner:   { bg:"#FCE8E8", accent:"#C04040", dark:"#7A2020" },
-  Snack:    { bg:"#F0E8F8", accent:"#7A4A9A", dark:"#4A2070" },
-  All:      { bg:"#F5F5F5", accent:"#555",    dark:"#222"    },
-};
-
-const SLOT_EMOJI = { Breakfast:"🌅", Snack:"🍎", Lunch:"🥗", Dinner:"🍽", "Eve Snack":"🌙" };
-
-const DEFAULT_PLAN = {
-  Monday:    { Breakfast:"Classic Overnight Oats",    Snack:"",            Lunch:"",                              Dinner:"Garlic Chicken & Rice",         "Eve Snack":"Greek Yoghurt + Berries" },
-  Tuesday:   { Breakfast:"Berry Overnight Oats",       Snack:"Protein Shake", Lunch:"",                           Dinner:"Beef Mince Stir Fry & Rice",    "Eve Snack":"Cottage Cheese + Rice Cakes" },
-  Wednesday: { Breakfast:"Egg Muffins",                Snack:"",            Lunch:"",                              Dinner:"Chicken Pasta Bake",            "Eve Snack":"Choc Dessert Smoothie" },
-  Thursday:  { Breakfast:"Chocolate Overnight Oats",   Snack:"Protein Shake", Lunch:"",                           Dinner:"Rump Steak & Roast Potatoes",   "Eve Snack":"Greek Yoghurt + Honey + Walnuts" },
-  Friday:    { Breakfast:"Honey Almond Overnight Oats",Snack:"",            Lunch:"",                              Dinner:"Chicken Wraps (Dinner)",        "Eve Snack":"Choc Dessert Smoothie" },
-  Saturday:  { Breakfast:"Banana Protein Smoothie",    Snack:"Banana",      Lunch:"Tuna Rice Bowl",               Dinner:"Honey Soy Chicken & Rice",      "Eve Snack":"Protein Shake" },
-  Sunday:    { Breakfast:"Egg Muffins",                Snack:"Boiled Eggs ×2", Lunch:"Chicken Rice Bowl",         Dinner:"Lemon Herb Chicken & Potatoes", "Eve Snack":"Greek Yoghurt + Berries" },
-};
-
-const AUTO_LUNCH_DAYS = { Monday:"Sunday", Tuesday:"Monday", Wednesday:"Tuesday", Thursday:"Wednesday", Friday:"Thursday" };
-
-function getMacros(mealName, person) {
-  if (!mealName || mealName.startsWith("←")) return { cal:0, prot:0 };
-  const m = MEALS.find(x => x.name === mealName);
-  if (!m) return { cal:0, prot:0 };
-  return person === "Sam" ? { cal:m.calM, prot:m.protM } : { cal:m.calF, prot:m.protF };
-}
-
-// ── INGREDIENT CONSOLIDATION MAP ──────────────────────────────────────────
-// Maps any raw ingredient name fragment → { canonical name, category, unit override }
 const CONSOLIDATE = {
   // ── Proteins ──
   "chicken breast":          { to:"Chicken breast",         cat:"🥩 Protein", unit:"g" },
@@ -748,879 +755,620 @@ const CONSOLIDATE = {
   "tomato sliced":           { to:"Tomato",                         cat:"🥦 Veg",     unit:"" },
 };
 
-// Category sort order
 const CAT_ORDER = ["🥩 Protein","💪 Supplements","🥛 Dairy","🍚 Carbs","🥜 Nuts","🥦 Veg","🍌 Fruit","🧂 Pantry"];
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════════════
+const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const SLOTS = ["Breakfast","Snack","Lunch","Dinner","Eve Snack"];
+const SLOT_EMOJI = {Breakfast:"🌅",Snack:"🍎",Lunch:"🥗",Dinner:"🍽","Eve Snack":"🌙"};
+const CATEGORIES = ["All","Breakfast","Smoothie","Lunch","Dinner","Snack"];
+const AUTO_LUNCH = {Monday:"Sunday",Tuesday:"Monday",Wednesday:"Tuesday",Thursday:"Wednesday",Friday:"Thursday"};
+const FREE_SLOTS = {Saturday:["Lunch","Dinner"],Sunday:["Lunch"]};
 
-function buildShoppingList(plan) {
+const CAT_COLOR = {
+  Breakfast:{bg:"#FEF3E2",accent:"#C17A55"},Smoothie:{bg:"#E6F4EC",accent:"#4F7A62"},
+  Lunch:{bg:"#E8F0FB",accent:"#3A6A9A"},Dinner:{bg:"#FCE8E8",accent:"#C04040"},
+  Snack:{bg:"#F0E8F8",accent:"#7A4A9A"},All:{bg:"#F5F5F5",accent:"#555"},
+};
+
+const DEFAULT_PLAN = {
+  Monday:    {Breakfast:"Classic Overnight Oats",Snack:"",Lunch:"",Dinner:"Garlic Chicken & Rice","Eve Snack":"Greek Yoghurt + Berries"},
+  Tuesday:   {Breakfast:"Berry Overnight Oats",Snack:"Protein Shake",Lunch:"",Dinner:"Beef Mince Stir Fry & Rice","Eve Snack":"Cottage Cheese + Rice Cakes"},
+  Wednesday: {Breakfast:"Egg Muffins",Snack:"",Lunch:"",Dinner:"Chicken Pasta Bake","Eve Snack":"Choc Dessert Smoothie"},
+  Thursday:  {Breakfast:"Chocolate Overnight Oats",Snack:"Protein Shake",Lunch:"",Dinner:"Rump Steak & Roast Potatoes","Eve Snack":"Greek Yoghurt + Honey + Walnuts"},
+  Friday:    {Breakfast:"Honey Almond Overnight Oats",Snack:"",Lunch:"",Dinner:"Chicken Wraps (Dinner)","Eve Snack":"Choc Dessert Smoothie"},
+  Saturday:  {Breakfast:"Banana Protein Smoothie",Snack:"Banana",Lunch:"",Dinner:"","Eve Snack":"Protein Shake"},
+  Sunday:    {Breakfast:"Egg Muffins",Snack:"Boiled Eggs ×2",Lunch:"",Dinner:"Lemon Herb Chicken & Potatoes","Eve Snack":"Greek Yoghurt + Berries"},
+};
+
+let state = {
+  tab: "plan",
+  person: "Luisa",
+  activeDay: 0,
+  recCat: "All",
+  recSearch: "",
+  pickerCat: "All",
+  pickerDay: null,
+  pickerSlot: null,
+  plan: null,
+  checked: {},
+};
+
+// Load from localStorage
+try { state.plan = JSON.parse(localStorage.getItem("mp_plan")) || JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
+catch { state.plan = JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
+try { state.checked = JSON.parse(localStorage.getItem("mp_checked")) || {}; }
+catch { state.checked = {}; }
+
+function save() {
+  localStorage.setItem("mp_plan", JSON.stringify(state.plan));
+  localStorage.setItem("mp_checked", JSON.stringify(state.checked));
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════════════
+function getMeal(name) { return MEALS.find(m => m.name === name); }
+
+function getDisplayPlan() {
+  const p = JSON.parse(JSON.stringify(state.plan));
+  Object.entries(AUTO_LUNCH).forEach(([day, prev]) => {
+    const d = state.plan[prev]?.Dinner;
+    p[day].Lunch = d ? "← " + d : "";
+  });
+  return p;
+}
+
+function getDayMacros(day) {
+  const dp = getDisplayPlan();
+  let cal = 0, prot = 0;
+  const freeSlots = FREE_SLOTS[day] || [];
+  Object.entries(dp[day] || {}).forEach(([slot, name]) => {
+    if (!name || freeSlots.includes(slot)) return;
+    const real = name.startsWith("← ") ? name.slice(2) : name;
+    const m = getMeal(real);
+    if (!m) return;
+    const p = state.person;
+    cal += p === "Sam" ? m.calM : m.calF;
+    prot += p === "Sam" ? m.protM : m.protF;
+  });
+  return { cal, prot };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SHOPPING LIST BUILDER
+// ═══════════════════════════════════════════════════════════════════════════
+function buildShoppingList() {
   const totals = {};
-
-  const resolveKey = (rawName) => {
+  function resolveKey(rawName) {
     const lower = rawName.toLowerCase().trim();
     if (CONSOLIDATE[lower]) return CONSOLIDATE[lower];
-    for (const [key, val] of Object.entries(CONSOLIDATE)) {
-      if (lower.includes(key) || key.includes(lower)) return val;
+    for (const [k, v] of Object.entries(CONSOLIDATE)) {
+      if (lower.includes(k) || k.includes(lower)) return v;
     }
     return null;
-  };
-
-  const addIng = (ings) => {
+  }
+  function addIng(ings) {
     ings.forEach(ing => {
       const match = ing.match(/^([\d./½¼¾]+)\s*(g|ml|kg)?\s+(.+)/);
       let rawQty, unit, rawName;
       if (match) {
-        const qtyStr = match[1].replace("½","0.5").replace("¼","0.25").replace("¾","0.75");
-        rawQty = parseFloat(qtyStr) || 1;
+        rawQty = parseFloat(match[1].replace("½","0.5").replace("¼","0.25").replace("¾","0.75")) || 1;
         unit = match[2] || "";
         rawName = match[3].split(",")[0].trim();
-      } else {
-        rawQty = 1; unit = ""; rawName = ing.split(",")[0].trim();
-      }
+      } else { rawQty = 1; unit = ""; rawName = ing.split(",")[0].trim(); }
       const rule = resolveKey(rawName);
       if (rule && rule.to === null) return;
-      const canonName = rule ? rule.to : rawName;
-      const canonCat  = rule ? rule.cat : "🧂 Pantry";
-      const canonUnit = rule ? (rule.unit || unit) : unit;
-      const qty = rule?.fixedQty !== undefined ? rule.fixedQty : rawQty;
-      const finalQty = unit === "kg" ? qty * 1000 : qty;
-      const finalUnit = unit === "kg" ? "g" : canonUnit;
-      const key = canonName.toLowerCase();
-      if (!totals[key]) totals[key] = { name: canonName, qty: 0, unit: finalUnit, cat: canonCat };
-      totals[key].qty += finalQty;
+      const canon = rule ? rule.to : rawName;
+      const cat   = rule ? rule.cat : "🧂 Pantry";
+      const u     = rule ? (rule.unit || unit) : unit;
+      const qty   = rule?.fixedQty !== undefined ? rule.fixedQty : rawQty;
+      const fQty  = unit === "kg" ? qty * 1000 : qty;
+      const fUnit = unit === "kg" ? "g" : u;
+      const key   = canon.toLowerCase();
+      if (!totals[key]) totals[key] = { name: canon, qty: 0, unit: fUnit, cat };
+      totals[key].qty += fQty;
     });
-  };
-
-  // Add BOTH Sam and Luisa portions for every selected meal
-  Object.values(plan).forEach(slots => {
-    Object.values(slots).forEach(mealName => {
-      if (!mealName || mealName.startsWith("←") || mealName.startsWith("—")) return;
-      const meal = MEALS.find(m => m.name === mealName);
-      if (!meal) return;
-      addIng(meal.ingM); // Sam's portion
-      addIng(meal.ingF); // Luisa's portion
+  }
+  Object.entries(state.plan).forEach(([day, slots]) => {
+    const freeSlots = FREE_SLOTS[day] || [];
+    Object.entries(slots).forEach(([slot, name]) => {
+      if (!name || name.startsWith("← ") || freeSlots.includes(slot)) return;
+      const m = getMeal(name);
+      if (!m) return;
+      addIng(m.ingM);
+      addIng(m.ingF);
     });
   });
-
   const items = Object.values(totals).filter(i => i.qty > 0.05);
   items.sort((a, b) => {
-    const ai = CAT_ORDER.indexOf(a.cat);
-    const bi = CAT_ORDER.indexOf(b.cat);
-    if (ai !== bi) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    const ai = CAT_ORDER.indexOf(a.cat), bi = CAT_ORDER.indexOf(b.cat);
+    if (ai !== bi) return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
     return a.name.localeCompare(b.name);
   });
   return items;
 }
 
-// ── MODAL BASE ──────────────────────────────────────────────────────────────
-function Sheet({ open, onClose, children, tall }) {
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [open]);
-  if (!open) return null;
-  return (
-    <div onClick={onClose} style={{
-      position:"fixed", inset:0, zIndex:200,
-      background:"rgba(0,0,0,0.5)",
-      display:"flex", alignItems:"flex-end",
-    }}>
-      <div onClick={e=>e.stopPropagation()} style={{
-        width:"100%", maxHeight: tall ? "94vh" : "80vh",
-        background:"white", borderRadius:"20px 20px 0 0",
-        overflow:"auto", boxShadow:"0 -8px 40px rgba(0,0,0,0.2)",
-      }}>
-        <div style={{ width:40, height:4, borderRadius:2, background:"#DDD", margin:"12px auto 4px" }}/>
-        {children}
-      </div>
-    </div>
-  );
+function fmtQty(qty, unit) {
+  if (unit === "g")  return qty >= 1000 ? (qty/1000).toFixed(qty>=2000?0:1)+"kg" : Math.ceil(qty)+"g";
+  if (unit === "ml") return qty >= 1000 ? (qty/1000).toFixed(1)+"L" : Math.ceil(qty)+"ml";
+  if (unit === "cloves") return Math.ceil(qty)+" clove"+(qty>1?"s":"");
+  if (unit === "sprigs") return Math.ceil(qty)+" sprig"+(qty>1?"s":"");
+  if (unit === "pack")   return Math.ceil(qty)+" pack";
+  if (qty > 1) return "×"+Math.ceil(qty);
+  return "";
 }
 
-// ── RECIPE DETAIL ─────────────────────────────────────────────────────────
-function RecipeSheet({ meal, person, onClose }) {
-  if (!meal) return null;
-  const col = CAT_COLOR[meal.cat];
-  const ings = person==="Sam" ? meal.ingM : meal.ingF;
-  const cal  = person==="Sam" ? meal.calM : meal.calF;
-  const prot = person==="Sam" ? meal.protM : meal.protF;
-  return (
-    <Sheet open={!!meal} onClose={onClose} tall>
-      <div style={{ padding:"0 20px 100px" }}>
-        {/* Hero */}
-        <div style={{ textAlign:"center", padding:"16px 0 20px" }}>
-          <div style={{ fontSize:56, marginBottom:8 }}>{meal.emoji}</div>
-          <div style={{ fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", fontWeight:700, color:col.accent, marginBottom:6 }}>{meal.cat} · {meal.time}</div>
-          <h2 style={{ fontFamily:"Georgia,serif", fontSize:22, lineHeight:1.2, marginBottom:10 }}>{meal.name}</h2>
-          <p style={{ fontSize:13, color:"#666", lineHeight:1.65 }}>{meal.desc}</p>
-        </div>
-        {/* Macros */}
-        <div style={{ display:"flex", gap:10, marginBottom:24 }}>
-          {[[cal,"kcal"],[prot+"g","protein"],["⏱",meal.time]].map(([v,l])=>(
-            <div key={l} style={{ flex:1, background:col.bg, borderRadius:10, padding:"12px 8px", textAlign:"center" }}>
-              <div style={{ fontFamily:"Georgia,serif", fontSize:20, color:col.accent, lineHeight:1 }}>{v}</div>
-              <div style={{ fontSize:9, textTransform:"uppercase", letterSpacing:"0.1em", color:"#999", marginTop:3 }}>{l}</div>
-            </div>
-          ))}
-        </div>
-        {/* Person label */}
-        <div style={{ fontSize:11, color:"#888", background:"#F8F5F0", borderRadius:8, padding:"8px 12px", marginBottom:20 }}>
-          📐 {person}'s portion — toggle top-right to switch
-        </div>
-        {/* Ingredients */}
-        <div style={{ marginBottom:24 }}>
-          <div style={{ fontSize:10, letterSpacing:"0.25em", textTransform:"uppercase", fontWeight:700, color:"#1E1E1E", marginBottom:12 }}>Ingredients</div>
-          {ings.map((ing,i)=>(
-            <div key={i} style={{ display:"flex", alignItems:"baseline", gap:8, padding:"9px 0", borderBottom:"1px solid #F5F0E8", fontSize:14, color:"#444" }}>
-              <span style={{ color:col.accent, fontWeight:700, fontSize:16, lineHeight:0.8 }}>·</span>{ing}
-            </div>
-          ))}
-        </div>
-        {/* Steps */}
+// ═══════════════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════════
+function switchTab(id) {
+  document.querySelectorAll(".tab-panel").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".navbtn").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + id).classList.add("active");
+  document.getElementById("nav-" + id).classList.add("active");
+  state.tab = id;
+  if (id === "plan")     renderPlan();
+  if (id === "recipes")  renderRecipes();
+  if (id === "shopping") renderShopping();
+  if (id === "prep")     renderPrep();
+}
+
+function setPerson(p) {
+  state.person = p;
+  document.getElementById("btn-luisa").classList.toggle("active", p === "Luisa");
+  document.getElementById("btn-sam").classList.toggle("active", p === "Sam");
+  renderPlan();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PLAN TAB
+// ═══════════════════════════════════════════════════════════════════════════
+function renderPlan() {
+  renderDayStrip();
+  renderDayDetail();
+}
+
+function renderDayStrip() {
+  const strip = document.getElementById("day-strip");
+  strip.innerHTML = DAYS.map((d, i) => {
+    const {cal} = getDayMacros(d);
+    const target = state.person === "Sam" ? 2200 : 1700;
+    const ok = cal >= target * 0.88 && cal <= target * 1.12;
+    const dotClass = cal > 0 ? (ok ? "ok" : "warn") : "";
+    return `<button class="day-btn${i === state.activeDay ? " active" : ""}" onclick="setDay(${i})">
+      <div class="dn">${d.slice(0,3)}</div>
+      <div class="dot${dotClass ? " "+dotClass : ""}"></div>
+    </button>`;
+  }).join("");
+}
+
+function setDay(i) {
+  state.activeDay = i;
+  renderPlan();
+  document.getElementById("tab-plan").querySelector(".sticky-hdr").nextElementSibling.scrollTop = 0;
+}
+
+function renderDayDetail() {
+  const day = DAYS[state.activeDay];
+  const dp  = getDisplayPlan();
+  const slots = dp[day] || {};
+  const p   = state.person;
+  const target = p === "Sam" ? 2200 : 1700;
+  const pTarget = p === "Sam" ? 190 : 125;
+  const {cal, prot} = getDayMacros(day);
+  const calPct  = Math.min(100, Math.round(cal / target * 100));
+  const protPct = Math.min(100, Math.round(prot / pTarget * 100));
+
+  document.getElementById("day-hdr").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+      <div style="font-family:Georgia,serif;font-size:22px">${day}</div>
+      <div style="font-size:12px;color:var(--mid)">
+        <span style="color:${calPct>=88&&calPct<=112?"var(--sage)":"var(--terra)"};font-weight:700">${cal||"—"}</span> / ${target} kcal
+      </div>
+    </div>
+    <div class="macro-bars">
+      ${[["Calories",cal,target,calPct,"var(--sage)","kcal"],["Protein",prot,pTarget,protPct,"var(--navy)","g"]].map(([lbl,v,t,pct,clr,u])=>`
         <div>
-          <div style={{ fontSize:10, letterSpacing:"0.25em", textTransform:"uppercase", fontWeight:700, color:"#1E1E1E", marginBottom:12 }}>Method</div>
-          {meal.steps.map((step,i)=>(
-            <div key={i} style={{ display:"flex", gap:14, marginBottom:14, fontSize:14, color:"#555", lineHeight:1.65 }}>
-              <span style={{ fontFamily:"Georgia,serif", fontSize:22, color:col.accent, lineHeight:1, minWidth:24, flexShrink:0 }}>{i+1}</span>
-              <span dangerouslySetInnerHTML={{__html:step.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')}}/>
-            </div>
-          ))}
+          <div class="mbar-lbl"><span>${lbl}</span><span style="font-weight:700;color:var(--charcoal)">${v||0}${u}</span></div>
+          <div class="mbar-track"><div class="mbar-fill" style="width:${pct}%;background:${pct>=88?clr:"var(--terra)"}"></div></div>
+        </div>`).join("")}
+    </div>`;
+
+  const slotsEl = document.getElementById("slots");
+  slotsEl.innerHTML = SLOTS.map(slot => {
+    const name = slots[slot] || "";
+    const isAuto = name.startsWith("← ");
+    const isFree = (FREE_SLOTS[day] || []).includes(slot);
+    const isEditLunch = (slot === "Lunch" && ["Monday","Tuesday","Wednesday","Thursday","Friday"].includes(day));
+    const editable = !isEditLunch && !isFree;
+    const meal = getMeal(isAuto ? name.slice(2) : name);
+    const macros = meal ? `${p==="Sam"?meal.calM:meal.calF} kcal · ${p==="Sam"?meal.protM:meal.protF}g` : "";
+    const changeBtn = editable && name ? `<button class="slot-change" onclick="openPicker('${day}','${slot}')">Change</button>` : "";
+
+    let mealContent = "";
+    if (isFree) {
+      mealContent = `<div class="slot-meal" style="background:#FFF8F0;cursor:default">
+        <span style="font-size:28px;flex-shrink:0">🎉</span>
+        <div>
+          <div class="slot-meal-name" style="color:#C17A55">Free day — enjoy!</div>
+          <div class="slot-meal-macro">Unplanned · no tracking</div>
         </div>
+      </div>`;
+    } else if (name) {
+      const clickFn = editable ? `openPicker('${day}','${slot}')` : meal ? `openRecipe('${encodeURIComponent(meal.name)}')` : "";
+      mealContent = `<div class="slot-meal${isAuto?" auto":""}" onclick="${clickFn}">
+        ${meal ? `<span style="font-size:28px;flex-shrink:0">${meal.emoji}</span>` : ""}
+        <div>
+          <div class="slot-meal-name${isAuto?" auto":""}">${name}</div>
+          ${macros && !isAuto ? `<div class="slot-meal-macro">${macros}</div>` : ""}
+        </div>
+      </div>`;
+    } else {
+      mealContent = `<button class="slot-empty" onclick="openPicker('${day}','${slot}')">
+        <span style="font-size:20px;color:#DDD">+</span> Add ${slot.toLowerCase()}
+      </button>`;
+    }
+
+    return `<div class="slot-card">
+      <div class="slot-lbl" style="${!name?"border-bottom:none":""}">
+        <div class="slot-lbl-left"><span>${SLOT_EMOJI[slot]}</span> ${slot}</div>
+        ${changeBtn}
       </div>
-    </Sheet>
-  );
+      ${mealContent}
+    </div>`;
+  }).join("");
 }
 
-// ── MEAL PICKER ───────────────────────────────────────────────────────────
-function MealPicker({ day, slot, onSelect, onClose, person }) {
-  const [search, setSearch] = useState("");
-  const [cat, setCat] = useState("All");
+// ═══════════════════════════════════════════════════════════════════════════
+// RECIPES TAB
+// ═══════════════════════════════════════════════════════════════════════════
+function renderCatPills(containerId, activeCat, onClickFn) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = CATEGORIES.map(c => {
+    const col = CAT_COLOR[c];
+    const active = c === activeCat;
+    return `<span class="pill" style="background:${active?col.accent:"#fff"};color:${active?"#fff":col.accent};border-color:${col.accent}" onclick="${onClickFn}('${c}')">${c}</span>`;
+  }).join("");
+}
+
+function setRecipeCat(c) { state.recCat = c; renderRecipes(); }
+function setPickerCat(c) { state.pickerCat = c; renderPickerList(); }
+
+function renderRecipes() {
+  renderCatPills("cat-pills", state.recCat, "setRecipeCat");
+  const search = (document.getElementById("recipe-search")?.value || "").toLowerCase();
   const filtered = MEALS.filter(m =>
-    (cat==="All" || m.cat===cat) &&
-    m.name.toLowerCase().includes(search.toLowerCase())
+    (state.recCat === "All" || m.cat === state.recCat) &&
+    m.name.toLowerCase().includes(search)
   );
-  return (
-    <Sheet open onClose={onClose} tall>
-      <div style={{ position:"sticky", top:0, background:"white", padding:"12px 20px 12px", zIndex:10, borderBottom:"1px solid #F0EAE0" }}>
-        <div style={{ fontFamily:"Georgia,serif", fontSize:17, marginBottom:2 }}>{SLOT_EMOJI[slot]} {slot}</div>
-        <div style={{ fontSize:11, color:"#888", marginBottom:12 }}>{day}</div>
-        <input value={search} onChange={e=>setSearch(e.target.value)}
-          placeholder="Search…" autoFocus
-          style={{ width:"100%", padding:"10px 14px", border:"1px solid #E0DAD0", borderRadius:10, fontSize:15, outline:"none", boxSizing:"border-box" }}/>
-        <div style={{ display:"flex", gap:6, overflowX:"auto", marginTop:10, paddingBottom:4, WebkitOverflowScrolling:"touch" }}>
-          {CATEGORIES.map(c=>{
-            const col=CAT_COLOR[c];
-            return (
-              <button key={c} onClick={()=>setCat(c)} style={{
-                padding:"5px 12px", borderRadius:20, border:`1.5px solid ${col.accent}`, fontSize:11, fontWeight:700,
-                cursor:"pointer", whiteSpace:"nowrap", flexShrink:0,
-                background:cat===c?col.accent:"white", color:cat===c?"white":col.accent
-              }}>{c}</button>
-            );
-          })}
+  const p = state.person;
+  document.getElementById("recipe-list").innerHTML = filtered.map(m => {
+    const col = CAT_COLOR[m.cat];
+    return `<div class="recipe-item" onclick="openRecipe('${encodeURIComponent(m.name)}')">
+      <div class="recipe-icon" style="background:${col.bg}">${m.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div class="recipe-item-name">${m.name}</div>
+        <div class="recipe-item-meta">
+          <span class="recipe-cat-badge" style="color:${col.accent}">${m.cat}</span>
+          <span style="font-size:11px;color:var(--light)">·</span>
+          <span style="font-size:11px;color:var(--light)">${p==="Sam"?m.calM:m.calF} kcal · ${p==="Sam"?m.protM:m.protF}g</span>
         </div>
       </div>
-      <div style={{ padding:"4px 0 120px" }}>
-        <div onClick={()=>{onSelect("");onClose();}} style={{ display:"flex", alignItems:"center", gap:12, padding:"14px 20px", borderBottom:"1px solid #F0EAE0", color:"#888", fontSize:14 }}>
-          <span style={{fontSize:18}}>✕</span> Clear this slot
-        </div>
-        {filtered.map(meal=>{
-          const col=CAT_COLOR[meal.cat];
-          const cal = person==="Sam"?meal.calM:meal.calF;
-          const prot = person==="Sam"?meal.protM:meal.protF;
-          return (
-            <div key={meal.id} onClick={()=>{onSelect(meal.name);onClose();}} style={{
-              display:"flex", alignItems:"center", gap:14, padding:"13px 20px",
-              borderBottom:"1px solid #F8F4F0", activeStyle:{background:"#F8F5F0"}
-            }}>
-              <span style={{fontSize:28,flexShrink:0}}>{meal.emoji}</span>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:14,fontWeight:600,color:"#1E1E1E"}}>{meal.name}</div>
-                <div style={{fontSize:11,color:"#888",marginTop:2}}>{meal.cat} · {cal} kcal · {prot}g</div>
-              </div>
-              <span style={{color:col.accent,fontSize:20,flexShrink:0}}>›</span>
-            </div>
-          );
-        })}
-      </div>
-    </Sheet>
-  );
+      <span class="recipe-chevron">›</span>
+    </div>`;
+  }).join("") || `<div style="text-align:center;padding:60px 20px;color:var(--light)">
+    <div style="font-size:36px;margin-bottom:8px">🔍</div>No recipes found</div>`;
 }
 
-// ── MAIN APP ──────────────────────────────────────────────────────────────
-function App() {
-  const [tab, setTab]       = useState("plan");
-  const [person, setPerson] = useState("Luisa");
-  const [activeDay, setActiveDay] = useState(0);
-  const [plan, setPlan]     = useState(()=>{ try{return JSON.parse(localStorage.getItem("mealPlan_v2"))||DEFAULT_PLAN;}catch{return DEFAULT_PLAN;} });
-  const [checked, setChecked] = useState(()=>{ try{return JSON.parse(localStorage.getItem("checked_v2"))||{};}catch{return {};} });
-  const [picker, setPicker] = useState(null);   // {day,slot}
-  const [recipe, setRecipe] = useState(null);
-  const [recCat, setRecCat] = useState("All");
-  const [recSearch, setRecSearch] = useState("");
+// ═══════════════════════════════════════════════════════════════════════════
+// RECIPE SHEET
+// ═══════════════════════════════════════════════════════════════════════════
+function openRecipe(encodedName) {
+  const name = decodeURIComponent(encodedName);
+  const m = getMeal(name);
+  if (!m) return;
+  const p = state.person;
+  const col = CAT_COLOR[m.cat];
+  const ings = p === "Sam" ? m.ingM : m.ingF;
+  const cal = p === "Sam" ? m.calM : m.calF;
+  const prot = p === "Sam" ? m.protM : m.protF;
 
-  useEffect(()=>{ localStorage.setItem("mealPlan_v2",JSON.stringify(plan)); },[plan]);
-  useEffect(()=>{ localStorage.setItem("checked_v2",JSON.stringify(checked)); },[checked]);
+  document.getElementById("recipe-sheet-header").innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:${col.accent}">${m.cat} · ${m.time}</div>
+      <button onclick="closeRecipeSheetBtn()" style="border:none;background:rgba(0,0,0,.08);border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:15px">×</button>
+    </div>`;
 
-  // Resolve display plan with auto-lunches
-  const displayPlan = useMemo(()=>{
-    const p = JSON.parse(JSON.stringify(plan));
-    Object.entries(AUTO_LUNCH_DAYS).forEach(([day,prevDay])=>{
-      const prev = plan[prevDay]?.Dinner;
-      p[day].Lunch = prev ? `← ${prev}` : "";
-    });
-    return p;
-  },[plan]);
-
-  const setMeal = (day, slot, name) => setPlan(p=>({...p,[day]:{...p[day],[slot]:name}}));
-
-  // Day macros
-  const dayMacros = (day) => {
-    let cal=0, prot=0;
-    Object.values(displayPlan[day]||{}).forEach(name=>{
-      if (!name) return;
-      const real = name.startsWith("←") ? name.replace("← ","") : name;
-      const {cal:c,prot:pt} = getMacros(real, person);
-      cal+=c; prot+=pt;
-    });
-    return {cal,prot};
-  };
-
-  const shoppingItems = useMemo(()=>buildShoppingList(plan),[plan]);
-  const checkedCount = Object.values(checked).filter(Boolean).length;
-
-  const filteredRecipes = MEALS.filter(m=>
-    (recCat==="All"||m.cat===recCat) &&
-    m.name.toLowerCase().includes(recSearch.toLowerCase())
-  );
-
-  const TARGET = person==="Sam" ? 2200 : 1700;
-  const PROT_TARGET = person==="Sam" ? 190 : 125;
-
-  // ── PLAN TAB ──────────────────────────────────────────────────────────
-  const PlanTab = () => {
-    const day = DAYS[activeDay];
-    const slots = displayPlan[day] || {};
-    const {cal,prot} = dayMacros(day);
-    const calPct = Math.min(100, Math.round(cal/TARGET*100));
-    const protPct = Math.min(100, Math.round(prot/PROT_TARGET*100));
-    const calOk = cal >= TARGET*0.88 && cal <= TARGET*1.12;
-    const protOk = prot >= PROT_TARGET*0.88;
-
-    return (
-      <div style={{flex:1,overflow:"auto",paddingBottom:80}}>
-        {/* Day strip */}
-        <div style={{ overflowX:"auto", display:"flex", gap:0, background:"white",
-          borderBottom:"1px solid #EDE8E0", position:"sticky", top:0, zIndex:10,
-          WebkitOverflowScrolling:"touch" }}>
-          {DAYS.map((d,i)=>{
-            const {cal:dc} = dayMacros(d);
-            const ok = dc >= TARGET*0.88 && dc <= TARGET*1.12;
-            return (
-              <button key={d} onClick={()=>setActiveDay(i)} style={{
-                flex:"0 0 calc(100%/7)", padding:"10px 4px 8px", border:"none", cursor:"pointer",
-                background: i===activeDay ? "#1E1E1E" : "white",
-                borderBottom: i===activeDay ? "3px solid #C17A55" : "3px solid transparent",
-                transition:"all 0.15s"
-              }}>
-                <div style={{ fontSize:9, fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase",
-                  color: i===activeDay ? "white" : "#AAA" }}>{d.slice(0,3)}</div>
-                <div style={{ width:6, height:6, borderRadius:"50%", margin:"4px auto 0",
-                  background: dc>0 ? (ok?"#4F7A62":"#C17A55") : "#DDD" }}/>
-              </button>
-            );
-          })}
+  document.getElementById("recipe-sheet-body").innerHTML = `
+    <div class="recipe-hero" style="background:${col.bg}">
+      <span class="recipe-emoji-big">${m.emoji}</span>
+      <h2 class="recipe-h2">${m.name}</h2>
+      <p class="recipe-desc">${m.desc}</p>
+      <div class="macro-chips">
+        <div class="macro-chip" style="background:rgba(255,255,255,.7)">
+          <div class="macro-chip-val" style="color:${col.accent}">${cal}</div>
+          <div class="macro-chip-lbl">Calories</div>
         </div>
-
-        {/* Day header */}
-        <div style={{ padding:"18px 20px 12px", background:"white", borderBottom:"1px solid #F0EAE0" }}>
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:12 }}>
-            <h2 style={{ fontFamily:"Georgia,serif", fontSize:22 }}>{day}</h2>
-            <div style={{ fontSize:12, color:"#888" }}>
-              <span style={{ color:calOk?"#4F7A62":"#C17A55", fontWeight:700 }}>{cal||"—"}</span> / {TARGET} kcal
-            </div>
-          </div>
-          {/* Macro bars */}
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
-            {[["Calories",cal,TARGET,calPct,"#4F7A62","kcal"],["Protein",prot,PROT_TARGET,protPct,"#3A6A9A","g"]].map(([lbl,v,t,pct,color,unit])=>(
-              <div key={lbl}>
-                <div style={{ display:"flex", justifyContent:"space-between", fontSize:10, color:"#888", marginBottom:4 }}>
-                  <span>{lbl}</span><span style={{fontWeight:700,color:"#1E1E1E"}}>{v}{unit}</span>
-                </div>
-                <div style={{ height:5, background:"#EDE8E0", borderRadius:3, overflow:"hidden" }}>
-                  <div style={{ height:"100%", width:`${pct}%`, background:pct>=88?color:"#E8A050", borderRadius:3, transition:"width 0.4s" }}/>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div class="macro-chip" style="background:rgba(255,255,255,.7)">
+          <div class="macro-chip-val" style="color:${col.accent}">${prot}g</div>
+          <div class="macro-chip-lbl">Protein</div>
         </div>
-
-        {/* Slots */}
-        <div style={{ padding:"12px 16px", display:"flex", flexDirection:"column", gap:10 }}>
-          {SLOTS.map(slot=>{
-            const mealName = slots[slot] || "";
-            const isAuto = mealName.startsWith("←");
-            const isEditable = !isAuto;
-            const meal = MEALS.find(m=>m.name===mealName);
-            const col = meal ? CAT_COLOR[meal.cat] : null;
-            const macros = getMacros(isAuto ? mealName.replace("← ","") : mealName, person);
-
-            return (
-              <div key={slot} style={{ background:"white", borderRadius:14, overflow:"hidden",
-                boxShadow:"0 1px 8px rgba(0,0,0,0.06)", border:"1px solid rgba(0,0,0,0.04)" }}>
-                {/* Slot label */}
-                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
-                  padding:"10px 16px 8px", borderBottom: mealName ? `1px solid ${col?.bg||"#F0EAE0"}` : "none" }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:11,
-                    letterSpacing:"0.15em", textTransform:"uppercase", fontWeight:700, color:"#AAA" }}>
-                    <span>{SLOT_EMOJI[slot]}</span> {slot}
-                  </div>
-                  {isEditable && mealName && (
-                    <button onClick={()=>setPicker({day,slot})} style={{
-                      fontSize:11, color:"#888", border:"1px solid #E8E0D8",
-                      background:"white", borderRadius:6, padding:"3px 8px", cursor:"pointer"
-                    }}>Change</button>
-                  )}
-                </div>
-
-                {mealName ? (
-                  <div onClick={()=>{ if(isEditable) setPicker({day,slot}); else if(meal) setRecipe(meal); }}
-                    style={{ padding:"12px 16px", cursor:"pointer",
-                      background: isAuto ? "#F0F8F4" : "white" }}>
-                    <div style={{ display:"flex", gap:12, alignItems:"center" }}>
-                      {meal && <span style={{fontSize:28,flexShrink:0}}>{meal.emoji}</span>}
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{ fontSize:14, fontWeight:600, color:isAuto?"#4F7A62":"#1E1E1E",
-                          fontStyle:isAuto?"italic":"normal", lineHeight:1.3 }}>
-                          {isAuto ? mealName : mealName}
-                        </div>
-                        {macros.cal>0 && (
-                          <div style={{ fontSize:11, color:"#888", marginTop:3 }}>
-                            {macros.cal} kcal · {macros.prot}g protein
-                          </div>
-                        )}
-                      </div>
-                      {meal && !isAuto && <span style={{color:"#CCC",fontSize:18}}>›</span>}
-                    </div>
-                  </div>
-                ) : (
-                  <button onClick={()=>setPicker({day,slot})} style={{
-                    width:"100%", padding:"14px 16px", background:"none", border:"none",
-                    cursor:"pointer", textAlign:"left", fontSize:14, color:"#CCC",
-                    fontStyle:"italic", display:"flex", alignItems:"center", gap:8
-                  }}>
-                    <span style={{fontSize:20,color:"#DDD"}}>+</span> Add {slot.toLowerCase()}
-                  </button>
-                )}
-              </div>
-            );
-          })}
+        <div class="macro-chip" style="background:rgba(255,255,255,.7)">
+          <div class="macro-chip-val" style="color:${col.accent}">⏱</div>
+          <div class="macro-chip-lbl">${m.time}</div>
         </div>
-      </div>
-    );
-  };
-
-  // ── RECIPES TAB ────────────────────────────────────────────────────────
-  const RecipesTab = () => (
-    <div style={{flex:1,overflow:"auto",paddingBottom:80}}>
-      {/* Search */}
-      <div style={{ padding:"14px 16px 10px", background:"white", borderBottom:"1px solid #F0EAE0",
-        position:"sticky", top:0, zIndex:10 }}>
-        <input value={recSearch} onChange={e=>setRecSearch(e.target.value)}
-          placeholder="Search recipes…"
-          style={{ width:"100%", padding:"10px 14px", border:"1px solid #E0DAD0",
-            borderRadius:10, fontSize:15, outline:"none", boxSizing:"border-box", marginBottom:10 }}/>
-        <div style={{ display:"flex", gap:6, overflowX:"auto", WebkitOverflowScrolling:"touch", paddingBottom:2 }}>
-          {CATEGORIES.map(c=>{
-            const col=CAT_COLOR[c];
-            return (
-              <button key={c} onClick={()=>setRecCat(c)} style={{
-                padding:"5px 12px", borderRadius:20, border:`1.5px solid ${col.accent}`,
-                fontSize:11, fontWeight:700, cursor:"pointer", whiteSpace:"nowrap", flexShrink:0,
-                background:recCat===c?col.accent:"white", color:recCat===c?"white":col.accent
-              }}>{c}</button>
-            );
-          })}
-        </div>
-      </div>
-      {/* List */}
-      <div style={{padding:"8px 0"}}>
-        {filteredRecipes.map(meal=>{
-          const col=CAT_COLOR[meal.cat];
-          const cal=person==="Sam"?meal.calM:meal.calF;
-          const prot=person==="Sam"?meal.protM:meal.protF;
-          return (
-            <div key={meal.id} onClick={()=>setRecipe(meal)} style={{
-              display:"flex", alignItems:"center", gap:14, padding:"14px 20px",
-              borderBottom:"1px solid #F5F0E8", cursor:"pointer", background:"white",
-              transition:"background 0.1s"
-            }}>
-              <div style={{ width:52, height:52, borderRadius:12, background:col.bg,
-                display:"flex", alignItems:"center", justifyContent:"center", fontSize:28, flexShrink:0 }}>
-                {meal.emoji}
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{ fontSize:14, fontWeight:600, color:"#1E1E1E", lineHeight:1.25, marginBottom:3 }}>{meal.name}</div>
-                <div style={{ display:"flex", gap:8, alignItems:"center" }}>
-                  <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.15em",
-                    textTransform:"uppercase", color:col.accent }}>{meal.cat}</span>
-                  <span style={{ fontSize:11, color:"#AAA" }}>·</span>
-                  <span style={{ fontSize:11, color:"#888" }}>{cal} kcal · {prot}g protein</span>
-                </div>
-              </div>
-              <span style={{color:"#CCC",fontSize:22,flexShrink:0}}>›</span>
-            </div>
-          );
-        })}
-        {filteredRecipes.length===0 && (
-          <div style={{textAlign:"center",padding:"60px 20px",color:"#AAA"}}>
-            <div style={{fontSize:40,marginBottom:8}}>🔍</div>
-            <div>No recipes found</div>
-          </div>
-        )}
       </div>
     </div>
+    <div class="person-note">📐 ${p}'s portion — toggle top-right to switch</div>
+    <div style="padding:0 16px 100px">
+      <div class="eyebrow" style="margin-bottom:10px">Ingredients</div>
+      ${ings.map(ing => `<div class="ing-row"><span class="ing-bullet">·</span>${ing}</div>`).join("")}
+      <div class="eyebrow" style="margin:20px 0 12px">Method</div>
+      ${m.steps.map((s,i) => `<div class="method-step">
+        <div class="method-num" style="color:${col.accent}">${i+1}</div>
+        <div>${s.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")}</div>
+      </div>`).join("")}
+    </div>`;
+
+  document.getElementById("recipe-sheet-overlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeRecipeSheet(e) {
+  if (e.target === document.getElementById("recipe-sheet-overlay")) closeRecipeSheetBtn();
+}
+function closeRecipeSheetBtn() {
+  document.getElementById("recipe-sheet-overlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MEAL PICKER SHEET
+// ═══════════════════════════════════════════════════════════════════════════
+function openPicker(day, slot) {
+  state.pickerDay = day;
+  state.pickerSlot = slot;
+  state.pickerCat = "All";
+  document.getElementById("picker-title").textContent = SLOT_EMOJI[slot] + " " + slot;
+  document.getElementById("picker-day").textContent = day;
+  document.getElementById("picker-search").value = "";
+  renderPickerList();
+  document.getElementById("picker-overlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("picker-search").focus(), 300);
+}
+
+function renderPickerList() {
+  renderCatPills("picker-pills", state.pickerCat, "setPickerCat");
+  const search = (document.getElementById("picker-search")?.value || "").toLowerCase();
+  const filtered = MEALS.filter(m =>
+    (state.pickerCat === "All" || m.cat === state.pickerCat) &&
+    m.name.toLowerCase().includes(search)
   );
-
-  // ── SHOPPING TAB ────────────────────────────────────────────────────────
-  const ShoppingTab = () => (
-    <div style={{flex:1,overflow:"auto",paddingBottom:80}}>
-      {/* Header */}
-      <div style={{ padding:"16px 20px 12px", background:"white", borderBottom:"1px solid #F0EAE0",
-        position:"sticky", top:0, zIndex:10 }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
-          <div>
-            <h2 style={{ fontFamily:"Georgia,serif", fontSize:20 }}>Shopping List</h2>
-            <div style={{ fontSize:11, color:"#888" }}>{shoppingItems.length} items · Sam + Luisa combined · tap to tick off</div>
-          </div>
-          <button onClick={()=>setChecked({})} style={{
-            padding:"7px 14px", border:"1px solid #E0DAD0", borderRadius:8,
-            background:"white", fontSize:12, color:"#888", cursor:"pointer"
-          }}>↺ Reset</button>
+  const p = state.person;
+  document.getElementById("picker-list").innerHTML =
+    `<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #F0EAE0;cursor:pointer;color:var(--light);font-size:13px" onclick="pickMeal('')">
+      <span style="font-size:18px">✕</span> Clear this slot</div>` +
+    filtered.map(m => {
+      const col = CAT_COLOR[m.cat];
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F8F4F0;cursor:pointer" onclick="pickMeal('${encodeURIComponent(m.name)}')" ontouchstart="this.style.background='#F8F5F0'" ontouchend="this.style.background=''">
+        <span style="font-size:26px;flex-shrink:0">${m.emoji}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:var(--charcoal)">${m.name}</div>
+          <div style="font-size:11px;color:var(--light)">${m.cat} · ${p==="Sam"?m.calM:m.calF} kcal · ${p==="Sam"?m.protM:m.protF}g protein</div>
         </div>
-        {/* Progress */}
-        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          <div style={{ flex:1, height:6, background:"#EDE8E0", borderRadius:3, overflow:"hidden" }}>
-            <div style={{ height:"100%", borderRadius:3, background:"#4F7A62",
-              width:`${shoppingItems.length?Math.round(checkedCount/shoppingItems.length*100):0}%`,
-              transition:"width 0.3s" }}/>
-          </div>
-          <span style={{ fontSize:11, color:"#888", whiteSpace:"nowrap" }}>{checkedCount}/{shoppingItems.length}</span>
-        </div>
-      </div>
+        <span style="color:#CCC;font-size:20px">›</span>
+      </div>`;
+    }).join("");
+}
 
-      {/* Tip */}
-      <div style={{ margin:"12px 16px 0", padding:"11px 14px", background:"#FEF3E2",
-        border:"1px solid #F0D0A0", borderRadius:10, fontSize:12, color:"#7A4020", lineHeight:1.6 }}>
-        🛒 <strong>Pak'nSave tip:</strong> Buy rice 5kg (~$8.50), oats 1kg (~$3.50), protein powder in bulk. Chicken ~$13/kg, mince ~$18.99/kg.
-      </div>
+function pickMeal(encodedName) {
+  const name = encodedName ? decodeURIComponent(encodedName) : "";
+  const {pickerDay: day, pickerSlot: slot} = state;
+  state.plan[day][slot] = name;
+  save();
+  closePicker();
+  renderPlan();
+  // Update shopping / prep if visible
+  if (state.tab === "shopping") renderShopping();
+  if (state.tab === "prep") renderPrep();
+}
 
-      {/* Items grouped by category */}
-      <div style={{padding:"0 16px 20px"}}>
-        {shoppingItems.length===0 ? (
-          <div style={{textAlign:"center",padding:"60px 0",color:"#AAA"}}>
-            <div style={{fontSize:40,marginBottom:8}}>🛒</div>
-            <div style={{fontSize:16,marginBottom:6}}>No meals selected yet</div>
-            <div style={{fontSize:13}}>Go to Plan tab and choose your meals</div>
-          </div>
-        ) : (() => {
-          const rendered = [];
-          let lastCat = null;
+function closePicker(e) {
+  if (!e || e.target === document.getElementById("picker-overlay")) {
+    document.getElementById("picker-overlay").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
 
-          shoppingItems.forEach(item => {
-            const key = item.name.toLowerCase();
-            const isChecked = !!checked[key];
+// ═══════════════════════════════════════════════════════════════════════════
+// SHOPPING TAB
+// ═══════════════════════════════════════════════════════════════════════════
+function clearChecked() { state.checked = {}; save(); renderShopping(); }
 
-            // Category divider
-            if (item.cat !== lastCat) {
-              rendered.push(
-                <div key={`hdr-${item.cat}`} style={{
-                  fontSize:10, fontWeight:700, letterSpacing:"0.22em",
-                  textTransform:"uppercase", color:"#AAA",
-                  padding:"20px 0 8px",
-                  borderBottom:"2px solid #EDE8E0",
-                  marginBottom:4
-                }}>{item.cat}</div>
-              );
-              lastCat = item.cat;
-            }
+function renderShopping() {
+  const items = buildShoppingList();
+  const total = items.length;
+  const done = items.filter(i => state.checked[i.name.toLowerCase()]).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
 
-            // Format qty
-            const q = item.qty;
-            let qtyLabel = "";
-            if (item.unit === "g") {
-              qtyLabel = q >= 1000 ? `${(q/1000).toFixed(q>=2000?0:1)} kg` : `${Math.ceil(q)} g`;
-            } else if (item.unit === "ml") {
-              qtyLabel = q >= 1000 ? `${(q/1000).toFixed(1)} L` : `${Math.ceil(q)} ml`;
-            } else if (item.unit === "cloves") {
-              qtyLabel = `${Math.ceil(q)} clove${q>1?"s":""}`;
-            } else if (item.unit === "sprigs") {
-              qtyLabel = `${Math.ceil(q)} sprig${q>1?"s":""}`;
-            } else if (item.unit === "pack") {
-              qtyLabel = `${Math.ceil(q)} pack`;
-            } else if (q > 1) {
-              qtyLabel = `× ${Math.ceil(q)}`;
-            }
+  document.getElementById("shop-count").textContent = total + " items · Sam + Luisa combined · tap to tick off";
+  document.getElementById("shop-progress").style.width = pct + "%";
+  document.getElementById("shop-progress-txt").textContent = done + "/" + total;
+  document.getElementById("shop-nav-lbl").textContent = done > 0 ? `Shop (${done})` : "Shop";
 
-            rendered.push(
-              <div key={key}
-                onClick={()=>setChecked(p=>({...p,[key]:!p[key]}))}
-                style={{
-                  display:"flex", alignItems:"center", gap:12,
-                  padding:"11px 0",
-                  borderBottom:"1px solid #F5F0E8",
-                  cursor:"pointer",
-                  WebkitTapHighlightColor:"transparent",
-                  opacity: isChecked ? 0.45 : 1,
-                  transition:"opacity 0.2s"
-                }}>
-                {/* Checkbox */}
-                <div style={{
-                  width:22, height:22, borderRadius:5, flexShrink:0,
-                  border:`2px solid ${isChecked?"#4F7A62":"#CCC"}`,
-                  background: isChecked ? "#4F7A62" : "white",
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  transition:"all 0.15s"
-                }}>
-                  {isChecked && <span style={{color:"white",fontSize:13,fontWeight:800,lineHeight:1}}>✓</span>}
-                </div>
-                {/* Name */}
-                <span style={{
-                  flex:1, fontSize:15, fontWeight:500, color:"#1E1E1E",
-                  textDecoration: isChecked ? "line-through" : "none"
-                }}>{item.name}</span>
-                {/* Qty pill */}
-                {qtyLabel && (
-                  <span style={{
-                    fontSize:12, fontWeight:700, color:"#777",
-                    background:"#F0EBE3", borderRadius:6,
-                    padding:"3px 9px", flexShrink:0
-                  }}>{qtyLabel}</span>
-                )}
-              </div>
-            );
-          });
-          return rendered;
-        })()}
-      </div>
-    </div>
-  );
+  let html = "";
+  let lastCat = null;
+  items.forEach(item => {
+    const key = item.name.toLowerCase();
+    const checked = !!state.checked[key];
+    if (item.cat !== lastCat) {
+      html += `<div class="cat-header">${item.cat}</div>`;
+      lastCat = item.cat;
+    }
+    const qty = fmtQty(item.qty, item.unit);
+    html += `<div class="shop-item${checked?" checked":""}" onclick="toggleCheck('${key.replace(/'/g,"\\'")}')">
+      <div class="shop-cb${checked?" checked":""}"></div>
+      <div class="shop-name">${item.name}</div>
+      ${qty ? `<div class="qty-pill">${qty}</div>` : ""}
+    </div>`;
+  });
+  if (!html) html = `<div style="text-align:center;padding:60px 0;color:var(--light)"><div style="font-size:40px;margin-bottom:8px">🛒</div>Select meals in Plan tab first</div>`;
+  document.getElementById("shop-list").innerHTML = html;
+}
 
-  // ── PREP TAB ────────────────────────────────────────────────────────────
-  const PrepTab = () => {
-    // Collect all unique selected meals (deduplicated)
-    const allSelected = useMemo(() => {
-      const seen = new Set();
-      const meals = [];
-      Object.values(plan).forEach(slots => {
-        Object.values(slots).forEach(name => {
-          if (!name || name.startsWith("←")) return;
-          if (!seen.has(name)) { seen.add(name); meals.push(name); }
-        });
-      });
-      return meals;
-    }, []);
+function toggleCheck(key) {
+  state.checked[key] = !state.checked[key];
+  save();
+  renderShopping();
+}
 
-    // Find selected meals by category
-    const getMealsOfCat = (cat) => allSelected.filter(n => {
-      const m = MEALS.find(x => x.name === n);
-      return m && m.cat === cat;
+// ═══════════════════════════════════════════════════════════════════════════
+// PREP TAB
+// ═══════════════════════════════════════════════════════════════════════════
+function renderPrep() {
+  const allSelected = [];
+  const seen = new Set();
+  Object.values(state.plan).forEach(slots => {
+    Object.values(slots).forEach(name => {
+      if (name && !name.startsWith("← ") && !seen.has(name)) {
+        seen.add(name); allSelected.push(name);
+      }
     });
+  });
 
-    const oatMeals     = getMealsOfCat("Breakfast").filter(n => n.includes("Oats") || n.includes("Bircher"));
-    const dinners      = getMealsOfCat("Dinner");
-    const smoothies    = getMealsOfCat("Smoothie");
-    const eggMuffins   = allSelected.includes("Egg Muffins");
-    const boiledEggs   = allSelected.includes("Boiled Eggs ×2");
+  const ofCat = (cat) => allSelected.filter(n => getMeal(n)?.cat === cat);
+  const oatMeals    = ofCat("Breakfast").filter(n => n.includes("Oats") || n.includes("Bircher"));
+  const dinners     = ofCat("Dinner");
+  const smoothies   = ofCat("Smoothie");
+  const hasEggMuff  = allSelected.includes("Egg Muffins");
+  const hasBoiled   = allSelected.includes("Boiled Eggs ×2");
 
-    // Sam's rice needed (total ingM dry white rice across all dinners + lunches)
-    const riceQty = { sam: 0, luisa: 0 };
-    Object.values(plan).forEach(slots => {
-      Object.values(slots).forEach(name => {
-        if (!name || name.startsWith("←")) return;
-        const meal = MEALS.find(m => m.name === name);
-        if (!meal) return;
-        const parseG = (ings, keyword) => {
-          for (const ing of ings) {
-            if (ing.toLowerCase().includes(keyword)) {
-              const m = ing.match(/^([\d.]+)\s*g/);
-              if (m) return parseFloat(m[1]);
-            }
+  // Calculate rice totals
+  let riceS = 0, riceL = 0;
+  Object.values(state.plan).forEach(slots => {
+    Object.values(slots).forEach(name => {
+      if (!name || name.startsWith("← ")) return;
+      const m = getMeal(name);
+      if (!m) return;
+      const parseRice = (ings) => {
+        for (const ing of ings) {
+          if (ing.toLowerCase().includes("dry white rice")) {
+            const mt = ing.match(/^([\d.]+)\s*g/);
+            if (mt) return parseFloat(mt[1]);
           }
-          return 0;
-        };
-        riceQty.sam   += parseG(meal.ingM, "dry white rice");
-        riceQty.luisa += parseG(meal.ingF, "dry white rice");
-      });
+        }
+        return 0;
+      };
+      riceS += parseRice(m.ingM);
+      riceL += parseRice(m.ingF);
     });
+  });
 
-    const Step = ({num, title, detail, highlight}) => (
-      <div style={{ display:"flex", gap:14, padding:"14px 0", borderBottom:"1px solid #F5F0E8" }}>
-        <div style={{
-          width:28, height:28, borderRadius:14, flexShrink:0,
-          background: highlight ? "#C17A55" : "#1E1E1E",
-          color:"white", display:"flex", alignItems:"center", justifyContent:"center",
-          fontFamily:"Georgia,serif", fontSize:14, fontWeight:700
-        }}>{num}</div>
-        <div style={{flex:1}}>
-          <div style={{ fontSize:14, fontWeight:700, color:"#1E1E1E", marginBottom:3 }}>{title}</div>
-          <div style={{ fontSize:13, color:"#666", lineHeight:1.65 }}>{detail}</div>
-        </div>
+  const step = (num, title, detail, hi=false) =>
+    `<div class="prep-step">
+      <div class="step-num${hi?" hi":""}">${num}</div>
+      <div><div class="step-title">${title}</div><div class="step-detail">${detail}</div></div>
+    </div>`;
+
+  const section = (icon, title, time, bg, body) =>
+    `<div class="prep-section">
+      <div class="prep-hdr" style="background:${bg}">
+        <div class="prep-hdr-left"><span style="font-size:22px">${icon}</span><span class="prep-hdr-title">${title}</span></div>
+        ${time?`<span class="prep-time">${time}</span>`:""}
       </div>
-    );
+      <div class="prep-body">${body}</div>
+    </div>`;
 
-    const Section = ({icon, title, time, bg, children}) => (
-      <div style={{ background:"white", borderRadius:14, overflow:"hidden",
-        boxShadow:"0 2px 12px rgba(0,0,0,0.06)", border:"1px solid rgba(0,0,0,0.04)", marginBottom:16 }}>
-        <div style={{ background: bg||"#1E1E1E", padding:"14px 18px",
-          display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <span style={{fontSize:22}}>{icon}</span>
-            <span style={{ fontFamily:"Georgia,serif", fontSize:17, color:"white" }}>{title}</span>
-          </div>
-          {time && <span style={{ fontSize:11, color:"rgba(255,255,255,0.6)",
-            background:"rgba(255,255,255,0.12)", padding:"3px 10px", borderRadius:12 }}>{time}</span>}
-        </div>
-        <div style={{padding:"4px 18px 8px"}}>{children}</div>
-      </div>
-    );
+  let html = "";
 
-    const Tip = ({text}) => (
-      <div style={{ background:"#FEF3E2", border:"1px solid #F0D0A0", borderRadius:10,
-        padding:"11px 14px", marginBottom:16, fontSize:13, color:"#7A4020", lineHeight:1.6 }}>
-        💡 {text}
-      </div>
-    );
+  // Golden rule
+  html += `<div class="golden-rule"><div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;color:var(--terra);margin-bottom:8px">The golden rule</div>
+    <p>Cook double at every dinner. Package the second portion immediately. That's tomorrow's lunch — done.</p></div>`;
 
-    const NoneSelected = ({label}) => (
-      <div style={{ padding:"12px 0 4px", fontSize:13, color:"#AAA", fontStyle:"italic" }}>
-        No {label} selected this week — skip this step.
-      </div>
-    );
+  // Sunday prep
+  const riceDetail = (riceS + riceL) > 0
+    ? `Sam needs ~${Math.ceil(riceS)}g · Luisa needs ~${Math.ceil(riceL)}g · Total: ${Math.ceil(riceS+riceL)}g dry. Cook in one big pot. Portion into containers while warm.`
+    : "No rice dinners this week — cook a small batch for lunch bowls if needed.";
 
-    return (
-      <div style={{flex:1, overflow:"auto", paddingBottom:80}}>
-        {/* Header */}
-        <div style={{ padding:"18px 20px 14px", background:"white",
-          borderBottom:"1px solid #F0EAE0", position:"sticky", top:0, zIndex:10 }}>
-          <h2 style={{ fontFamily:"Georgia,serif", fontSize:20, marginBottom:4 }}>Meal Prep Guide</h2>
-          <div style={{ fontSize:11, color:"#888" }}>Based on your selected meals this week</div>
-        </div>
+  const oatDetail = oatMeals.length > 0
+    ? `Selected: ${oatMeals.join(", ")}. Line up jars, add dry ingredients (oats + protein + honey), pour over milk, seal. Done in 8 min.`
+    : "No overnight oats selected — skip.";
 
-        <div style={{padding:"16px 16px 0"}}>
-
-          {/* Golden rule */}
-          <div style={{ background:"#1E1E1E", borderRadius:14, padding:"20px", marginBottom:16 }}>
-            <div style={{ fontSize:10, letterSpacing:"0.25em", textTransform:"uppercase",
-              fontWeight:700, color:"#C17A55", marginBottom:8 }}>The golden rule</div>
-            <p style={{ fontFamily:"Georgia,serif", fontSize:16, color:"white",
-              lineHeight:1.55, margin:0 }}>
-              Cook double at every dinner. Package the second portion immediately.
-              That's tomorrow's lunch — done.
-            </p>
-          </div>
-
-          {/* ── SUNDAY PREP ── */}
-          <Section icon="☀️" title="Sunday Prep" time="60–90 min" bg="#4F7A62">
-
-            {/* Rice */}
-            {riceQty.sam + riceQty.luisa > 0 ? (
-              <Step num={1} title="Cook all rice for the week"
-                detail={`Sam needs ~${Math.ceil(riceQty.sam)}g dry rice · Luisa needs ~${Math.ceil(riceQty.luisa)}g dry rice · Total: ${Math.ceil(riceQty.sam + riceQty.luisa)}g dry (cook in one big pot). Portion into containers immediately while warm.`}/>
-            ) : (
-              <Step num={1} title="Cook rice" detail="No rice-based dinners selected this week — skip or cook a small batch for lunch bowls."/>
-            )}
-
-            {/* Overnight oats */}
-            <Step num={2}
-              title={`Overnight oat jars (${oatMeals.length > 0 ? oatMeals.length + " variety" + (oatMeals.length>1?"s":"") + " selected" : "none selected"})`}
-              detail={oatMeals.length > 0
-                ? `Prep: ${oatMeals.join(", ")}. Line up jars, add dry ingredients first (oats + protein + honey), pour over trim milk, seal. Done in 8 min. Makes Mon–${oatMeals.length >= 5 ? "Fri" : "Thu"} breakfasts.`
-                : "No overnight oats selected — skip, or prep a batch of your choice anyway."}/>
-
-            {/* Egg muffins */}
-            {eggMuffins ? (
-              <Step num={3} title="Egg muffins — batch bake" highlight
-                detail="Preheat 180°C. Whisk eggs, add cooked chicken, capsicum, spinach, cheese. Fill muffin tin ¾ full. Bake 18–20 min. Cool fully before storing. Makes 6 muffins (3 servings). Reheat 60 sec each morning."/>
-            ) : (
-              <Step num={3} title="Egg muffins" detail="Not selected this week — skip."/>
-            )}
-
-            {/* Boiled eggs */}
-            {boiledEggs ? (
-              <Step num={4} title="Boiled eggs for snacks" highlight
-                detail="Hard boil 6–8 eggs (8 min from boiling). Ice bath immediately. Store UNPEELED in fridge — stays fresh 7 days. Peel when eating."/>
-            ) : (
-              <Step num={4} title="Boiled eggs" detail="Not selected as a snack this week — skip."/>
-            )}
-
-            {/* Marinate chicken */}
-            <Step num={5} title="Marinate & portion chicken"
-              detail="Divide chicken into meal-sized portions based on this week's dinners. Soy + garlic bag for stir-fry nights. Lemon + dijon + thyme bag for roast nights. Plain for pasta. Refrigerate."/>
-
-            {/* Pre-measure */}
-            <Step num={6} title="Pre-measure dry ingredients (5 min)"
-              detail="Weigh out oats, protein powder, cocoa, chia seeds into small zip bags or containers. Removes all decision-making during the week. Label each bag with the meal name."/>
-
-          </Section>
-
-          {/* ── MIDWEEK TOP-UP ── */}
-          <Section icon="🌙" title="Wednesday Top-Up" time="20–30 min" bg="#3A6A9A">
-
-            <Step num={1} title="Check and restock rice"
-              detail="If fewer than 3 portions left in the fridge, cook another 400g dry rice. Replenishes Thu–Sun meals."/>
-
-            {oatMeals.length > 0 ? (
-              <Step num={2} title={`Prep ${Math.min(3, oatMeals.length)} more oat jars`}
-                detail="Same method as Sunday. Covers Thu, Fri, and Sat breakfasts. Check milk level while you're at it."/>
-            ) : (
-              <Step num={2} title="Breakfast check" detail="Check what's in the fridge for the second half of the week."/>
-            )}
-
-            <Step num={3} title="Defrost protein for Thu–Sun"
-              detail="Move chicken or mince from the freezer to the fridge now. Takes 2 minutes today, saves 30 minutes of scrambling on Thursday night."/>
-
-          </Section>
-
-          {/* ── THIS WEEK'S DINNERS ── */}
-          <Section icon="🍽" title="This Week's Dinners" bg="#C04040">
-            {dinners.length === 0 ? (
-              <NoneSelected label="dinners"/>
-            ) : dinners.map((name, i) => {
-              const meal = MEALS.find(m => m.name === name);
-              if (!meal) return null;
-              return (
-                <div key={name} style={{ padding:"12px 0", borderBottom:"1px solid #F5F0E8" }}>
-                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
-                    <span style={{fontSize:22}}>{meal.emoji}</span>
-                    <div>
-                      <div style={{ fontSize:14, fontWeight:700, color:"#1E1E1E" }}>{meal.name}</div>
-                      <div style={{ fontSize:11, color:"#888" }}>⏱ {meal.time} · Sam: {meal.calM} kcal {meal.protM}g · Luisa: {meal.calF} kcal {meal.protF}g</div>
-                    </div>
-                  </div>
-                  <div style={{ fontSize:12, color:"#C04040", fontWeight:600, paddingLeft:32 }}>
-                    Cook double → pack Luisa's + Sam's lunch containers before you sit down to eat
-                  </div>
-                </div>
-              );
-            })}
-          </Section>
-
-          {/* ── SMOOTHIES NOTE ── */}
-          {smoothies.length > 0 && (
-            <Section icon="🥤" title="Smoothies (no prep needed)" bg="#7A4A9A">
-              <Tip text="Pre-bag dry ingredients Sunday (protein + oats + cocoa) into individual zip bags. Each smoothie takes 90 seconds — add milk and blend." />
-              {smoothies.map(name => {
-                const meal = MEALS.find(m => m.name === name);
-                if (!meal) return null;
-                return (
-                  <div key={name} style={{ padding:"10px 0", borderBottom:"1px solid #F5F0E8",
-                    display:"flex", alignItems:"center", gap:10 }}>
-                    <span style={{fontSize:22}}>{meal.emoji}</span>
-                    <div>
-                      <div style={{fontSize:14,fontWeight:600,color:"#1E1E1E"}}>{meal.name}</div>
-                      <div style={{fontSize:11,color:"#888"}}>{meal.ingF.slice(0,3).join(" · ")}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </Section>
-          )}
-
-          {/* ── NIGHTLY REMINDER ── */}
-          <div style={{ background:"#FEF3E2", border:"1px solid #F0D0A0", borderRadius:14,
-            padding:"18px", marginBottom:16 }}>
-            <div style={{ fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase",
-              fontWeight:700, color:"#C17A55", marginBottom:10 }}>Every dinner night</div>
-            {["Cook the full double portion — Sam's larger serve + Luisa's smaller serve in the same pan.",
-              "Plate your dinners. Then immediately pack the second portions into labelled containers.",
-              "Into the fridge before you sit down. Non-negotiable — this is the system.",
-              "Both lunches done. Zero decision-making tomorrow."
-            ].map((step, i) => (
-              <div key={i} style={{ display:"flex", gap:10, marginBottom:8, fontSize:13,
-                color:"#444", lineHeight:1.6 }}>
-                <span style={{ color:"#C17A55", fontWeight:700, flexShrink:0 }}>{i+1}.</span>
-                {step}
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </div>
-    );
-  };
-
-  // ── RENDER ─────────────────────────────────────────────────────────────
-  return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100dvh",
-      fontFamily:"'DM Sans','Helvetica Neue',sans-serif", background:"#FAF7F2",
-      maxWidth:480, margin:"0 auto", position:"relative" }}>
-
-      {/* STATUS BAR AREA */}
-      <div style={{ background:"#1E1E1E", paddingTop:"env(safe-area-inset-top,0px)" }}/>
-
-      {/* TOP BAR */}
-      <div style={{ background:"#1E1E1E", padding:"12px 20px 10px",
-        display:"flex", justifyContent:"space-between", alignItems:"center",
-        flexShrink:0 }}>
-        <div style={{ fontFamily:"Georgia,serif", fontSize:17, color:"white",
-          display:"flex", alignItems:"center", gap:6 }}>
-          <span>🍽</span>
-          <span>Sam & Luisa</span>
-        </div>
-        {/* Person toggle */}
-        <div style={{ display:"flex", background:"rgba(255,255,255,0.1)", borderRadius:8, overflow:"hidden" }}>
-          {["Luisa","Sam"].map(p=>(
-            <button key={p} onClick={()=>setPerson(p)} style={{
-              padding:"5px 14px", border:"none", cursor:"pointer", fontSize:12, fontWeight:700,
-              background:person===p?"#C17A55":"transparent",
-              color:person===p?"white":"rgba(255,255,255,0.5)",
-              transition:"all 0.15s"
-            }}>{p}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* CONTENT */}
-      <div style={{ flex:1, overflow:"hidden", display:"flex", flexDirection:"column" }}>
-        {tab==="plan"     && <PlanTab/>}
-        {tab==="recipes"  && <RecipesTab/>}
-        {tab==="shopping" && <ShoppingTab/>}
-        {tab==="prep"     && <PrepTab/>}
-      </div>
-
-      {/* BOTTOM NAV */}
-      <div style={{ flexShrink:0, background:"white", borderTop:"1px solid #EDE8E0",
-        display:"flex", paddingBottom:"env(safe-area-inset-bottom,0px)",
-        boxShadow:"0 -4px 20px rgba(0,0,0,0.07)" }}>
-        {[
-          ["plan","📅","Plan"],
-          ["recipes","📖","Recipes"],
-          ["shopping","🛒",`Shop${checkedCount>0?` (${checkedCount})`:""}` ],
-          ["prep","🧑‍🍳","Prep"]
-        ].map(([id,icon,label])=>(
-          <button key={id} onClick={()=>setTab(id)} style={{
-            flex:1, padding:"11px 4px 10px", border:"none", cursor:"pointer",
-            background:"transparent", display:"flex", flexDirection:"column",
-            alignItems:"center", gap:3, transition:"all 0.15s"
-          }}>
-            <span style={{ fontSize:20, opacity:tab===id?1:0.45 }}>{icon}</span>
-            <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.08em",
-              textTransform:"uppercase", color:tab===id?"#C17A55":"#AAA" }}>{label}</span>
-            {tab===id && <div style={{ width:20, height:2, borderRadius:1, background:"#C17A55", marginTop:1 }}/>}
-          </button>
-        ))}
-      </div>
-
-      {/* MODALS */}
-      <RecipeSheet meal={recipe} person={person} onClose={()=>setRecipe(null)}/>
-      {picker && (
-        <MealPicker day={picker.day} slot={picker.slot} person={person}
-          onSelect={(name)=>setMeal(picker.day,picker.slot,name)}
-          onClose={()=>setPicker(null)}/>
-      )}
-    </div>
+  html += section("☀️","Sunday Prep","60–90 min","#4F7A62",
+    step(1,"Cook all the week's rice",riceDetail) +
+    step(2,`Overnight oat jars (${oatMeals.length} selected)`, oatDetail) +
+    step(3,"Egg muffins",hasEggMuff
+      ? "180°C · whisk eggs + chicken + capsicum + spinach + cheese · fill muffin tin · bake 18–20 min · cool completely before storing"
+      : "Not selected this week — skip.",hasEggMuff) +
+    step(4,"Boiled eggs for snacks",hasBoiled
+      ? "8 min from boiling, ice bath immediately, store UNPEELED — stays fresh 7 days"
+      : "Not selected this week — skip.",hasBoiled) +
+    step(5,"Marinate & portion chicken","Divide into meal-size bags: soy+garlic, lemon+dijon+thyme, plain. Label and refrigerate.") +
+    step(6,"Pre-measure dry ingredients (5 min)","Weigh oats, protein powder, cocoa, chia into zip bags. Labels each with the meal name. Removes all weekday decisions.")
   );
+
+  // Wednesday top-up
+  html += section("🌙","Wednesday Top-Up","20–30 min","#3A6A9A",
+    step(1,"Check and top up rice","If fewer than 3 portions left, cook 400g more dry rice. Covers Thu–Sun.") +
+    step(2,oatMeals.length > 0 ? `Prep ${Math.min(3,oatMeals.length)} more oat jars` : "Breakfast check",
+      oatMeals.length > 0 ? "Same method as Sunday. Covers Thu, Fri, Sat breakfasts." : "Check what's available for the second half of the week.") +
+    step(3,"Defrost protein for Thu–Sun","Move chicken/mince from freezer → fridge now. Takes 2 minutes today, saves 30 minutes Thursday night.")
+  );
+
+  // This week's dinners
+  const dinnerBody = dinners.length === 0
+    ? `<div style="padding:12px 0;font-size:13px;color:var(--light);font-style:italic">No dinners selected — go to Plan tab</div>`
+    : dinners.map(name => {
+        const m = getMeal(name);
+        if (!m) return "";
+        return `<div class="dinner-item">
+          <span style="font-size:24px;flex-shrink:0">${m.emoji}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:var(--charcoal)">${m.name}</div>
+            <div style="font-size:11px;color:var(--light);margin:2px 0">⏱ ${m.time} · S: ${m.calM}kcal ${m.protM}g · L: ${m.calF}kcal ${m.protF}g</div>
+            <div class="dinner-note">Cook double → pack both lunch containers before sitting down</div>
+          </div>
+        </div>`;
+      }).join("");
+  html += section("🍽","This Week's Dinners","","#C04040",dinnerBody);
+
+  // Smoothies
+  if (smoothies.length > 0) {
+    const smoothieBody = `<div class="tip-box">💡 Pre-bag dry ingredients Sunday (protein + cocoa). Each smoothie takes 90 seconds — add milk and blend.</div>` +
+      smoothies.map(name => {
+        const m = getMeal(name);
+        if (!m) return "";
+        return `<div class="dinner-item">
+          <span style="font-size:24px;flex-shrink:0">${m.emoji}</span>
+          <div><div style="font-size:14px;font-weight:700;color:var(--charcoal)">${m.name}</div>
+          <div style="font-size:11px;color:var(--light)">${m.ingF.slice(0,3).join(" · ")}</div></div>
+        </div>`;
+      }).join("");
+    html += section("🥤","Smoothies (no cook)","","#7A4A9A",smoothieBody);
+  }
+
+  // Nightly reminder
+  html += `<div style="background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:14px;padding:18px;margin-bottom:8px">
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--terra);margin-bottom:10px">Every dinner night</div>
+    ${["Cook full double portion — Sam's larger + Luisa's smaller serve in one pan.",
+       "Plate your dinners. Then immediately pack the second portions into labelled containers.",
+       "Into the fridge before you sit down to eat. Non-negotiable.",
+       "Both lunches done. Zero decision-making tomorrow."
+    ].map((s,i)=>`<div style="display:flex;gap:10px;margin-bottom:8px;font-size:13px;color:#444;line-height:1.6">
+      <span style="color:var(--terra);font-weight:700;flex-shrink:0">${i+1}.</span>${s}</div>`).join("")}
+  </div>`;
+
+  document.getElementById("prep-content").innerHTML = html;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════════════
 renderPlan();
 renderRecipes();
 </script>
