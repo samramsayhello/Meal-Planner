@@ -1,4 +1,252 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meal Plan">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Meal Plan</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#FAF7F2;--white:#fff;--charcoal:#1E1E1E;--mid:#666;--light:#AAA;
+  --sage:#4F7A62;--sage-lt:#E6F4EC;--terra:#C17A55;--terra-lt:#FEF3E2;
+  --gold:#C9963A;--navy:#1A3A5C;--warm:#F3EDE2;
+  --bs:0 2px 12px rgba(0,0,0,.07);
+}
+html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
+  font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-size:15px;
+  overscroll-behavior:none;-webkit-text-size-adjust:100%}
+#app{display:flex;flex-direction:column;height:100%;height:100dvh;
+  max-width:480px;margin:0 auto;background:var(--bg)}
+.topbar{background:var(--charcoal);padding:12px 16px 10px;
+  padding-top:calc(12px + env(safe-area-inset-top,0px));
+  display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.brand{font-family:Georgia,serif;font-size:17px;color:#fff;display:flex;align-items:center;gap:6px}
+.ptoggle{display:flex;background:rgba(255,255,255,.1);border-radius:8px;overflow:hidden}
+.ptoggle button{padding:5px 14px;border:none;cursor:pointer;font-size:12px;font-weight:700;
+  color:rgba(255,255,255,.5);background:transparent;transition:all .15s}
+.ptoggle button.active{background:var(--terra);color:#fff}
+.content{flex:1;overflow:hidden;position:relative}
+.tab-panel{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  display:none;background:var(--bg)}
+.tab-panel.active{display:block}
+.bottomnav{flex-shrink:0;background:#fff;border-top:1px solid #EDE8E0;display:flex;
+  padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 20px rgba(0,0,0,.07)}
+.navbtn{flex:1;border:none;background:transparent;cursor:pointer;padding:10px 4px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:2px}
+.navbtn .ni{font-size:20px;opacity:.4;transition:opacity .15s}
+.navbtn .nl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--light);transition:color .15s}
+.navbtn .nd{width:20px;height:2px;border-radius:1px;background:var(--terra);margin-top:2px;
+  display:none}
+.navbtn.active .ni{opacity:1}
+.navbtn.active .nl{color:var(--terra)}
+.navbtn.active .nd{display:block}
+.section-title{font-family:Georgia,serif;font-size:20px;color:var(--charcoal)}
+.eyebrow{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--light)}
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
+.sticky-hdr{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #F0EAE0}
+.pill{display:inline-block;border-radius:20px;font-size:10px;font-weight:700;
+  letter-spacing:.1em;padding:4px 11px;cursor:pointer;border:1.5px solid;
+  white-space:nowrap;transition:all .15s}
+.day-strip{display:flex;overflow-x:auto;background:#fff;
+  border-bottom:1px solid #EDE8E0;-webkit-overflow-scrolling:touch}
+.day-strip::-webkit-scrollbar{display:none}
+.day-btn{flex:0 0 calc(100%/7);border:none;background:transparent;cursor:pointer;
+  padding:10px 2px 0;border-bottom:3px solid transparent;transition:all .15s}
+.day-btn.active{background:var(--charcoal);border-bottom-color:var(--terra)}
+.day-btn .dn{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--light)}
+.day-btn.active .dn{color:#fff}
+.day-btn .dot{width:6px;height:6px;border-radius:50%;margin:4px auto 6px;background:#DDD}
+.day-btn .dot.ok{background:var(--sage)}
+.day-btn .dot.warn{background:var(--terra)}
+.day-hdr{padding:14px 16px 10px;background:#fff;border-bottom:1px solid #F0EAE0}
+.macro-bars{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.mbar-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--mid);margin-bottom:4px}
+.mbar-track{height:5px;background:#EDE8E0;border-radius:3px;overflow:hidden}
+.mbar-fill{height:100%;border-radius:3px;transition:width .4s}
+.slots{padding:10px 12px;display:flex;flex-direction:column;gap:8px;padding-bottom:80px}
+.slot-card{background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.04)}
+.slot-lbl{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 7px}
+.slot-lbl-left{display:flex;align-items:center;gap:5px;
+  font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#CCC}
+.slot-change{font-size:11px;color:var(--mid);border:1px solid #E8E0D8;
+  background:#fff;border-radius:5px;padding:3px 8px;cursor:pointer}
+.slot-meal{padding:10px 14px 12px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.slot-meal.auto{background:#F0F8F4}
+.slot-meal-name{font-size:14px;font-weight:600;color:var(--charcoal);line-height:1.3}
+.slot-meal-name.auto{color:var(--sage);font-style:italic}
+.slot-meal-macro{font-size:11px;color:var(--light);margin-top:2px}
+.slot-empty{padding:12px 14px;color:#CCC;font-style:italic;font-size:13px;
+  display:flex;align-items:center;gap:6px;cursor:pointer;border:none;
+  background:transparent;width:100%;text-align:left}
+.search-bar{width:100%;padding:10px 14px;border:1px solid #E0DAD0;border-radius:10px;
+  font-size:15px;outline:none;box-sizing:border-box;background:#fff}
+.cat-pills{display:flex;gap:6px;overflow-x:auto;padding:0 0 2px;-webkit-overflow-scrolling:touch}
+.cat-pills::-webkit-scrollbar{display:none}
+.recipe-list{padding-bottom:80px}
+.recipe-item{display:flex;align-items:center;gap:12px;padding:13px 16px;
+  border-bottom:1px solid #F5F0E8;cursor:pointer;background:#fff;transition:background .1s}
+.recipe-item:active{background:#F8F5F0}
+.recipe-icon{width:48px;height:48px;border-radius:12px;display:flex;
+  align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.recipe-item-name{font-size:14px;font-weight:600;color:var(--charcoal);line-height:1.25;margin-bottom:3px}
+.recipe-item-meta{display:flex;gap:6px;align-items:center}
+.recipe-cat-badge{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
+.recipe-chevron{color:#CCC;font-size:20px;flex-shrink:0}
+.progress-bar{height:6px;background:#EDE8E0;border-radius:3px;overflow:hidden;flex:1}
+.progress-fill{height:100%;background:var(--sage);border-radius:3px;transition:width .3s}
+.cat-header{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--light);padding:16px 4px 8px;border-bottom:2px solid #EDE8E0;margin-bottom:4px}
+.shop-item{display:flex;align-items:center;gap:12px;padding:11px 4px;
+  border-bottom:1px solid #F5F0E8;cursor:pointer;transition:opacity .2s}
+.shop-item.checked{opacity:.45}
+.shop-cb{width:22px;height:22px;border-radius:5px;border:2px solid #CCC;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .15s}
+.shop-cb.checked{background:var(--sage);border-color:var(--sage)}
+.shop-cb.checked::after{content:'✓';color:#fff;font-size:13px;font-weight:800;line-height:1}
+.shop-name{flex:1;font-size:15px;font-weight:500;color:var(--charcoal)}
+.shop-item.checked .shop-name{text-decoration:line-through}
+.qty-pill{font-size:11px;font-weight:700;color:#777;background:#F0EBE3;padding:3px 9px;border-radius:6px;flex-shrink:0}
+.prep-section{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;
+  box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
+.prep-hdr{padding:13px 16px;display:flex;align-items:center;justify-content:space-between}
+.prep-hdr-left{display:flex;align-items:center;gap:10px}
+.prep-hdr-title{font-family:Georgia,serif;font-size:16px;color:#fff}
+.prep-time{font-size:10px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.12);padding:3px 10px;border-radius:12px}
+.prep-body{padding:4px 16px 10px}
+.prep-step{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #F5F0E8}
+.prep-step:last-child{border-bottom:none}
+.step-num{width:26px;height:26px;border-radius:13px;background:var(--charcoal);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:Georgia,serif;font-size:13px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-num.hi{background:var(--terra)}
+.step-title{font-size:13px;font-weight:700;color:var(--charcoal);margin-bottom:3px}
+.step-detail{font-size:12px;color:var(--mid);line-height:1.6}
+.golden-rule{background:var(--charcoal);border-radius:14px;padding:18px;margin-bottom:14px}
+.golden-rule p{font-family:Georgia,serif;font-size:15px;color:#fff;line-height:1.55}
+.tip-box{background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:10px;
+  padding:11px 14px;margin:8px 0 4px;font-size:12px;color:#7A4020;line-height:1.6}
+.dinner-item{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #F5F0E8}
+.dinner-item:last-child{border-bottom:none}
+.dinner-note{font-size:11px;color:var(--terra);font-weight:600;margin-top:3px}
+.sheet-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);
+  display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
+.sheet-overlay.open{opacity:1;pointer-events:all}
+.sheet{width:100%;max-height:90vh;background:#fff;border-radius:20px 20px 0 0;
+  overflow:hidden;display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .3s ease}
+.sheet-overlay.open .sheet{transform:translateY(0)}
+.sheet-handle{width:40px;height:4px;border-radius:2px;background:#DDD;margin:10px auto 0;flex-shrink:0}
+.sheet-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+.sheet-sticky{position:sticky;top:0;background:#fff;z-index:10;
+  border-bottom:1px solid #F0EAE0;padding:12px 16px 10px;flex-shrink:0}
+.recipe-hero{padding:20px 20px 16px;text-align:center}
+.recipe-emoji-big{font-size:56px;display:block;margin-bottom:8px}
+.recipe-h2{font-family:Georgia,serif;font-size:22px;margin-bottom:8px;line-height:1.2}
+.recipe-desc{font-size:13px;color:var(--mid);line-height:1.65}
+.macro-chips{display:flex;gap:10px;margin:16px 0 0}
+.macro-chip{flex:1;border-radius:10px;padding:12px 8px;text-align:center}
+.macro-chip-val{font-family:Georgia,serif;font-size:20px;line-height:1}
+.macro-chip-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-top:3px}
+.person-note{font-size:11px;color:var(--mid);background:#F8F5F0;border-radius:8px;padding:8px 12px;margin:12px 16px}
+.ing-row{display:flex;align-items:baseline;gap:8px;padding:9px 0;border-bottom:1px solid #F5F0E8;font-size:14px;color:#444}
+.ing-bullet{color:var(--sage);font-weight:700;font-size:16px;line-height:.8;flex-shrink:0}
+.method-step{display:flex;gap:12px;margin-bottom:12px;font-size:13px;color:var(--mid);line-height:1.65}
+.method-num{font-family:Georgia,serif;font-size:20px;flex-shrink:0;width:22px;line-height:1;margin-top:1px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <div class="brand">🍽 Sam &amp; Luisa</div>
+    <div class="ptoggle">
+      <button id="btn-luisa" class="active" onclick="setPerson('Luisa')">Luisa</button>
+      <button id="btn-sam" onclick="setPerson('Sam')">Sam</button>
+    </div>
+  </div>
+  <div class="content">
+    <div id="tab-plan" class="tab-panel active">
+      <div class="sticky-hdr">
+        <div class="day-strip" id="day-strip"></div>
+        <div class="day-hdr" id="day-hdr"></div>
+      </div>
+      <div class="slots" id="slots"></div>
+    </div>
+    <div id="tab-recipes" class="tab-panel">
+      <div class="sticky-hdr" style="padding:12px 14px 10px">
+        <input class="search-bar" id="recipe-search" placeholder="Search recipes…" oninput="renderRecipes()">
+        <div class="cat-pills" id="cat-pills" style="margin-top:8px"></div>
+      </div>
+      <div class="recipe-list" id="recipe-list"></div>
+    </div>
+    <div id="tab-shopping" class="tab-panel">
+      <div class="sticky-hdr" style="padding:14px 16px 12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div>
+            <div class="section-title">Shopping List</div>
+            <div id="shop-count" class="eyebrow" style="margin-top:2px"></div>
+          </div>
+          <button onclick="clearChecked()" style="padding:7px 12px;border:1px solid #E0DAD0;border-radius:8px;background:#fff;font-size:12px;color:var(--mid);cursor:pointer">↺ Reset</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="progress-bar"><div class="progress-fill" id="shop-progress"></div></div>
+          <span id="shop-progress-txt" style="font-size:11px;color:var(--light);white-space:nowrap"></span>
+        </div>
+      </div>
+      <div style="margin:10px 14px 0;padding:10px 12px;background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:10px;font-size:12px;color:#7A4020;line-height:1.55">
+        🛒 <strong>Pak'nSave tip:</strong> Rice 5kg ~$8.50 · Oats 1kg ~$3.50 · Chicken ~$13/kg · Mince ~$18.99/kg · Eggs ~$9.59/doz
+      </div>
+      <div id="shop-list" style="padding:0 14px 80px"></div>
+    </div>
+    <div id="tab-prep" class="tab-panel">
+      <div class="sticky-hdr" style="padding:14px 16px 10px">
+        <div class="section-title">Meal Prep Guide</div>
+        <div class="eyebrow" style="margin-top:3px">Generated from your selected meals</div>
+      </div>
+      <div id="prep-content" style="padding:14px 14px 80px"></div>
+    </div>
+  </div>
+  <div class="bottomnav">
+    <button class="navbtn active" id="nav-plan" onclick="switchTab('plan')">
+      <span class="ni">📅</span><span class="nl">Plan</span><span class="nd"></span>
+    </button>
+    <button class="navbtn" id="nav-recipes" onclick="switchTab('recipes')">
+      <span class="ni">📖</span><span class="nl">Recipes</span><span class="nd"></span>
+    </button>
+    <button class="navbtn" id="nav-shopping" onclick="switchTab('shopping')">
+      <span class="ni">🛒</span><span class="nl" id="shop-nav-lbl">Shop</span><span class="nd"></span>
+    </button>
+    <button class="navbtn" id="nav-prep" onclick="switchTab('prep')">
+      <span class="ni">🧑‍🍳</span><span class="nl">Prep</span><span class="nd"></span>
+    </button>
+  </div>
+</div>
+<div class="sheet-overlay" id="recipe-sheet-overlay" onclick="closeRecipeSheet(event)">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-sticky" id="recipe-sheet-header"></div>
+    <div class="sheet-scroll" id="recipe-sheet-body"></div>
+  </div>
+</div>
+<div class="sheet-overlay" id="picker-overlay" onclick="closePicker(event)">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-sticky">
+      <div id="picker-title" style="font-family:Georgia,serif;font-size:17px;margin-bottom:2px"></div>
+      <div id="picker-day" style="font-size:11px;color:var(--light);margin-bottom:10px"></div>
+      <input class="search-bar" id="picker-search" placeholder="Search meals…" oninput="renderPickerList()">
+      <div class="cat-pills" id="picker-pills" style="margin-top:8px"></div>
+    </div>
+    <div class="sheet-scroll" id="picker-list"></div>
+  </div>
+</div>
+<script>
 
 const MEALS = [
   // BREAKFASTS
@@ -698,7 +946,7 @@ function MealPicker({ day, slot, onSelect, onClose, person }) {
 }
 
 // ── MAIN APP ──────────────────────────────────────────────────────────────
-export default function App() {
+function App() {
   const [tab, setTab]       = useState("plan");
   const [person, setPerson] = useState("Luisa");
   const [activeDay, setActiveDay] = useState(0);
@@ -1372,3 +1620,9 @@ export default function App() {
     </div>
   );
 }
+
+renderPlan();
+renderRecipes();
+</script>
+</body>
+</html>
