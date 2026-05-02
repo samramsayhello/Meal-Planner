@@ -1,1 +1,1375 @@
 
+import { useState, useEffect, useMemo, useRef } from "react";
+
+const MEALS = [
+  // BREAKFASTS
+  { id: 1, name: "Classic Overnight Oats", cat: "Breakfast", emoji: "🫙",
+    calM: 430, protM: 38, calF: 320, protF: 28, time: "Prep Sun",
+    desc: "Creamy oats with vanilla protein, honey and cinnamon. Prep 5 jars Sunday, grab one each morning.",
+    ingM: ["80g rolled oats","300ml trim milk","30g vanilla protein powder","1 banana","10g honey","Pinch cinnamon"],
+    ingF: ["60g rolled oats","250ml trim milk","25g vanilla protein powder","10g honey","Pinch cinnamon"],
+    steps: ["Add oats and protein powder to a mason jar.","Pour over trim milk and stir well.","Drizzle honey, add banana slices if using.","Seal jar. Refrigerate overnight (minimum 6 hours).","Grab from fridge each morning — no heat needed."] },
+  { id: 2, name: "Berry Overnight Oats", cat: "Breakfast", emoji: "🫐",
+    calM: 415, protM: 36, calF: 300, protF: 26, time: "Prep Sun",
+    desc: "Oats with frozen berries and chia seeds. The berries thaw overnight and create a natural jam layer.",
+    ingM: ["80g rolled oats","300ml trim milk","25g vanilla protein powder","80g frozen berries","10g honey","10g chia seeds"],
+    ingF: ["60g rolled oats","250ml trim milk","20g vanilla protein powder","60g frozen berries","8g honey","8g chia seeds"],
+    steps: ["Add oats, protein powder, and chia seeds to jar.","Add frozen berries directly from the bag.","Pour over milk. Stir gently, leaving berries mostly intact.","Drizzle honey. Seal. Refrigerate overnight.","The berries thaw and release juice — stir before eating."] },
+  { id: 3, name: "Chocolate Overnight Oats", cat: "Breakfast", emoji: "🍫",
+    calM: 440, protM: 40, calF: 330, protF: 30, time: "Prep Sun",
+    desc: "Chocolate protein with cocoa, honey and chia seeds. Tastes like dessert for breakfast.",
+    ingM: ["80g rolled oats","300ml trim milk","30g chocolate protein powder","8g cocoa powder","10g honey","10g chia seeds"],
+    ingF: ["60g rolled oats","250ml trim milk","25g chocolate protein powder","5g cocoa powder","8g honey","8g chia seeds"],
+    steps: ["Mix oats, chocolate protein, cocoa and chia seeds in jar.","Pour over milk. Stir until cocoa is fully combined.","Drizzle honey. Seal. Refrigerate overnight.","In the morning, stir well — it thickens considerably.","Optional: add a few frozen berries on top before eating."] },
+  { id: 4, name: "Honey Almond Overnight Oats", cat: "Breakfast", emoji: "🍯",
+    calM: 460, protM: 40, calF: 340, protF: 30, time: "Prep Sun",
+    desc: "Oats with almond butter and honey. Slightly higher calorie — ideal for gym days.",
+    ingM: ["80g rolled oats","280ml trim milk","25g vanilla protein powder","12g almond butter","10g honey"],
+    ingF: ["60g rolled oats","230ml trim milk","20g vanilla protein powder","8g almond butter","8g honey"],
+    steps: ["Add oats and protein powder to jar.","Add almond butter directly into the jar.","Pour over milk. Stir well until almond butter loosens and mixes.","Drizzle honey on top. Seal. Refrigerate overnight.","The almond butter will soften and distribute through the oats overnight."] },
+  { id: 5, name: "Egg Muffins", cat: "Breakfast", emoji: "🧁",
+    calM: 390, protM: 42, calF: 260, protF: 28, time: "Prep Sun",
+    desc: "High-protein egg muffins with chicken, capsicum and cheese. Batch cook Sunday, reheat 60 seconds each morning.",
+    ingM: ["3 eggs","50g cooked chicken, diced","30g shredded cheese","¼ capsicum, diced","Handful baby spinach","Salt and pepper"],
+    ingF: ["2 eggs","30g cooked chicken, diced","15g shredded cheese","¼ capsicum, diced","Handful baby spinach","Salt and pepper"],
+    steps: ["Preheat oven to 180°C. Grease a muffin tin thoroughly.","Whisk eggs with salt and pepper in a bowl.","Stir in chicken, cheese, capsicum and spinach.","Pour evenly into muffin holes — fill to ¾ full.","Bake 18–20 minutes until set and golden on top.","Cool completely before storing in the fridge (up to 5 days). Reheat 60 seconds."] },
+  { id: 6, name: "Bircher Muesli", cat: "Breakfast", emoji: "🍎",
+    calM: 410, protM: 32, calF: 310, protF: 24, time: "Prep Sun",
+    desc: "Swiss-style soaked oats with grated apple, honey and yoghurt. Creamy and satisfying.",
+    ingM: ["70g rolled oats","200ml trim milk","80g Greek yoghurt","1 apple, grated","12g honey","20g vanilla protein powder"],
+    ingF: ["55g rolled oats","160ml trim milk","60g Greek yoghurt","½ apple, grated","8g honey","15g vanilla protein powder"],
+    steps: ["Grate apple (including skin — full of fibre).","Combine oats, milk, yoghurt, protein powder and apple in a jar.","Stir well. Drizzle honey. Seal.","Refrigerate overnight — minimum 8 hours.","Stir well before eating. Add a splash of milk if too thick."] },
+
+  // SMOOTHIES
+  { id: 7, name: "Banana Protein Smoothie", cat: "Smoothie", emoji: "🍌",
+    calM: 500, protM: 45, calF: 380, protF: 34, time: "5 min",
+    desc: "Full meal replacement smoothie. High calorie, very filling. Great on long run days.",
+    ingM: ["40g vanilla protein powder","1 banana","30g rolled oats","15g almond butter","300ml trim milk","Handful ice"],
+    ingF: ["30g vanilla protein powder","1 banana","20g rolled oats","10g almond butter","250ml trim milk","Handful ice"],
+    steps: ["Add all ingredients to blender.","Blend on high for 60 seconds until completely smooth.","Drink immediately — oats will continue to thicken if left.","For a thicker consistency, freeze the banana in advance."] },
+  { id: 8, name: "Berry Blast Smoothie", cat: "Smoothie", emoji: "🍓",
+    calM: 380, protM: 35, calF: 290, protF: 26, time: "5 min",
+    desc: "Bright, fruity and refreshing. Great post-gym or as a mid-morning breakfast.",
+    ingM: ["30g vanilla protein powder","120g frozen berries","1 banana","10g honey","250ml trim milk","Handful ice"],
+    ingF: ["25g vanilla protein powder","80g frozen berries","½ banana","8g honey","200ml trim milk","Handful ice"],
+    steps: ["Add milk and protein powder to blender first.","Add frozen berries (no need to thaw), banana, and honey.","Blend 60–90 seconds until completely smooth.","Add more ice for a thicker, colder smoothie."] },
+  { id: 9, name: "Chocolate Banana Smoothie", cat: "Smoothie", emoji: "🍫",
+    calM: 420, protM: 38, calF: 310, protF: 28, time: "5 min",
+    desc: "Rich chocolate and banana combination. Tastes indulgent, hits protein targets.",
+    ingM: ["30g chocolate protein powder","1 banana","8g cocoa powder","8g honey","250ml trim milk","Handful ice"],
+    ingF: ["25g chocolate protein powder","½ banana","5g cocoa powder","5g honey","200ml trim milk","Handful ice"],
+    steps: ["Combine all ingredients in blender.","Blend 60 seconds on high until smooth and creamy.","Taste before serving — add more honey if needed."] },
+  { id: 10, name: "Green Hunger Smoothie", cat: "Smoothie", emoji: "🥬",
+    calM: 200, protM: 22, calF: 160, protF: 18, time: "3 min",
+    desc: "Low calorie hunger buster. Kills cravings without spending your calorie budget.",
+    ingM: ["25g vanilla protein powder","Large handful baby spinach","½ cucumber","200ml trim milk","Handful ice"],
+    ingF: ["20g vanilla protein powder","Large handful baby spinach","½ cucumber","150ml trim milk","Handful ice"],
+    steps: ["Add milk to blender first, then spinach.","Add cucumber (no need to peel), protein powder, and ice.","Blend 90 seconds — spinach needs longer to fully break down.","Drink immediately. Don't store — spinach oxidises quickly."] },
+  { id: 11, name: "Choc Dessert Smoothie", cat: "Smoothie", emoji: "🍫",
+    calM: 300, protM: 30, calF: 220, protF: 22, time: "3 min",
+    desc: "Evening treat that hits the chocolate craving without blowing the day's calories.",
+    ingM: ["25g chocolate protein powder","1 tsp cocoa powder","1 tsp honey","200ml trim milk","Handful ice"],
+    ingF: ["20g chocolate protein powder","1 tsp cocoa powder","5g honey","150ml trim milk","Handful ice"],
+    steps: ["Add all ingredients to blender.","Blend 60 seconds until thick and smooth.","Best served immediately as an evening snack instead of dessert."] },
+  { id: 12, name: "Honey Greek Yoghurt Smoothie", cat: "Smoothie", emoji: "🫙",
+    calM: 300, protM: 26, calF: 220, protF: 20, time: "3 min",
+    desc: "Creamy and filling. More like a drinkable yoghurt. Great mid-morning option.",
+    ingM: ["150g plain Greek yoghurt","1 banana","12g honey","15g vanilla protein powder","100ml trim milk"],
+    ingF: ["120g plain Greek yoghurt","½ banana","8g honey","10g vanilla protein powder","80ml trim milk"],
+    steps: ["Add all ingredients to blender.","Blend 45 seconds until smooth. It will be thick.","Add a splash more milk if needed to reach desired consistency."] },
+
+  // LUNCHES
+  { id: 13, name: "Chicken Rice Bowl", cat: "Lunch", emoji: "🍗",
+    calM: 540, protM: 52, calF: 400, protF: 40, time: "Leftover",
+    desc: "Last night's garlic chicken over rice with fresh salad. The best kind of lunch — already made.",
+    ingM: ["200g cooked chicken breast","150g cooked white rice","30g baby spinach","¼ cucumber, sliced","15ml soy sauce"],
+    ingF: ["140g cooked chicken breast","100g cooked white rice","20g baby spinach","¼ cucumber, sliced","10ml soy sauce"],
+    steps: ["This uses leftover chicken from the previous night's dinner.","If reheating: microwave rice and chicken separately, 90 seconds each.","Assemble bowl: rice base, chicken on top, spinach and cucumber to the side.","Drizzle soy sauce over chicken. Eat at room temperature or heated."] },
+  { id: 14, name: "Beef Mince Rice Bowl", cat: "Lunch", emoji: "🥩",
+    calM: 520, protM: 50, calF: 390, protF: 38, time: "Leftover",
+    desc: "Leftover beef mince stir fry over rice. Even better the next day.",
+    ingM: ["180g cooked beef mince (stir fry)","150g cooked white rice","Soy sauce to taste"],
+    ingF: ["130g cooked beef mince (stir fry)","100g cooked white rice","Soy sauce to taste"],
+    steps: ["Reheat mince and rice in microwave, 90 seconds each.","Stir mince well — the sauce redistributes as it reheats.","Serve mince over rice. A little extra soy sauce is fine."] },
+  { id: 15, name: "Chicken Pasta Bowl", cat: "Lunch", emoji: "🍝",
+    calM: 560, protM: 50, calF: 420, protF: 38, time: "Leftover",
+    desc: "Yesterday's pasta bake makes an excellent cold or reheated lunch.",
+    ingM: ["180g cooked chicken","150g cooked pasta","60ml pasta sauce","15g shredded cheese"],
+    ingF: ["130g cooked chicken","100g cooked pasta","40ml pasta sauce","10g shredded cheese"],
+    steps: ["Reheat in microwave 2 minutes, stirring halfway through.","Add a splash of water before reheating if pasta looks dry.","Eat hot or cold — pasta bake works well both ways."] },
+  { id: 16, name: "Steak & Potato Box", cat: "Lunch", emoji: "🥩",
+    calM: 560, protM: 52, calF: 420, protF: 40, time: "Leftover",
+    desc: "Cold rump steak with roast potatoes and salad. Surprisingly good cold.",
+    ingM: ["200g cooked rump steak","200g roasted potatoes","30g baby spinach","5ml olive oil"],
+    ingF: ["140g cooked rump steak","150g roasted potatoes","20g baby spinach","5ml olive oil"],
+    steps: ["This works well cold — no reheating needed.","Slice steak thinly if not already done.","Pack with potatoes and spinach in a container.","Optional: reheat potatoes separately for 90 seconds if preferred warm."] },
+  { id: 17, name: "Chicken Wrap", cat: "Lunch", emoji: "🌯",
+    calM: 480, protM: 45, calF: 360, protF: 34, time: "Leftover",
+    desc: "Leftover chicken in a wrap with salsa and salad. Quick to assemble from leftovers.",
+    ingM: ["180g cooked chicken","2 wraps","30ml salsa","20g baby spinach","20g lite sour cream"],
+    ingF: ["130g cooked chicken","1 wrap","20ml salsa","15g baby spinach","15g lite sour cream"],
+    steps: ["Warm wraps for 15 seconds in microwave if preferred.","Lay flat and spread salsa down the centre.","Add chicken, spinach and a dollop of sour cream.","Roll tightly. Cut in half diagonally. Pack in container or eat immediately."] },
+  { id: 18, name: "Tuna Rice Bowl", cat: "Lunch", emoji: "🐟",
+    calM: 450, protM: 48, calF: 340, protF: 36, time: "No cook",
+    desc: "No cook, no heat required. Canned tuna over rice with soy and cucumber. Fast and reliable.",
+    ingM: ["185g canned tuna in spring water","150g cooked rice","¼ cucumber, sliced","15ml soy sauce","30g baby spinach"],
+    ingF: ["130g canned tuna in spring water","100g cooked rice","¼ cucumber, sliced","10ml soy sauce","20g baby spinach"],
+    steps: ["Drain tuna well. Flake into pieces with a fork.","Place rice in bowl or container.","Top with tuna, cucumber and spinach.","Drizzle soy sauce over tuna. Ready immediately — no heating needed."] },
+
+  // DINNERS
+  { id: 19, name: "Garlic Chicken & Rice", cat: "Dinner", emoji: "🍗",
+    calM: 600, protM: 58, calF: 450, protF: 44, time: "30 min",
+    desc: "Juicy chicken in sesame-garlic soy glaze with rice, broccoli and spring onion. The weekly staple.",
+    ingM: ["250g chicken breast","160g dry white rice","150g broccoli","2 garlic cloves, minced","20ml soy sauce","8ml sesame oil","15g spring onion","8ml olive oil"],
+    ingF: ["170g chicken breast","110g dry white rice","100g broccoli","1 garlic clove, minced","15ml soy sauce","5ml sesame oil","10g spring onion","5ml olive oil"],
+    steps: ["Cook rice per packet directions. Set aside covered.","Season chicken with salt and pepper. Heat olive oil in a pan over medium-high heat.","Cook chicken 6–7 minutes each side until golden and cooked through. Rest 5 minutes then slice.","In same pan, fry garlic 30 seconds. Add soy sauce and sesame oil. Add broccoli, cover, steam 3 minutes.","Plate rice, top with sliced chicken and broccoli. Drizzle pan sauce over. Garnish with spring onion.","COOK DOUBLE — pack second portion immediately for tomorrow's lunch."] },
+  { id: 20, name: "Beef Mince Stir Fry & Rice", cat: "Dinner", emoji: "🥩",
+    calM: 580, protM: 55, calF: 435, protF: 42, time: "25 min",
+    desc: "Lean beef mince with capsicum, carrot and onion in soy-oyster sauce. One pan, 25 minutes.",
+    ingM: ["220g lean beef mince","160g dry white rice","½ onion, diced","½ capsicum, sliced","½ carrot, julienned","20ml soy sauce","10ml oyster sauce","8ml sesame oil","5ml olive oil"],
+    ingF: ["150g lean beef mince","110g dry white rice","¼ onion, diced","¼ capsicum, sliced","¼ carrot, julienned","15ml soy sauce","8ml oyster sauce","5ml sesame oil"],
+    steps: ["Cook rice. While it cooks, prep all vegetables.","Heat oil in a wok or large pan over high heat.","Brown mince 4–5 minutes, breaking it up. Drain excess fat if needed.","Push mince aside. Stir-fry onion and carrot 2 minutes, then add capsicum 1 minute.","Add soy sauce, oyster sauce and sesame oil. Toss everything together for 1 minute.","Serve over rice. COOK DOUBLE — pack second portion for tomorrow's lunch."] },
+  { id: 21, name: "Rump Steak & Roast Potatoes", cat: "Dinner", emoji: "🥩",
+    calM: 670, protM: 60, calF: 480, protF: 44, time: "35 min",
+    desc: "Rump steak with garlic butter and fresh rosemary roast potatoes. Thursday treat.",
+    ingM: ["280g rump steak","250g potatoes, cubed","10g butter","1 garlic clove, crushed","2 sprigs fresh rosemary","10ml olive oil","40g baby spinach"],
+    ingF: ["180g rump steak","180g potatoes, cubed","8g butter","1 garlic clove, crushed","1 sprig fresh rosemary","8ml olive oil","30g baby spinach"],
+    steps: ["Preheat oven to 200°C. Toss potatoes with olive oil, rosemary, salt and pepper on a lined tray.","Roast potatoes 25–30 minutes until golden and crispy, turning halfway.","Remove steak from fridge 10 minutes before cooking. Pat dry, season generously.","Heat a heavy pan (cast iron if available) over high heat until smoking. Add a little oil.","Sear steak 2–3 minutes each side for medium-rare. In last minute, add butter and crushed garlic. Baste steak.","Rest 5 minutes before slicing. Serve with potatoes and spinach. COOK DOUBLE if making two steaks."] },
+  { id: 22, name: "Chicken Pasta Bake", cat: "Dinner", emoji: "🍝",
+    calM: 620, protM: 56, calF: 460, protF: 42, time: "35 min",
+    desc: "One-pan chicken pasta bake with spinach and melted cheese on top. Comfort food that hits macros.",
+    ingM: ["240g chicken breast, diced","160g dry pasta","120ml pasta sauce","40g baby spinach","30g shredded cheese","8ml olive oil","2 garlic cloves"],
+    ingF: ["160g chicken breast, diced","110g dry pasta","80ml pasta sauce","30g baby spinach","20g shredded cheese","5ml olive oil","1 garlic clove"],
+    steps: ["Cook pasta until just al dente (it will continue cooking in oven). Drain, reserve ½ cup pasta water.","In an oven-safe pan, fry garlic in olive oil 30 seconds. Add diced chicken, cook until golden 5–6 minutes.","Add pasta sauce, pasta water, and cooked pasta. Stir in spinach until wilted.","Transfer to baking dish if needed. Scatter cheese on top.","Bake 180°C for 15 minutes until cheese is melted and bubbly. COOK DOUBLE."] },
+  { id: 23, name: "Chicken Wraps (Dinner)", cat: "Dinner", emoji: "🌯",
+    calM: 560, protM: 50, calF: 420, protF: 38, time: "20 min",
+    desc: "Cumin-paprika chicken in wraps with salsa, lettuce and sour cream. Quick Friday meal.",
+    ingM: ["220g chicken breast","2 wraps","40ml salsa","20g baby spinach","25g lite sour cream","½ capsicum, sliced","1 tsp cumin","1 tsp smoked paprika"],
+    ingF: ["150g chicken breast","1 wrap","25ml salsa","15g baby spinach","15g lite sour cream","¼ capsicum, sliced","1 tsp cumin","1 tsp smoked paprika"],
+    steps: ["Slice chicken into strips. Season with cumin, smoked paprika, salt and pepper.","Fry chicken strips in a little oil over medium-high heat 6–7 minutes until cooked through.","Warm wraps 15 seconds in microwave.","Assemble: spread salsa, add chicken, capsicum, spinach and sour cream.","Roll tightly, slice diagonally. COOK EXTRA CHICKEN for tomorrow's lunch wraps."] },
+  { id: 24, name: "Honey Soy Chicken & Rice", cat: "Dinner", emoji: "🍯",
+    calM: 610, protM: 56, calF: 455, protF: 42, time: "25 min",
+    desc: "Chicken glazed in honey, soy and ginger with sesame seeds. A step up from plain garlic chicken.",
+    ingM: ["250g chicken breast","160g dry white rice","15g honey","25ml soy sauce","5g fresh ginger, grated","2 garlic cloves","8ml sesame oil","120g broccoli"],
+    ingF: ["170g chicken breast","110g dry white rice","10g honey","18ml soy sauce","5g fresh ginger","1 garlic clove","5ml sesame oil","80g broccoli"],
+    steps: ["Mix honey, soy sauce, grated ginger and garlic into a marinade.","Coat chicken in marinade. Marinate 10 minutes minimum (or overnight).","Cook rice. Steam broccoli 4 minutes.","Pan-fry chicken over medium-high heat 6–7 minutes each side, basting with marinade.","In last 2 minutes, add remaining marinade to pan — it will caramelise beautifully.","Slice and serve over rice with broccoli. Drizzle any pan glaze over. COOK DOUBLE."] },
+  { id: 25, name: "Lemon Herb Chicken & Potatoes", cat: "Dinner", emoji: "🍋",
+    calM: 590, protM: 56, calF: 440, protF: 42, time: "35 min",
+    desc: "Chicken thighs with dijon, lemon and thyme baked with golden potatoes. Sunday favourite.",
+    ingM: ["250g chicken thighs","220g potatoes, cubed","½ lemon","10g dijon mustard","3 sprigs fresh thyme","10ml olive oil","2 garlic cloves"],
+    ingF: ["170g chicken thighs","160g potatoes, cubed","½ lemon","8g dijon mustard","2 sprigs fresh thyme","8ml olive oil","1 garlic clove"],
+    steps: ["Preheat oven to 200°C.","Mix lemon juice, zest, dijon, thyme leaves, garlic and olive oil into a marinade.","Toss potatoes with oil and salt on a lined baking tray. Push to the sides.","Coat chicken thighs in marinade. Place in centre of tray.","Roast 30–35 minutes until chicken skin is golden and potatoes are crispy.","Rest 5 minutes. Serve with baby spinach or salad. COOK DOUBLE."] },
+  { id: 26, name: "Beef Mince Bolognese & Pasta", cat: "Dinner", emoji: "🍝",
+    calM: 600, protM: 54, calF: 450, protF: 40, time: "30 min",
+    desc: "Classic bolognese with garlic, parmesan and fresh basil. Feels like a treat.",
+    ingM: ["220g lean beef mince","160g dry pasta","120ml pasta sauce","½ onion","2 garlic cloves","20g parmesan","5ml olive oil"],
+    ingF: ["150g lean beef mince","110g dry pasta","80ml pasta sauce","¼ onion","1 garlic clove","15g parmesan","5ml olive oil"],
+    steps: ["Cook pasta until al dente. Reserve ½ cup pasta water before draining.","Fry onion in olive oil 3 minutes. Add garlic 30 seconds. Add mince, brown well 5–6 minutes.","Add pasta sauce and a splash of pasta water. Simmer 10 minutes, stirring occasionally.","Toss cooked pasta through sauce. Serve topped with parmesan and fresh basil.","COOK DOUBLE — bolognese reheats even better the next day."] },
+  { id: 27, name: "Honey Garlic Salmon & Rice", cat: "Dinner", emoji: "🐟",
+    calM: 640, protM: 58, calF: 480, protF: 44, time: "25 min",
+    desc: "Pan-seared salmon with honey-garlic-soy glaze. Buy salmon on special. Worth it.",
+    ingM: ["220g salmon fillet","160g dry white rice","15g honey","20ml soy sauce","2 garlic cloves","150g broccoli","½ lemon","8ml olive oil"],
+    ingF: ["160g salmon fillet","110g dry white rice","10g honey","15ml soy sauce","1 garlic clove","100g broccoli","½ lemon","5ml olive oil"],
+    steps: ["Cook rice. Steam broccoli 4–5 minutes.","Mix honey, soy sauce and garlic into a glaze.","Pat salmon dry. Season with salt and pepper.","Heat oil in pan over medium-high. Sear salmon skin-side down 4 minutes. Flip, cook 2–3 more minutes.","Pour glaze over salmon in the last 90 seconds — it will caramelise and coat beautifully.","Serve immediately over rice with broccoli and a squeeze of lemon."] },
+  { id: 28, name: "Peri Peri Chicken & Kumara", cat: "Dinner", emoji: "🌶️",
+    calM: 600, protM: 56, calF: 450, protF: 42, time: "35 min",
+    desc: "Chicken marinated in peri peri sauce with roasted kumara and salad.",
+    ingM: ["250g chicken breast","220g kumara, cubed","30ml peri peri sauce","10ml olive oil","40g baby spinach","½ lemon"],
+    ingF: ["170g chicken breast","160g kumara, cubed","20ml peri peri sauce","8ml olive oil","30g baby spinach"],
+    steps: ["Preheat oven to 200°C. Toss kumara with oil and salt on a lined tray.","Coat chicken in peri peri sauce. Add to the same tray as kumara.","Roast 30–35 minutes, turning chicken halfway through.","Squeeze lemon over chicken in the last 5 minutes.","Serve with baby spinach salad. COOK DOUBLE for tomorrow's lunch."] },
+  { id: 29, name: "Thai Beef Mince Bowl", cat: "Dinner", emoji: "🌿",
+    calM: 580, protM: 54, calF: 430, protF: 40, time: "25 min",
+    desc: "Beef mince with fish sauce, lime, ginger and chilli over rice. Completely different flavour profile from the regular mince meals.",
+    ingM: ["220g lean beef mince","160g dry white rice","15ml fish sauce","1 lime","2 garlic cloves","5g fresh ginger","10ml soy sauce","40g baby spinach","Chilli flakes to taste"],
+    ingF: ["150g lean beef mince","110g dry white rice","10ml fish sauce","½ lime","1 garlic clove","5g fresh ginger","8ml soy sauce","30g baby spinach"],
+    steps: ["Cook rice. While cooking, prep garlic, ginger and lime.","Brown mince in a hot pan 4–5 minutes, breaking it up well.","Add garlic and ginger, stir 30 seconds. Add fish sauce, soy sauce and lime juice.","Cook 2 more minutes until liquid has reduced and coated the mince.","Serve over rice with baby spinach. Top with lime zest and chilli flakes. COOK DOUBLE."] },
+
+  // SNACKS
+  { id: 30, name: "Greek Yoghurt + Berries", cat: "Snack", emoji: "🫙",
+    calM: 180, protM: 18, calF: 130, protF: 13, time: "No cook",
+    desc: "Plain yoghurt with thawed frozen berries. Feels like dessert, hits protein.",
+    ingM: ["200g plain Greek yoghurt","80g frozen berries (thawed)"],
+    ingF: ["150g plain Greek yoghurt","60g frozen berries (thawed)"],
+    steps: ["Thaw berries 10 minutes or overnight in fridge.","Spoon yoghurt into bowl or container. Top with berries.","Optional: drizzle a little honey if craving sweetness."] },
+  { id: 31, name: "Greek Yoghurt + Honey + Walnuts", cat: "Snack", emoji: "🍯",
+    calM: 220, protM: 16, calF: 160, protF: 12, time: "No cook",
+    desc: "Yoghurt with honey and walnuts. Rich, satisfying, genuinely tastes like dessert.",
+    ingM: ["180g plain Greek yoghurt","10g honey","15g walnuts"],
+    ingF: ["130g plain Greek yoghurt","8g honey","10g walnuts"],
+    steps: ["Spoon yoghurt into a bowl.","Drizzle honey over the top.","Roughly chop walnuts and scatter over. Eat immediately."] },
+  { id: 32, name: "Protein Shake", cat: "Snack", emoji: "🥤",
+    calM: 160, protM: 30, calF: 130, protF: 25, time: "2 min",
+    desc: "Straight protein shake. Fast, effective, critical post-gym and post-run.",
+    ingM: ["30g vanilla or chocolate protein powder","200ml trim milk"],
+    ingF: ["25g vanilla or chocolate protein powder","150ml trim milk"],
+    steps: ["Add protein powder to a shaker cup.","Pour over milk. Seal. Shake vigorously for 10 seconds.","Drink within 20 minutes of finishing a gym session or run."] },
+  { id: 33, name: "Boiled Eggs ×2", cat: "Snack", emoji: "🥚",
+    calM: 160, protM: 14, calF: 120, protF: 10, time: "Prep Sun",
+    desc: "Hard boiled eggs prepped Sunday. Keep unpeeled in the fridge all week.",
+    ingM: ["2 eggs","Salt and pepper"],
+    ingF: ["2 eggs","Salt and pepper"],
+    steps: ["Bring a pot of water to a full boil.","Lower eggs carefully into boiling water.","Cook exactly 8 minutes for hard boiled yolks.","Transfer to ice water bath immediately. Cool 5 minutes.","Store UNPEELED in fridge — stays fresh up to 7 days.","Peel when eating. Season with salt and pepper."] },
+  { id: 34, name: "Cottage Cheese + Rice Cakes", cat: "Snack", emoji: "🫙",
+    calM: 160, protM: 18, calF: 110, protF: 13, time: "No cook",
+    desc: "High protein, low calorie, surprisingly filling with a sprinkle of salt and pepper.",
+    ingM: ["150g cottage cheese","2 rice cakes","Salt and pepper"],
+    ingF: ["100g cottage cheese","1 rice cake","Salt and pepper"],
+    steps: ["Open container. Season cottage cheese with salt and pepper.","Eat with rice cakes for crunch. Can also spread cottage cheese on the rice cake."] },
+  { id: 35, name: "Apple + Almond Butter", cat: "Snack", emoji: "🍎",
+    calM: 190, protM: 6, calF: 150, protF: 5, time: "No cook",
+    desc: "Natural sweetness with healthy fats. Keeps hunger away for hours.",
+    ingM: ["1 apple, sliced","15g almond butter"],
+    ingF: ["1 apple, sliced","10g almond butter"],
+    steps: ["Slice apple into wedges. Remove core.","Portion almond butter into a small dish or side container.","Dip apple slices into almond butter. Eat immediately."] },
+  { id: 36, name: "Edamame + Sea Salt", cat: "Snack", emoji: "🫘",
+    calM: 160, protM: 14, calF: 120, protF: 10, time: "5 min",
+    desc: "Frozen edamame microwaved with sea salt. Incredibly filling, great protein source.",
+    ingM: ["150g frozen shelled edamame","Pinch sea salt"],
+    ingF: ["110g frozen shelled edamame","Pinch sea salt"],
+    steps: ["Place edamame in a microwave-safe bowl.","Microwave on high 2–3 minutes until heated through.","Drain any water. Season generously with sea salt.","Eat immediately. Also good cold as a grab-and-go snack."] },
+  { id: 37, name: "Protein Mug Cake", cat: "Snack", emoji: "🍫",
+    calM: 220, protM: 24, calF: 170, protF: 18, time: "5 min",
+    desc: "Chocolate protein mug cake in 90 seconds. Genuinely tastes like cake. Hits the chocolate craving.",
+    ingM: ["30g chocolate protein powder","1 egg","8g cocoa powder","8g honey","30ml trim milk"],
+    ingF: ["25g chocolate protein powder","1 egg","5g cocoa powder","5g honey","20ml trim milk"],
+    steps: ["Add all ingredients to a microwave-safe mug. Mix well with a fork until smooth.","Microwave on high for 90 seconds. It will rise and then settle — that's normal.","Let stand 1 minute before eating — it will be very hot.","Optional: a small dollop of Greek yoghurt on top."] },
+  { id: 38, name: "Rice Cakes + Almond Butter + Honey", cat: "Snack", emoji: "🍯",
+    calM: 200, protM: 8, calF: 150, protF: 6, time: "No cook",
+    desc: "Crunchy rice cakes with almond butter and honey drizzle. Satisfying and portable.",
+    ingM: ["3 rice cakes","12g almond butter","8g honey"],
+    ingF: ["2 rice cakes","8g almond butter","5g honey"],
+    steps: ["Spread almond butter over rice cakes.","Drizzle honey over the almond butter.","Eat immediately — rice cakes go soft quickly once topped."] },
+  { id: 39, name: "Banana", cat: "Snack", emoji: "🍌",
+    calM: 100, protM: 1, calF: 100, protF: 1, time: "No cook",
+    desc: "Pre-run fuel for runs 8km+. Eat 45–60 minutes before heading out.",
+    ingM: ["1 medium banana"],
+    ingF: ["1 medium banana"],
+    steps: ["Eat 45–60 minutes before a run of 8km or longer.","Provides fast-absorbing carbohydrates for sustained energy.","Combine with a small protein shake for a proper pre-run meal."] },
+
+  // ── EXTRA SNACKS & PANTRY OPTIONS ──────────────────────────────────────
+  { id: 40, name: "Apple Slices + Cinnamon", cat: "Snack", emoji: "🍎",
+    calM: 80, protM: 1, calF: 80, protF: 1, time: "No cook",
+    desc: "Sliced apple with cinnamon. Naturally sweet, zero prep, keeps hunger away.",
+    ingM: ["1 apple, sliced","Pinch cinnamon"],
+    ingF: ["1 apple, sliced","Pinch cinnamon"],
+    steps: ["Slice apple into wedges.","Sprinkle cinnamon over slices.","Pack in a container or eat immediately."] },
+
+  { id: 41, name: "Trail Mix (Nuts + Dried Fruit)", cat: "Snack", emoji: "🥜",
+    calM: 220, protM: 6, calF: 180, protF: 5, time: "No cook",
+    desc: "Mixed nuts and dried cranberries. Keep a jar in the pantry — the ultimate hunger emergency snack.",
+    ingM: ["20g mixed nuts (almonds, cashews, walnuts)","15g dried cranberries"],
+    ingF: ["15g mixed nuts","10g dried cranberries"],
+    steps: ["Pre-portion into small zip bags on Sunday.","Keep at your desk or in your bag.","One bag = one serve. Do not eat from the main jar."] },
+
+  { id: 42, name: "Oat Energy Balls", cat: "Snack", emoji: "🟤",
+    calM: 240, protM: 10, calF: 190, protF: 8, time: "Prep Sun",
+    desc: "No-bake oat balls with honey, almond butter and dark chocolate chips. Make Sunday, snack all week.",
+    ingM: ["80g rolled oats","30g almond butter","20g honey","10g dark chocolate chips","15g vanilla protein powder"],
+    ingF: ["60g rolled oats","20g almond butter","15g honey","8g dark chocolate chips","10g vanilla protein powder"],
+    steps: ["Mix all ingredients in a bowl until fully combined.","If too dry add a tsp water. Too wet add more oats.","Roll into golf-ball-sized balls.","Refrigerate on a lined tray 30 minutes to firm up.","Store in fridge up to 7 days. Makes 8-10 balls."] },
+
+  { id: 43, name: "Banana + Almond Butter Rice Cakes", cat: "Snack", emoji: "🍌",
+    calM: 230, protM: 7, calF: 180, protF: 6, time: "No cook",
+    desc: "Rice cakes with almond butter and banana slices. Filling, naturally sweet, under 5 minutes.",
+    ingM: ["2 rice cakes","12g almond butter","half banana sliced"],
+    ingF: ["2 rice cakes","10g almond butter","half banana sliced"],
+    steps: ["Spread almond butter over rice cakes.","Top with sliced banana.","Eat immediately as banana softens the rice cake quickly."] },
+
+  { id: 44, name: "Dark Chocolate + Almonds", cat: "Snack", emoji: "🍫",
+    calM: 200, protM: 5, calF: 160, protF: 4, time: "No cook",
+    desc: "2-3 squares of 70%+ dark chocolate with a small handful of almonds. The pantry treat that does not blow your day.",
+    ingM: ["25g dark chocolate (70%+)","20g almonds"],
+    ingF: ["20g dark chocolate (70%+)","15g almonds"],
+    steps: ["Break chocolate into squares.","Pair with almonds and eat slowly.","Keep 70%+ dark chocolate in the pantry. Lower percentages have too much sugar."] },
+
+  { id: 45, name: "Hummus + Veggie Sticks", cat: "Snack", emoji: "🥕",
+    calM: 180, protM: 7, calF: 140, protF: 5, time: "No cook",
+    desc: "Hummus with carrot and cucumber sticks. High fibre, filling, easy to prep ahead.",
+    ingM: ["80g hummus","1 carrot cut into sticks","half cucumber sliced"],
+    ingF: ["60g hummus","1 carrot cut into sticks","half cucumber sliced"],
+    steps: ["Pre-cut carrot and cucumber sticks Sunday, store in water in the fridge — stays crisp all week.","Portion hummus into a small container.","Pack together for a grab-and-go snack."] },
+
+  { id: 46, name: "Crackers + Cottage Cheese + Tomato", cat: "Snack", emoji: "🧀",
+    calM: 200, protM: 14, calF: 160, protF: 11, time: "No cook",
+    desc: "Wholegrain crackers with cottage cheese and tomato. Savoury, high protein, satisfying.",
+    ingM: ["4 wholegrain crackers","80g cottage cheese","1 tomato sliced","Salt and pepper"],
+    ingF: ["3 wholegrain crackers","60g cottage cheese","1 tomato sliced","Salt and pepper"],
+    steps: ["Spread cottage cheese over each cracker.","Top with a slice of tomato.","Season with salt and pepper. Eat immediately."] },
+
+  { id: 47, name: "Frozen Berries + Yoghurt Bowl", cat: "Snack", emoji: "🫐",
+    calM: 160, protM: 14, calF: 120, protF: 10, time: "No cook",
+    desc: "Frozen berries straight from the freezer over cold yoghurt. Acts like ice cream. Genuinely feels like dessert.",
+    ingM: ["150g plain Greek yoghurt","80g frozen berries"],
+    ingF: ["120g plain Greek yoghurt","60g frozen berries"],
+    steps: ["Spoon yoghurt into a bowl.","Pour frozen berries directly over the top — do not thaw them.","The berries stay cold and firm like frozen fruit with cream.","Optional: drizzle a little honey over the top."] },
+
+  // ── HEALTHY DESSERTS ────────────────────────────────────────────────────
+  { id: 48, name: "Baked Cinnamon Apple", cat: "Snack", emoji: "🍎",
+    calM: 130, protM: 1, calF: 110, protF: 1, time: "25 min",
+    desc: "Whole apple baked with cinnamon and honey until soft and caramel-like. Proper dessert feeling for 110 calories.",
+    ingM: ["1 large apple","1 tsp cinnamon","8g honey","Pinch nutmeg"],
+    ingF: ["1 apple","1 tsp cinnamon","5g honey","Pinch nutmeg"],
+    steps: ["Preheat oven to 180C.","Core the apple without peeling. Place in a small baking dish.","Mix cinnamon, nutmeg and honey. Spoon into hollow and over top.","Bake 20-25 minutes until completely soft and caramelised.","Serve warm. A spoonful of Greek yoghurt alongside is excellent."] },
+
+  { id: 49, name: "Chia Seed Pudding", cat: "Snack", emoji: "🫙",
+    calM: 290, protM: 22, calF: 230, protF: 18, time: "Prep Sun",
+    desc: "Chia seeds soaked overnight in milk with vanilla and honey. Sets into a thick creamy pudding. Prep with your oat jars on Sunday.",
+    ingM: ["30g chia seeds","250ml trim milk","15g vanilla protein powder","8g honey"],
+    ingF: ["25g chia seeds","200ml trim milk","12g vanilla protein powder","6g honey"],
+    steps: ["Combine chia seeds, milk, protein powder and honey in a jar.","Stir very well — no clumps of protein powder.","Seal. Refrigerate overnight or minimum 4 hours.","Stir again before eating. Should be thick and pudding-like.","Top with frozen berries or banana slices."] },
+
+  { id: 50, name: "Banana Nice Cream", cat: "Snack", emoji: "🍦",
+    calM: 180, protM: 3, calF: 150, protF: 2, time: "5 min",
+    desc: "Blended frozen banana that becomes exactly like soft-serve ice cream. Zero added sugar. Takes 5 minutes.",
+    ingM: ["2 frozen bananas","Splash trim milk","Pinch cinnamon"],
+    ingF: ["2 frozen bananas","Splash trim milk","Pinch cinnamon"],
+    steps: ["Peel and freeze bananas the night before (minimum 6 hours).","Break into chunks. Add to blender with a splash of milk and cinnamon.","Blend until completely smooth — stop and scrape sides as needed.","Eat immediately for soft-serve, or freeze 30 more minutes for firmer scoop.","Variations: add 1 tsp cocoa for chocolate, or frozen berries for fruity."] },
+
+  { id: 51, name: "No-Bake Oat Cookies", cat: "Snack", emoji: "🍪",
+    calM: 260, protM: 12, calF: 200, protF: 10, time: "Prep Sun",
+    desc: "No-bake cookies made from oats, protein powder, almond butter and honey. Set in fridge. Actually tastes like a cookie.",
+    ingM: ["70g rolled oats","25g vanilla protein powder","20g almond butter","15g honey","20ml trim milk","10g dark chocolate chips"],
+    ingF: ["55g rolled oats","20g vanilla protein powder","15g almond butter","12g honey","15ml trim milk","8g dark chocolate chips"],
+    steps: ["Mix oats, protein powder, almond butter, honey and milk in a bowl.","Fold in chocolate chips.","If too crumbly add milk 1 tsp at a time until mixture holds together.","Shape into flat round cookies on a lined tray.","Refrigerate 1 hour until firm. Makes 6-8 cookies.","Store in fridge up to 7 days. One cookie = one serve."] },
+
+  { id: 52, name: "Protein Chocolate Bark", cat: "Snack", emoji: "🍫",
+    calM: 200, protM: 12, calF: 160, protF: 10, time: "Prep Sun",
+    desc: "Dark chocolate melted with protein powder, topped with nuts and berries then frozen. Break into pieces all week.",
+    ingM: ["40g dark chocolate (70%+)","15g vanilla protein powder","15g mixed nuts chopped","20g frozen berries"],
+    ingF: ["30g dark chocolate (70%+)","10g vanilla protein powder","10g mixed nuts","15g frozen berries"],
+    steps: ["Melt dark chocolate in microwave in 30-second bursts, stirring between each.","Stir in protein powder until smooth.","Spread thinly on a lined tray.","Scatter nuts and berries over the top.","Freeze 20 minutes until set. Break into pieces.","Store in freezer up to 2 weeks. Eat straight from frozen."] },
+
+  { id: 53, name: "Honey Ricotta + Berries", cat: "Snack", emoji: "🍯",
+    calM: 200, protM: 14, calF: 160, protF: 11, time: "No cook",
+    desc: "Light ricotta with honey and berries. Creamy, sweet, feels indulgent but under 200 calories.",
+    ingM: ["150g low-fat ricotta","10g honey","80g frozen berries thawed"],
+    ingF: ["120g low-fat ricotta","8g honey","60g frozen berries thawed"],
+    steps: ["Spoon ricotta into a bowl.","Drizzle honey over the top.","Add thawed berries and stir gently.","Optional: sprinkle chia seeds or crushed walnuts."] },
+
+  { id: 54, name: "Stewed Pears + Cinnamon", cat: "Snack", emoji: "🍐",
+    calM: 120, protM: 1, calF: 100, protF: 1, time: "10 min",
+    desc: "Pears simmered with cinnamon and honey until soft and syrupy. Warm, comforting, naturally sweet. Perfect winter dessert.",
+    ingM: ["2 pears peeled and chopped","1 tsp cinnamon","5g honey","Splash water"],
+    ingF: ["2 pears peeled and chopped","1 tsp cinnamon","5g honey","Splash water"],
+    steps: ["Peel, core and chop pears into chunks.","Place in a small saucepan with cinnamon, honey and a splash of water.","Cook over medium heat 8-10 minutes stirring occasionally until soft.","Serve warm alone or with a spoonful of Greek yoghurt.","Keeps in fridge 4 days. Reheat 60 seconds in microwave."] },
+];
+]
+
+const CATEGORIES = ["All","Breakfast","Smoothie","Lunch","Dinner","Snack"];
+const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const SLOTS = ["Breakfast","Snack","Lunch","Dinner","Eve Snack"];
+
+const CAT_COLOR = {
+  Breakfast:{ bg:"#FEF3E2", accent:"#C17A55", dark:"#7A4020" },
+  Smoothie: { bg:"#E6F4EC", accent:"#4F7A62", dark:"#2A5040" },
+  Lunch:    { bg:"#E8F0FB", accent:"#3A6A9A", dark:"#1A3A5C" },
+  Dinner:   { bg:"#FCE8E8", accent:"#C04040", dark:"#7A2020" },
+  Snack:    { bg:"#F0E8F8", accent:"#7A4A9A", dark:"#4A2070" },
+  All:      { bg:"#F5F5F5", accent:"#555",    dark:"#222"    },
+};
+
+const SLOT_EMOJI = { Breakfast:"🌅", Snack:"🍎", Lunch:"🥗", Dinner:"🍽", "Eve Snack":"🌙" };
+
+const DEFAULT_PLAN = {
+  Monday:    { Breakfast:"Classic Overnight Oats",    Snack:"",            Lunch:"",                              Dinner:"Garlic Chicken & Rice",         "Eve Snack":"Greek Yoghurt + Berries" },
+  Tuesday:   { Breakfast:"Berry Overnight Oats",       Snack:"Protein Shake", Lunch:"",                           Dinner:"Beef Mince Stir Fry & Rice",    "Eve Snack":"Cottage Cheese + Rice Cakes" },
+  Wednesday: { Breakfast:"Egg Muffins",                Snack:"",            Lunch:"",                              Dinner:"Chicken Pasta Bake",            "Eve Snack":"Choc Dessert Smoothie" },
+  Thursday:  { Breakfast:"Chocolate Overnight Oats",   Snack:"Protein Shake", Lunch:"",                           Dinner:"Rump Steak & Roast Potatoes",   "Eve Snack":"Greek Yoghurt + Honey + Walnuts" },
+  Friday:    { Breakfast:"Honey Almond Overnight Oats",Snack:"",            Lunch:"",                              Dinner:"Chicken Wraps (Dinner)",        "Eve Snack":"Choc Dessert Smoothie" },
+  Saturday:  { Breakfast:"Banana Protein Smoothie",    Snack:"Banana",      Lunch:"Tuna Rice Bowl",               Dinner:"Honey Soy Chicken & Rice",      "Eve Snack":"Protein Shake" },
+  Sunday:    { Breakfast:"Egg Muffins",                Snack:"Boiled Eggs ×2", Lunch:"Chicken Rice Bowl",         Dinner:"Lemon Herb Chicken & Potatoes", "Eve Snack":"Greek Yoghurt + Berries" },
+};
+
+const AUTO_LUNCH_DAYS = { Monday:"Sunday", Tuesday:"Monday", Wednesday:"Tuesday", Thursday:"Wednesday", Friday:"Thursday" };
+
+function getMacros(mealName, person) {
+  if (!mealName || mealName.startsWith("←")) return { cal:0, prot:0 };
+  const m = MEALS.find(x => x.name === mealName);
+  if (!m) return { cal:0, prot:0 };
+  return person === "Sam" ? { cal:m.calM, prot:m.protM } : { cal:m.calF, prot:m.protF };
+}
+
+// ── INGREDIENT CONSOLIDATION MAP ──────────────────────────────────────────
+// Maps any raw ingredient name fragment → { canonical name, category, unit override }
+const CONSOLIDATE = {
+  // ── Proteins ──
+  "chicken breast":          { to:"Chicken breast",         cat:"🥩 Protein", unit:"g" },
+  "cooked chicken breast":   { to:"Chicken breast",         cat:"🥩 Protein", unit:"g" },
+  "cooked chicken":          { to:"Chicken breast",         cat:"🥩 Protein", unit:"g" },
+  "chicken thighs":          { to:"Chicken thighs",         cat:"🥩 Protein", unit:"g" },
+  "lean beef mince":         { to:"Beef mince (lean)",      cat:"🥩 Protein", unit:"g" },
+  "cooked beef mince":       { to:"Beef mince (lean)",      cat:"🥩 Protein", unit:"g" },
+  "rump steak":              { to:"Rump steak",             cat:"🥩 Protein", unit:"g" },
+  "cooked rump steak":       { to:"Rump steak",             cat:"🥩 Protein", unit:"g" },
+  "salmon fillet":           { to:"Salmon fillet",          cat:"🥩 Protein", unit:"g" },
+  "canned tuna in spring water": { to:"Canned tuna (spring water)", cat:"🥩 Protein", unit:"g" },
+  "eggs":                    { to:"Eggs",                   cat:"🥩 Protein", unit:"" },
+  "egg":                     { to:"Eggs",                   cat:"🥩 Protein", unit:"" },
+  "cooked chicken, diced":   { to:"Chicken breast",         cat:"🥩 Protein", unit:"g" },
+  // ── Dairy ──
+  "trim milk":               { to:"Trim milk",              cat:"🥛 Dairy",   unit:"ml" },
+  "plain greek yoghurt":     { to:"Greek yoghurt (plain)",  cat:"🥛 Dairy",   unit:"g" },
+  "greek yoghurt":           { to:"Greek yoghurt (plain)",  cat:"🥛 Dairy",   unit:"g" },
+  "shredded cheese":         { to:"Shredded cheese",        cat:"🥛 Dairy",   unit:"g" },
+  "parmesan":                { to:"Parmesan cheese",        cat:"🥛 Dairy",   unit:"g" },
+  "butter":                  { to:"Butter",                 cat:"🥛 Dairy",   unit:"g" },
+  "lite sour cream":         { to:"Lite sour cream",        cat:"🥛 Dairy",   unit:"g" },
+  "cottage cheese":          { to:"Cottage cheese",         cat:"🥛 Dairy",   unit:"g" },
+  // ── Protein powder — keep flavours separate ──
+  "vanilla protein powder":  { to:"Vanilla protein powder",   cat:"💪 Supplements", unit:"g" },
+  "chocolate protein powder":{ to:"Chocolate protein powder", cat:"💪 Supplements", unit:"g" },
+  "vanilla or chocolate protein powder": { to:"Vanilla protein powder", cat:"💪 Supplements", unit:"g" },
+  // ── Grains & carbs ──
+  "rolled oats":             { to:"Rolled oats",            cat:"🍚 Carbs",   unit:"g" },
+  "dry white rice":          { to:"White rice (dry)",       cat:"🍚 Carbs",   unit:"g" },
+  "dry pasta":               { to:"Pasta",                  cat:"🍚 Carbs",   unit:"g" },
+  "cooked pasta":            { to:null,                     cat:null          },  // SKIP — leftover
+  "cooked white rice":       { to:null,                     cat:null          },  // SKIP — leftover
+  "cooked rice":             { to:null,                     cat:null          },  // SKIP — leftover
+  "rice cakes":              { to:"Rice cakes",             cat:"🍚 Carbs",   unit:"pack" },
+  "rice cake":               { to:"Rice cakes",             cat:"🍚 Carbs",   unit:"pack" },
+  "wrap":                    { to:"Wraps",                  cat:"🍚 Carbs",   unit:"" },
+  "wraps":                   { to:"Wraps",                  cat:"🍚 Carbs",   unit:"" },
+  // ── Vegetables ──
+  "baby spinach":            { to:"Baby spinach",           cat:"🥦 Veg",     unit:"g" },
+  "handful baby spinach":    { to:"Baby spinach",           cat:"🥦 Veg",     unit:"g", fixedQty:30 },
+  "large handful baby spinach":{ to:"Baby spinach",         cat:"🥦 Veg",     unit:"g", fixedQty:40 },
+  "broccoli":                { to:"Broccoli",               cat:"🥦 Veg",     unit:"g" },
+  "capsicum":                { to:"Capsicum",               cat:"🥦 Veg",     unit:"" },
+  "onion":                   { to:"Onion",                  cat:"🥦 Veg",     unit:"" },
+  "potatoes":                { to:"Potatoes",               cat:"🥦 Veg",     unit:"g" },
+  "roasted potatoes":        { to:null,                     cat:null          },  // SKIP — leftover
+  "kumara":                  { to:"Kumara (sweet potato)",  cat:"🥦 Veg",     unit:"g" },
+  "garlic clove":            { to:"Garlic",                 cat:"🥦 Veg",     unit:"cloves" },
+  "carrot":                  { to:"Carrot",                 cat:"🥦 Veg",     unit:"" },
+  "cucumber":                { to:"Cucumber",               cat:"🥦 Veg",     unit:"" },
+  "spring onion":            { to:"Spring onion",           cat:"🥦 Veg",     unit:"g" },
+  "fresh ginger":            { to:"Fresh ginger",           cat:"🥦 Veg",     unit:"g" },
+  "lemon":                   { to:"Lemon",                  cat:"🥦 Veg",     unit:"" },
+  "lime":                    { to:"Lime",                   cat:"🥦 Veg",     unit:"" },
+  "frozen shelled edamame":  { to:"Edamame (frozen, shelled)", cat:"🥦 Veg",  unit:"g" },
+  "sprig fresh rosemary":    { to:"Fresh rosemary",         cat:"🥦 Veg",     unit:"sprigs" },
+  "sprigs fresh thyme":      { to:"Fresh thyme",            cat:"🥦 Veg",     unit:"sprigs" },
+  // ── Fruit ──
+  "banana":                  { to:"Banana",                 cat:"🍌 Fruit",   unit:"" },
+  "medium banana":           { to:"Banana",                 cat:"🍌 Fruit",   unit:"" },
+  "frozen berries":          { to:"Frozen berries",         cat:"🍌 Fruit",   unit:"g" },
+  "apple":                   { to:"Apple",                  cat:"🍌 Fruit",   unit:"" },
+  // ── Pantry ──
+  "soy sauce":               { to:"Soy sauce",              cat:"🧂 Pantry",  unit:"ml" },
+  "soy sauce to taste":      { to:"Soy sauce",              cat:"🧂 Pantry",  unit:"ml", fixedQty:15 },
+  "oyster sauce":            { to:"Oyster sauce",           cat:"🧂 Pantry",  unit:"ml" },
+  "pasta sauce":             { to:"Pasta sauce",            cat:"🧂 Pantry",  unit:"ml" },
+  "sesame oil":              { to:"Sesame oil",             cat:"🧂 Pantry",  unit:"ml" },
+  "olive oil":               { to:"Olive oil",              cat:"🧂 Pantry",  unit:"ml" },
+  "honey":                   { to:"Honey",                  cat:"🧂 Pantry",  unit:"g" },
+  "almond butter":           { to:"Almond butter",          cat:"🧂 Pantry",  unit:"g" },
+  "fish sauce":              { to:"Fish sauce",             cat:"🧂 Pantry",  unit:"ml" },
+  "peri peri sauce":         { to:"Peri peri sauce",        cat:"🧂 Pantry",  unit:"ml" },
+  "salsa":                   { to:"Salsa",                  cat:"🧂 Pantry",  unit:"ml" },
+  "dijon mustard":           { to:"Dijon mustard",          cat:"🧂 Pantry",  unit:"g" },
+  "cocoa powder":            { to:"Cocoa powder",           cat:"🧂 Pantry",  unit:"g" },
+  "tsp cocoa powder":        { to:"Cocoa powder",           cat:"🧂 Pantry",  unit:"g", fixedQty:5 },
+  "chia seeds":              { to:"Chia seeds",             cat:"🧂 Pantry",  unit:"g" },
+  "walnuts":                 { to:"Walnuts",                cat:"🧂 Pantry",  unit:"g" },
+  // ── Skip these (always have them / not shop items) ──
+  "salt and pepper":         { to:null, cat:null },
+  "pinch cinnamon":          { to:null, cat:null },
+  "pinch sea salt":          { to:null, cat:null },
+  "pinch nutmeg":            { to:null, cat:null },
+  "handful ice":             { to:null, cat:null },
+  "splash water":            { to:null, cat:null },
+  "splash trim milk":        { to:null, cat:null },
+  "tsp cumin":               { to:"Spices (cumin, paprika, smoked paprika)", cat:"🧂 Pantry", unit:"", fixedQty:0.01 },
+  "tsp smoked paprika":      { to:"Spices (cumin, paprika, smoked paprika)", cat:"🧂 Pantry", unit:"", fixedQty:0.01 },
+  "tsp cinnamon":            { to:null, cat:null },
+  "vanilla extract":         { to:null, cat:null },
+  // ── New ingredients ──
+  "mixed nuts (almonds, cashews, walnuts)": { to:"Mixed nuts",      cat:"🥜 Nuts",    unit:"g" },
+  "mixed nuts":              { to:"Mixed nuts",                      cat:"🥜 Nuts",    unit:"g" },
+  "almonds":                 { to:"Almonds",                        cat:"🥜 Nuts",    unit:"g" },
+  "mixed nuts chopped":      { to:"Mixed nuts",                      cat:"🥜 Nuts",    unit:"g" },
+  "dried cranberries":       { to:"Dried cranberries",              cat:"🍌 Fruit",   unit:"g" },
+  "dark chocolate (70%+)":   { to:"Dark chocolate (70%+)",          cat:"🧂 Pantry",  unit:"g" },
+  "dark chocolate chips":    { to:"Dark chocolate chips",           cat:"🧂 Pantry",  unit:"g" },
+  "dark chocolate":          { to:"Dark chocolate (70%+)",          cat:"🧂 Pantry",  unit:"g" },
+  "low-fat ricotta":         { to:"Ricotta (low-fat)",              cat:"🥛 Dairy",   unit:"g" },
+  "hummus":                  { to:"Hummus",                         cat:"🥛 Dairy",   unit:"g" },
+  "wholegrain crackers":     { to:"Wholegrain crackers",            cat:"🍚 Carbs",   unit:"" },
+  "pears peeled and chopped":{ to:"Pears",                          cat:"🍌 Fruit",   unit:"" },
+  "celery stalks":           { to:"Celery",                         cat:"🥦 Veg",     unit:"" },
+  "tomato sliced":           { to:"Tomato",                         cat:"🥦 Veg",     unit:"" },
+};
+
+// Category sort order
+const CAT_ORDER = ["🥩 Protein","💪 Supplements","🥛 Dairy","🍚 Carbs","🥜 Nuts","🥦 Veg","🍌 Fruit","🧂 Pantry"];
+
+function buildShoppingList(plan) {
+  const totals = {};
+
+  const resolveKey = (rawName) => {
+    const lower = rawName.toLowerCase().trim();
+    if (CONSOLIDATE[lower]) return CONSOLIDATE[lower];
+    for (const [key, val] of Object.entries(CONSOLIDATE)) {
+      if (lower.includes(key) || key.includes(lower)) return val;
+    }
+    return null;
+  };
+
+  const addIng = (ings) => {
+    ings.forEach(ing => {
+      const match = ing.match(/^([\d./½¼¾]+)\s*(g|ml|kg)?\s+(.+)/);
+      let rawQty, unit, rawName;
+      if (match) {
+        const qtyStr = match[1].replace("½","0.5").replace("¼","0.25").replace("¾","0.75");
+        rawQty = parseFloat(qtyStr) || 1;
+        unit = match[2] || "";
+        rawName = match[3].split(",")[0].trim();
+      } else {
+        rawQty = 1; unit = ""; rawName = ing.split(",")[0].trim();
+      }
+      const rule = resolveKey(rawName);
+      if (rule && rule.to === null) return;
+      const canonName = rule ? rule.to : rawName;
+      const canonCat  = rule ? rule.cat : "🧂 Pantry";
+      const canonUnit = rule ? (rule.unit || unit) : unit;
+      const qty = rule?.fixedQty !== undefined ? rule.fixedQty : rawQty;
+      const finalQty = unit === "kg" ? qty * 1000 : qty;
+      const finalUnit = unit === "kg" ? "g" : canonUnit;
+      const key = canonName.toLowerCase();
+      if (!totals[key]) totals[key] = { name: canonName, qty: 0, unit: finalUnit, cat: canonCat };
+      totals[key].qty += finalQty;
+    });
+  };
+
+  // Add BOTH Sam and Luisa portions for every selected meal
+  Object.values(plan).forEach(slots => {
+    Object.values(slots).forEach(mealName => {
+      if (!mealName || mealName.startsWith("←") || mealName.startsWith("—")) return;
+      const meal = MEALS.find(m => m.name === mealName);
+      if (!meal) return;
+      addIng(meal.ingM); // Sam's portion
+      addIng(meal.ingF); // Luisa's portion
+    });
+  });
+
+  const items = Object.values(totals).filter(i => i.qty > 0.05);
+  items.sort((a, b) => {
+    const ai = CAT_ORDER.indexOf(a.cat);
+    const bi = CAT_ORDER.indexOf(b.cat);
+    if (ai !== bi) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    return a.name.localeCompare(b.name);
+  });
+  return items;
+}
+
+// ── MODAL BASE ──────────────────────────────────────────────────────────────
+function Sheet({ open, onClose, children, tall }) {
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+  if (!open) return null;
+  return (
+    <div onClick={onClose} style={{
+      position:"fixed", inset:0, zIndex:200,
+      background:"rgba(0,0,0,0.5)",
+      display:"flex", alignItems:"flex-end",
+    }}>
+      <div onClick={e=>e.stopPropagation()} style={{
+        width:"100%", maxHeight: tall ? "94vh" : "80vh",
+        background:"white", borderRadius:"20px 20px 0 0",
+        overflow:"auto", boxShadow:"0 -8px 40px rgba(0,0,0,0.2)",
+      }}>
+        <div style={{ width:40, height:4, borderRadius:2, background:"#DDD", margin:"12px auto 4px" }}/>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ── RECIPE DETAIL ─────────────────────────────────────────────────────────
+function RecipeSheet({ meal, person, onClose }) {
+  if (!meal) return null;
+  const col = CAT_COLOR[meal.cat];
+  const ings = person==="Sam" ? meal.ingM : meal.ingF;
+  const cal  = person==="Sam" ? meal.calM : meal.calF;
+  const prot = person==="Sam" ? meal.protM : meal.protF;
+  return (
+    <Sheet open={!!meal} onClose={onClose} tall>
+      <div style={{ padding:"0 20px 100px" }}>
+        {/* Hero */}
+        <div style={{ textAlign:"center", padding:"16px 0 20px" }}>
+          <div style={{ fontSize:56, marginBottom:8 }}>{meal.emoji}</div>
+          <div style={{ fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase", fontWeight:700, color:col.accent, marginBottom:6 }}>{meal.cat} · {meal.time}</div>
+          <h2 style={{ fontFamily:"Georgia,serif", fontSize:22, lineHeight:1.2, marginBottom:10 }}>{meal.name}</h2>
+          <p style={{ fontSize:13, color:"#666", lineHeight:1.65 }}>{meal.desc}</p>
+        </div>
+        {/* Macros */}
+        <div style={{ display:"flex", gap:10, marginBottom:24 }}>
+          {[[cal,"kcal"],[prot+"g","protein"],["⏱",meal.time]].map(([v,l])=>(
+            <div key={l} style={{ flex:1, background:col.bg, borderRadius:10, padding:"12px 8px", textAlign:"center" }}>
+              <div style={{ fontFamily:"Georgia,serif", fontSize:20, color:col.accent, lineHeight:1 }}>{v}</div>
+              <div style={{ fontSize:9, textTransform:"uppercase", letterSpacing:"0.1em", color:"#999", marginTop:3 }}>{l}</div>
+            </div>
+          ))}
+        </div>
+        {/* Person label */}
+        <div style={{ fontSize:11, color:"#888", background:"#F8F5F0", borderRadius:8, padding:"8px 12px", marginBottom:20 }}>
+          📐 {person}'s portion — toggle top-right to switch
+        </div>
+        {/* Ingredients */}
+        <div style={{ marginBottom:24 }}>
+          <div style={{ fontSize:10, letterSpacing:"0.25em", textTransform:"uppercase", fontWeight:700, color:"#1E1E1E", marginBottom:12 }}>Ingredients</div>
+          {ings.map((ing,i)=>(
+            <div key={i} style={{ display:"flex", alignItems:"baseline", gap:8, padding:"9px 0", borderBottom:"1px solid #F5F0E8", fontSize:14, color:"#444" }}>
+              <span style={{ color:col.accent, fontWeight:700, fontSize:16, lineHeight:0.8 }}>·</span>{ing}
+            </div>
+          ))}
+        </div>
+        {/* Steps */}
+        <div>
+          <div style={{ fontSize:10, letterSpacing:"0.25em", textTransform:"uppercase", fontWeight:700, color:"#1E1E1E", marginBottom:12 }}>Method</div>
+          {meal.steps.map((step,i)=>(
+            <div key={i} style={{ display:"flex", gap:14, marginBottom:14, fontSize:14, color:"#555", lineHeight:1.65 }}>
+              <span style={{ fontFamily:"Georgia,serif", fontSize:22, color:col.accent, lineHeight:1, minWidth:24, flexShrink:0 }}>{i+1}</span>
+              <span dangerouslySetInnerHTML={{__html:step.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')}}/>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Sheet>
+  );
+}
+
+// ── MEAL PICKER ───────────────────────────────────────────────────────────
+function MealPicker({ day, slot, onSelect, onClose, person }) {
+  const [search, setSearch] = useState("");
+  const [cat, setCat] = useState("All");
+  const filtered = MEALS.filter(m =>
+    (cat==="All" || m.cat===cat) &&
+    m.name.toLowerCase().includes(search.toLowerCase())
+  );
+  return (
+    <Sheet open onClose={onClose} tall>
+      <div style={{ position:"sticky", top:0, background:"white", padding:"12px 20px 12px", zIndex:10, borderBottom:"1px solid #F0EAE0" }}>
+        <div style={{ fontFamily:"Georgia,serif", fontSize:17, marginBottom:2 }}>{SLOT_EMOJI[slot]} {slot}</div>
+        <div style={{ fontSize:11, color:"#888", marginBottom:12 }}>{day}</div>
+        <input value={search} onChange={e=>setSearch(e.target.value)}
+          placeholder="Search…" autoFocus
+          style={{ width:"100%", padding:"10px 14px", border:"1px solid #E0DAD0", borderRadius:10, fontSize:15, outline:"none", boxSizing:"border-box" }}/>
+        <div style={{ display:"flex", gap:6, overflowX:"auto", marginTop:10, paddingBottom:4, WebkitOverflowScrolling:"touch" }}>
+          {CATEGORIES.map(c=>{
+            const col=CAT_COLOR[c];
+            return (
+              <button key={c} onClick={()=>setCat(c)} style={{
+                padding:"5px 12px", borderRadius:20, border:`1.5px solid ${col.accent}`, fontSize:11, fontWeight:700,
+                cursor:"pointer", whiteSpace:"nowrap", flexShrink:0,
+                background:cat===c?col.accent:"white", color:cat===c?"white":col.accent
+              }}>{c}</button>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{ padding:"4px 0 120px" }}>
+        <div onClick={()=>{onSelect("");onClose();}} style={{ display:"flex", alignItems:"center", gap:12, padding:"14px 20px", borderBottom:"1px solid #F0EAE0", color:"#888", fontSize:14 }}>
+          <span style={{fontSize:18}}>✕</span> Clear this slot
+        </div>
+        {filtered.map(meal=>{
+          const col=CAT_COLOR[meal.cat];
+          const cal = person==="Sam"?meal.calM:meal.calF;
+          const prot = person==="Sam"?meal.protM:meal.protF;
+          return (
+            <div key={meal.id} onClick={()=>{onSelect(meal.name);onClose();}} style={{
+              display:"flex", alignItems:"center", gap:14, padding:"13px 20px",
+              borderBottom:"1px solid #F8F4F0", activeStyle:{background:"#F8F5F0"}
+            }}>
+              <span style={{fontSize:28,flexShrink:0}}>{meal.emoji}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:14,fontWeight:600,color:"#1E1E1E"}}>{meal.name}</div>
+                <div style={{fontSize:11,color:"#888",marginTop:2}}>{meal.cat} · {cal} kcal · {prot}g</div>
+              </div>
+              <span style={{color:col.accent,fontSize:20,flexShrink:0}}>›</span>
+            </div>
+          );
+        })}
+      </div>
+    </Sheet>
+  );
+}
+
+// ── MAIN APP ──────────────────────────────────────────────────────────────
+export default function App() {
+  const [tab, setTab]       = useState("plan");
+  const [person, setPerson] = useState("Luisa");
+  const [activeDay, setActiveDay] = useState(0);
+  const [plan, setPlan]     = useState(()=>{ try{return JSON.parse(localStorage.getItem("mealPlan_v2"))||DEFAULT_PLAN;}catch{return DEFAULT_PLAN;} });
+  const [checked, setChecked] = useState(()=>{ try{return JSON.parse(localStorage.getItem("checked_v2"))||{};}catch{return {};} });
+  const [picker, setPicker] = useState(null);   // {day,slot}
+  const [recipe, setRecipe] = useState(null);
+  const [recCat, setRecCat] = useState("All");
+  const [recSearch, setRecSearch] = useState("");
+
+  useEffect(()=>{ localStorage.setItem("mealPlan_v2",JSON.stringify(plan)); },[plan]);
+  useEffect(()=>{ localStorage.setItem("checked_v2",JSON.stringify(checked)); },[checked]);
+
+  // Resolve display plan with auto-lunches
+  const displayPlan = useMemo(()=>{
+    const p = JSON.parse(JSON.stringify(plan));
+    Object.entries(AUTO_LUNCH_DAYS).forEach(([day,prevDay])=>{
+      const prev = plan[prevDay]?.Dinner;
+      p[day].Lunch = prev ? `← ${prev}` : "";
+    });
+    return p;
+  },[plan]);
+
+  const setMeal = (day, slot, name) => setPlan(p=>({...p,[day]:{...p[day],[slot]:name}}));
+
+  // Day macros
+  const dayMacros = (day) => {
+    let cal=0, prot=0;
+    Object.values(displayPlan[day]||{}).forEach(name=>{
+      if (!name) return;
+      const real = name.startsWith("←") ? name.replace("← ","") : name;
+      const {cal:c,prot:pt} = getMacros(real, person);
+      cal+=c; prot+=pt;
+    });
+    return {cal,prot};
+  };
+
+  const shoppingItems = useMemo(()=>buildShoppingList(plan),[plan]);
+  const checkedCount = Object.values(checked).filter(Boolean).length;
+
+  const filteredRecipes = MEALS.filter(m=>
+    (recCat==="All"||m.cat===recCat) &&
+    m.name.toLowerCase().includes(recSearch.toLowerCase())
+  );
+
+  const TARGET = person==="Sam" ? 2200 : 1700;
+  const PROT_TARGET = person==="Sam" ? 190 : 125;
+
+  // ── PLAN TAB ──────────────────────────────────────────────────────────
+  const PlanTab = () => {
+    const day = DAYS[activeDay];
+    const slots = displayPlan[day] || {};
+    const {cal,prot} = dayMacros(day);
+    const calPct = Math.min(100, Math.round(cal/TARGET*100));
+    const protPct = Math.min(100, Math.round(prot/PROT_TARGET*100));
+    const calOk = cal >= TARGET*0.88 && cal <= TARGET*1.12;
+    const protOk = prot >= PROT_TARGET*0.88;
+
+    return (
+      <div style={{flex:1,overflow:"auto",paddingBottom:80}}>
+        {/* Day strip */}
+        <div style={{ overflowX:"auto", display:"flex", gap:0, background:"white",
+          borderBottom:"1px solid #EDE8E0", position:"sticky", top:0, zIndex:10,
+          WebkitOverflowScrolling:"touch" }}>
+          {DAYS.map((d,i)=>{
+            const {cal:dc} = dayMacros(d);
+            const ok = dc >= TARGET*0.88 && dc <= TARGET*1.12;
+            return (
+              <button key={d} onClick={()=>setActiveDay(i)} style={{
+                flex:"0 0 calc(100%/7)", padding:"10px 4px 8px", border:"none", cursor:"pointer",
+                background: i===activeDay ? "#1E1E1E" : "white",
+                borderBottom: i===activeDay ? "3px solid #C17A55" : "3px solid transparent",
+                transition:"all 0.15s"
+              }}>
+                <div style={{ fontSize:9, fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase",
+                  color: i===activeDay ? "white" : "#AAA" }}>{d.slice(0,3)}</div>
+                <div style={{ width:6, height:6, borderRadius:"50%", margin:"4px auto 0",
+                  background: dc>0 ? (ok?"#4F7A62":"#C17A55") : "#DDD" }}/>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Day header */}
+        <div style={{ padding:"18px 20px 12px", background:"white", borderBottom:"1px solid #F0EAE0" }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:12 }}>
+            <h2 style={{ fontFamily:"Georgia,serif", fontSize:22 }}>{day}</h2>
+            <div style={{ fontSize:12, color:"#888" }}>
+              <span style={{ color:calOk?"#4F7A62":"#C17A55", fontWeight:700 }}>{cal||"—"}</span> / {TARGET} kcal
+            </div>
+          </div>
+          {/* Macro bars */}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+            {[["Calories",cal,TARGET,calPct,"#4F7A62","kcal"],["Protein",prot,PROT_TARGET,protPct,"#3A6A9A","g"]].map(([lbl,v,t,pct,color,unit])=>(
+              <div key={lbl}>
+                <div style={{ display:"flex", justifyContent:"space-between", fontSize:10, color:"#888", marginBottom:4 }}>
+                  <span>{lbl}</span><span style={{fontWeight:700,color:"#1E1E1E"}}>{v}{unit}</span>
+                </div>
+                <div style={{ height:5, background:"#EDE8E0", borderRadius:3, overflow:"hidden" }}>
+                  <div style={{ height:"100%", width:`${pct}%`, background:pct>=88?color:"#E8A050", borderRadius:3, transition:"width 0.4s" }}/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Slots */}
+        <div style={{ padding:"12px 16px", display:"flex", flexDirection:"column", gap:10 }}>
+          {SLOTS.map(slot=>{
+            const mealName = slots[slot] || "";
+            const isAuto = mealName.startsWith("←");
+            const isEditable = !isAuto;
+            const meal = MEALS.find(m=>m.name===mealName);
+            const col = meal ? CAT_COLOR[meal.cat] : null;
+            const macros = getMacros(isAuto ? mealName.replace("← ","") : mealName, person);
+
+            return (
+              <div key={slot} style={{ background:"white", borderRadius:14, overflow:"hidden",
+                boxShadow:"0 1px 8px rgba(0,0,0,0.06)", border:"1px solid rgba(0,0,0,0.04)" }}>
+                {/* Slot label */}
+                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                  padding:"10px 16px 8px", borderBottom: mealName ? `1px solid ${col?.bg||"#F0EAE0"}` : "none" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:11,
+                    letterSpacing:"0.15em", textTransform:"uppercase", fontWeight:700, color:"#AAA" }}>
+                    <span>{SLOT_EMOJI[slot]}</span> {slot}
+                  </div>
+                  {isEditable && mealName && (
+                    <button onClick={()=>setPicker({day,slot})} style={{
+                      fontSize:11, color:"#888", border:"1px solid #E8E0D8",
+                      background:"white", borderRadius:6, padding:"3px 8px", cursor:"pointer"
+                    }}>Change</button>
+                  )}
+                </div>
+
+                {mealName ? (
+                  <div onClick={()=>{ if(isEditable) setPicker({day,slot}); else if(meal) setRecipe(meal); }}
+                    style={{ padding:"12px 16px", cursor:"pointer",
+                      background: isAuto ? "#F0F8F4" : "white" }}>
+                    <div style={{ display:"flex", gap:12, alignItems:"center" }}>
+                      {meal && <span style={{fontSize:28,flexShrink:0}}>{meal.emoji}</span>}
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{ fontSize:14, fontWeight:600, color:isAuto?"#4F7A62":"#1E1E1E",
+                          fontStyle:isAuto?"italic":"normal", lineHeight:1.3 }}>
+                          {isAuto ? mealName : mealName}
+                        </div>
+                        {macros.cal>0 && (
+                          <div style={{ fontSize:11, color:"#888", marginTop:3 }}>
+                            {macros.cal} kcal · {macros.prot}g protein
+                          </div>
+                        )}
+                      </div>
+                      {meal && !isAuto && <span style={{color:"#CCC",fontSize:18}}>›</span>}
+                    </div>
+                  </div>
+                ) : (
+                  <button onClick={()=>setPicker({day,slot})} style={{
+                    width:"100%", padding:"14px 16px", background:"none", border:"none",
+                    cursor:"pointer", textAlign:"left", fontSize:14, color:"#CCC",
+                    fontStyle:"italic", display:"flex", alignItems:"center", gap:8
+                  }}>
+                    <span style={{fontSize:20,color:"#DDD"}}>+</span> Add {slot.toLowerCase()}
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  // ── RECIPES TAB ────────────────────────────────────────────────────────
+  const RecipesTab = () => (
+    <div style={{flex:1,overflow:"auto",paddingBottom:80}}>
+      {/* Search */}
+      <div style={{ padding:"14px 16px 10px", background:"white", borderBottom:"1px solid #F0EAE0",
+        position:"sticky", top:0, zIndex:10 }}>
+        <input value={recSearch} onChange={e=>setRecSearch(e.target.value)}
+          placeholder="Search recipes…"
+          style={{ width:"100%", padding:"10px 14px", border:"1px solid #E0DAD0",
+            borderRadius:10, fontSize:15, outline:"none", boxSizing:"border-box", marginBottom:10 }}/>
+        <div style={{ display:"flex", gap:6, overflowX:"auto", WebkitOverflowScrolling:"touch", paddingBottom:2 }}>
+          {CATEGORIES.map(c=>{
+            const col=CAT_COLOR[c];
+            return (
+              <button key={c} onClick={()=>setRecCat(c)} style={{
+                padding:"5px 12px", borderRadius:20, border:`1.5px solid ${col.accent}`,
+                fontSize:11, fontWeight:700, cursor:"pointer", whiteSpace:"nowrap", flexShrink:0,
+                background:recCat===c?col.accent:"white", color:recCat===c?"white":col.accent
+              }}>{c}</button>
+            );
+          })}
+        </div>
+      </div>
+      {/* List */}
+      <div style={{padding:"8px 0"}}>
+        {filteredRecipes.map(meal=>{
+          const col=CAT_COLOR[meal.cat];
+          const cal=person==="Sam"?meal.calM:meal.calF;
+          const prot=person==="Sam"?meal.protM:meal.protF;
+          return (
+            <div key={meal.id} onClick={()=>setRecipe(meal)} style={{
+              display:"flex", alignItems:"center", gap:14, padding:"14px 20px",
+              borderBottom:"1px solid #F5F0E8", cursor:"pointer", background:"white",
+              transition:"background 0.1s"
+            }}>
+              <div style={{ width:52, height:52, borderRadius:12, background:col.bg,
+                display:"flex", alignItems:"center", justifyContent:"center", fontSize:28, flexShrink:0 }}>
+                {meal.emoji}
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{ fontSize:14, fontWeight:600, color:"#1E1E1E", lineHeight:1.25, marginBottom:3 }}>{meal.name}</div>
+                <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+                  <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.15em",
+                    textTransform:"uppercase", color:col.accent }}>{meal.cat}</span>
+                  <span style={{ fontSize:11, color:"#AAA" }}>·</span>
+                  <span style={{ fontSize:11, color:"#888" }}>{cal} kcal · {prot}g protein</span>
+                </div>
+              </div>
+              <span style={{color:"#CCC",fontSize:22,flexShrink:0}}>›</span>
+            </div>
+          );
+        })}
+        {filteredRecipes.length===0 && (
+          <div style={{textAlign:"center",padding:"60px 20px",color:"#AAA"}}>
+            <div style={{fontSize:40,marginBottom:8}}>🔍</div>
+            <div>No recipes found</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  // ── SHOPPING TAB ────────────────────────────────────────────────────────
+  const ShoppingTab = () => (
+    <div style={{flex:1,overflow:"auto",paddingBottom:80}}>
+      {/* Header */}
+      <div style={{ padding:"16px 20px 12px", background:"white", borderBottom:"1px solid #F0EAE0",
+        position:"sticky", top:0, zIndex:10 }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
+          <div>
+            <h2 style={{ fontFamily:"Georgia,serif", fontSize:20 }}>Shopping List</h2>
+            <div style={{ fontSize:11, color:"#888" }}>{shoppingItems.length} items · Sam + Luisa combined · tap to tick off</div>
+          </div>
+          <button onClick={()=>setChecked({})} style={{
+            padding:"7px 14px", border:"1px solid #E0DAD0", borderRadius:8,
+            background:"white", fontSize:12, color:"#888", cursor:"pointer"
+          }}>↺ Reset</button>
+        </div>
+        {/* Progress */}
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <div style={{ flex:1, height:6, background:"#EDE8E0", borderRadius:3, overflow:"hidden" }}>
+            <div style={{ height:"100%", borderRadius:3, background:"#4F7A62",
+              width:`${shoppingItems.length?Math.round(checkedCount/shoppingItems.length*100):0}%`,
+              transition:"width 0.3s" }}/>
+          </div>
+          <span style={{ fontSize:11, color:"#888", whiteSpace:"nowrap" }}>{checkedCount}/{shoppingItems.length}</span>
+        </div>
+      </div>
+
+      {/* Tip */}
+      <div style={{ margin:"12px 16px 0", padding:"11px 14px", background:"#FEF3E2",
+        border:"1px solid #F0D0A0", borderRadius:10, fontSize:12, color:"#7A4020", lineHeight:1.6 }}>
+        🛒 <strong>Pak'nSave tip:</strong> Buy rice 5kg (~$8.50), oats 1kg (~$3.50), protein powder in bulk. Chicken ~$13/kg, mince ~$18.99/kg.
+      </div>
+
+      {/* Items grouped by category */}
+      <div style={{padding:"0 16px 20px"}}>
+        {shoppingItems.length===0 ? (
+          <div style={{textAlign:"center",padding:"60px 0",color:"#AAA"}}>
+            <div style={{fontSize:40,marginBottom:8}}>🛒</div>
+            <div style={{fontSize:16,marginBottom:6}}>No meals selected yet</div>
+            <div style={{fontSize:13}}>Go to Plan tab and choose your meals</div>
+          </div>
+        ) : (() => {
+          const rendered = [];
+          let lastCat = null;
+
+          shoppingItems.forEach(item => {
+            const key = item.name.toLowerCase();
+            const isChecked = !!checked[key];
+
+            // Category divider
+            if (item.cat !== lastCat) {
+              rendered.push(
+                <div key={`hdr-${item.cat}`} style={{
+                  fontSize:10, fontWeight:700, letterSpacing:"0.22em",
+                  textTransform:"uppercase", color:"#AAA",
+                  padding:"20px 0 8px",
+                  borderBottom:"2px solid #EDE8E0",
+                  marginBottom:4
+                }}>{item.cat}</div>
+              );
+              lastCat = item.cat;
+            }
+
+            // Format qty
+            const q = item.qty;
+            let qtyLabel = "";
+            if (item.unit === "g") {
+              qtyLabel = q >= 1000 ? `${(q/1000).toFixed(q>=2000?0:1)} kg` : `${Math.ceil(q)} g`;
+            } else if (item.unit === "ml") {
+              qtyLabel = q >= 1000 ? `${(q/1000).toFixed(1)} L` : `${Math.ceil(q)} ml`;
+            } else if (item.unit === "cloves") {
+              qtyLabel = `${Math.ceil(q)} clove${q>1?"s":""}`;
+            } else if (item.unit === "sprigs") {
+              qtyLabel = `${Math.ceil(q)} sprig${q>1?"s":""}`;
+            } else if (item.unit === "pack") {
+              qtyLabel = `${Math.ceil(q)} pack`;
+            } else if (q > 1) {
+              qtyLabel = `× ${Math.ceil(q)}`;
+            }
+
+            rendered.push(
+              <div key={key}
+                onClick={()=>setChecked(p=>({...p,[key]:!p[key]}))}
+                style={{
+                  display:"flex", alignItems:"center", gap:12,
+                  padding:"11px 0",
+                  borderBottom:"1px solid #F5F0E8",
+                  cursor:"pointer",
+                  WebkitTapHighlightColor:"transparent",
+                  opacity: isChecked ? 0.45 : 1,
+                  transition:"opacity 0.2s"
+                }}>
+                {/* Checkbox */}
+                <div style={{
+                  width:22, height:22, borderRadius:5, flexShrink:0,
+                  border:`2px solid ${isChecked?"#4F7A62":"#CCC"}`,
+                  background: isChecked ? "#4F7A62" : "white",
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  transition:"all 0.15s"
+                }}>
+                  {isChecked && <span style={{color:"white",fontSize:13,fontWeight:800,lineHeight:1}}>✓</span>}
+                </div>
+                {/* Name */}
+                <span style={{
+                  flex:1, fontSize:15, fontWeight:500, color:"#1E1E1E",
+                  textDecoration: isChecked ? "line-through" : "none"
+                }}>{item.name}</span>
+                {/* Qty pill */}
+                {qtyLabel && (
+                  <span style={{
+                    fontSize:12, fontWeight:700, color:"#777",
+                    background:"#F0EBE3", borderRadius:6,
+                    padding:"3px 9px", flexShrink:0
+                  }}>{qtyLabel}</span>
+                )}
+              </div>
+            );
+          });
+          return rendered;
+        })()}
+      </div>
+    </div>
+  );
+
+  // ── PREP TAB ────────────────────────────────────────────────────────────
+  const PrepTab = () => {
+    // Collect all unique selected meals (deduplicated)
+    const allSelected = useMemo(() => {
+      const seen = new Set();
+      const meals = [];
+      Object.values(plan).forEach(slots => {
+        Object.values(slots).forEach(name => {
+          if (!name || name.startsWith("←")) return;
+          if (!seen.has(name)) { seen.add(name); meals.push(name); }
+        });
+      });
+      return meals;
+    }, []);
+
+    // Find selected meals by category
+    const getMealsOfCat = (cat) => allSelected.filter(n => {
+      const m = MEALS.find(x => x.name === n);
+      return m && m.cat === cat;
+    });
+
+    const oatMeals     = getMealsOfCat("Breakfast").filter(n => n.includes("Oats") || n.includes("Bircher"));
+    const dinners      = getMealsOfCat("Dinner");
+    const smoothies    = getMealsOfCat("Smoothie");
+    const eggMuffins   = allSelected.includes("Egg Muffins");
+    const boiledEggs   = allSelected.includes("Boiled Eggs ×2");
+
+    // Sam's rice needed (total ingM dry white rice across all dinners + lunches)
+    const riceQty = { sam: 0, luisa: 0 };
+    Object.values(plan).forEach(slots => {
+      Object.values(slots).forEach(name => {
+        if (!name || name.startsWith("←")) return;
+        const meal = MEALS.find(m => m.name === name);
+        if (!meal) return;
+        const parseG = (ings, keyword) => {
+          for (const ing of ings) {
+            if (ing.toLowerCase().includes(keyword)) {
+              const m = ing.match(/^([\d.]+)\s*g/);
+              if (m) return parseFloat(m[1]);
+            }
+          }
+          return 0;
+        };
+        riceQty.sam   += parseG(meal.ingM, "dry white rice");
+        riceQty.luisa += parseG(meal.ingF, "dry white rice");
+      });
+    });
+
+    const Step = ({num, title, detail, highlight}) => (
+      <div style={{ display:"flex", gap:14, padding:"14px 0", borderBottom:"1px solid #F5F0E8" }}>
+        <div style={{
+          width:28, height:28, borderRadius:14, flexShrink:0,
+          background: highlight ? "#C17A55" : "#1E1E1E",
+          color:"white", display:"flex", alignItems:"center", justifyContent:"center",
+          fontFamily:"Georgia,serif", fontSize:14, fontWeight:700
+        }}>{num}</div>
+        <div style={{flex:1}}>
+          <div style={{ fontSize:14, fontWeight:700, color:"#1E1E1E", marginBottom:3 }}>{title}</div>
+          <div style={{ fontSize:13, color:"#666", lineHeight:1.65 }}>{detail}</div>
+        </div>
+      </div>
+    );
+
+    const Section = ({icon, title, time, bg, children}) => (
+      <div style={{ background:"white", borderRadius:14, overflow:"hidden",
+        boxShadow:"0 2px 12px rgba(0,0,0,0.06)", border:"1px solid rgba(0,0,0,0.04)", marginBottom:16 }}>
+        <div style={{ background: bg||"#1E1E1E", padding:"14px 18px",
+          display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <span style={{fontSize:22}}>{icon}</span>
+            <span style={{ fontFamily:"Georgia,serif", fontSize:17, color:"white" }}>{title}</span>
+          </div>
+          {time && <span style={{ fontSize:11, color:"rgba(255,255,255,0.6)",
+            background:"rgba(255,255,255,0.12)", padding:"3px 10px", borderRadius:12 }}>{time}</span>}
+        </div>
+        <div style={{padding:"4px 18px 8px"}}>{children}</div>
+      </div>
+    );
+
+    const Tip = ({text}) => (
+      <div style={{ background:"#FEF3E2", border:"1px solid #F0D0A0", borderRadius:10,
+        padding:"11px 14px", marginBottom:16, fontSize:13, color:"#7A4020", lineHeight:1.6 }}>
+        💡 {text}
+      </div>
+    );
+
+    const NoneSelected = ({label}) => (
+      <div style={{ padding:"12px 0 4px", fontSize:13, color:"#AAA", fontStyle:"italic" }}>
+        No {label} selected this week — skip this step.
+      </div>
+    );
+
+    return (
+      <div style={{flex:1, overflow:"auto", paddingBottom:80}}>
+        {/* Header */}
+        <div style={{ padding:"18px 20px 14px", background:"white",
+          borderBottom:"1px solid #F0EAE0", position:"sticky", top:0, zIndex:10 }}>
+          <h2 style={{ fontFamily:"Georgia,serif", fontSize:20, marginBottom:4 }}>Meal Prep Guide</h2>
+          <div style={{ fontSize:11, color:"#888" }}>Based on your selected meals this week</div>
+        </div>
+
+        <div style={{padding:"16px 16px 0"}}>
+
+          {/* Golden rule */}
+          <div style={{ background:"#1E1E1E", borderRadius:14, padding:"20px", marginBottom:16 }}>
+            <div style={{ fontSize:10, letterSpacing:"0.25em", textTransform:"uppercase",
+              fontWeight:700, color:"#C17A55", marginBottom:8 }}>The golden rule</div>
+            <p style={{ fontFamily:"Georgia,serif", fontSize:16, color:"white",
+              lineHeight:1.55, margin:0 }}>
+              Cook double at every dinner. Package the second portion immediately.
+              That's tomorrow's lunch — done.
+            </p>
+          </div>
+
+          {/* ── SUNDAY PREP ── */}
+          <Section icon="☀️" title="Sunday Prep" time="60–90 min" bg="#4F7A62">
+
+            {/* Rice */}
+            {riceQty.sam + riceQty.luisa > 0 ? (
+              <Step num={1} title="Cook all rice for the week"
+                detail={`Sam needs ~${Math.ceil(riceQty.sam)}g dry rice · Luisa needs ~${Math.ceil(riceQty.luisa)}g dry rice · Total: ${Math.ceil(riceQty.sam + riceQty.luisa)}g dry (cook in one big pot). Portion into containers immediately while warm.`}/>
+            ) : (
+              <Step num={1} title="Cook rice" detail="No rice-based dinners selected this week — skip or cook a small batch for lunch bowls."/>
+            )}
+
+            {/* Overnight oats */}
+            <Step num={2}
+              title={`Overnight oat jars (${oatMeals.length > 0 ? oatMeals.length + " variety" + (oatMeals.length>1?"s":"") + " selected" : "none selected"})`}
+              detail={oatMeals.length > 0
+                ? `Prep: ${oatMeals.join(", ")}. Line up jars, add dry ingredients first (oats + protein + honey), pour over trim milk, seal. Done in 8 min. Makes Mon–${oatMeals.length >= 5 ? "Fri" : "Thu"} breakfasts.`
+                : "No overnight oats selected — skip, or prep a batch of your choice anyway."}/>
+
+            {/* Egg muffins */}
+            {eggMuffins ? (
+              <Step num={3} title="Egg muffins — batch bake" highlight
+                detail="Preheat 180°C. Whisk eggs, add cooked chicken, capsicum, spinach, cheese. Fill muffin tin ¾ full. Bake 18–20 min. Cool fully before storing. Makes 6 muffins (3 servings). Reheat 60 sec each morning."/>
+            ) : (
+              <Step num={3} title="Egg muffins" detail="Not selected this week — skip."/>
+            )}
+
+            {/* Boiled eggs */}
+            {boiledEggs ? (
+              <Step num={4} title="Boiled eggs for snacks" highlight
+                detail="Hard boil 6–8 eggs (8 min from boiling). Ice bath immediately. Store UNPEELED in fridge — stays fresh 7 days. Peel when eating."/>
+            ) : (
+              <Step num={4} title="Boiled eggs" detail="Not selected as a snack this week — skip."/>
+            )}
+
+            {/* Marinate chicken */}
+            <Step num={5} title="Marinate & portion chicken"
+              detail="Divide chicken into meal-sized portions based on this week's dinners. Soy + garlic bag for stir-fry nights. Lemon + dijon + thyme bag for roast nights. Plain for pasta. Refrigerate."/>
+
+            {/* Pre-measure */}
+            <Step num={6} title="Pre-measure dry ingredients (5 min)"
+              detail="Weigh out oats, protein powder, cocoa, chia seeds into small zip bags or containers. Removes all decision-making during the week. Label each bag with the meal name."/>
+
+          </Section>
+
+          {/* ── MIDWEEK TOP-UP ── */}
+          <Section icon="🌙" title="Wednesday Top-Up" time="20–30 min" bg="#3A6A9A">
+
+            <Step num={1} title="Check and restock rice"
+              detail="If fewer than 3 portions left in the fridge, cook another 400g dry rice. Replenishes Thu–Sun meals."/>
+
+            {oatMeals.length > 0 ? (
+              <Step num={2} title={`Prep ${Math.min(3, oatMeals.length)} more oat jars`}
+                detail="Same method as Sunday. Covers Thu, Fri, and Sat breakfasts. Check milk level while you're at it."/>
+            ) : (
+              <Step num={2} title="Breakfast check" detail="Check what's in the fridge for the second half of the week."/>
+            )}
+
+            <Step num={3} title="Defrost protein for Thu–Sun"
+              detail="Move chicken or mince from the freezer to the fridge now. Takes 2 minutes today, saves 30 minutes of scrambling on Thursday night."/>
+
+          </Section>
+
+          {/* ── THIS WEEK'S DINNERS ── */}
+          <Section icon="🍽" title="This Week's Dinners" bg="#C04040">
+            {dinners.length === 0 ? (
+              <NoneSelected label="dinners"/>
+            ) : dinners.map((name, i) => {
+              const meal = MEALS.find(m => m.name === name);
+              if (!meal) return null;
+              return (
+                <div key={name} style={{ padding:"12px 0", borderBottom:"1px solid #F5F0E8" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:4 }}>
+                    <span style={{fontSize:22}}>{meal.emoji}</span>
+                    <div>
+                      <div style={{ fontSize:14, fontWeight:700, color:"#1E1E1E" }}>{meal.name}</div>
+                      <div style={{ fontSize:11, color:"#888" }}>⏱ {meal.time} · Sam: {meal.calM} kcal {meal.protM}g · Luisa: {meal.calF} kcal {meal.protF}g</div>
+                    </div>
+                  </div>
+                  <div style={{ fontSize:12, color:"#C04040", fontWeight:600, paddingLeft:32 }}>
+                    Cook double → pack Luisa's + Sam's lunch containers before you sit down to eat
+                  </div>
+                </div>
+              );
+            })}
+          </Section>
+
+          {/* ── SMOOTHIES NOTE ── */}
+          {smoothies.length > 0 && (
+            <Section icon="🥤" title="Smoothies (no prep needed)" bg="#7A4A9A">
+              <Tip text="Pre-bag dry ingredients Sunday (protein + oats + cocoa) into individual zip bags. Each smoothie takes 90 seconds — add milk and blend." />
+              {smoothies.map(name => {
+                const meal = MEALS.find(m => m.name === name);
+                if (!meal) return null;
+                return (
+                  <div key={name} style={{ padding:"10px 0", borderBottom:"1px solid #F5F0E8",
+                    display:"flex", alignItems:"center", gap:10 }}>
+                    <span style={{fontSize:22}}>{meal.emoji}</span>
+                    <div>
+                      <div style={{fontSize:14,fontWeight:600,color:"#1E1E1E"}}>{meal.name}</div>
+                      <div style={{fontSize:11,color:"#888"}}>{meal.ingF.slice(0,3).join(" · ")}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </Section>
+          )}
+
+          {/* ── NIGHTLY REMINDER ── */}
+          <div style={{ background:"#FEF3E2", border:"1px solid #F0D0A0", borderRadius:14,
+            padding:"18px", marginBottom:16 }}>
+            <div style={{ fontSize:10, letterSpacing:"0.2em", textTransform:"uppercase",
+              fontWeight:700, color:"#C17A55", marginBottom:10 }}>Every dinner night</div>
+            {["Cook the full double portion — Sam's larger serve + Luisa's smaller serve in the same pan.",
+              "Plate your dinners. Then immediately pack the second portions into labelled containers.",
+              "Into the fridge before you sit down. Non-negotiable — this is the system.",
+              "Both lunches done. Zero decision-making tomorrow."
+            ].map((step, i) => (
+              <div key={i} style={{ display:"flex", gap:10, marginBottom:8, fontSize:13,
+                color:"#444", lineHeight:1.6 }}>
+                <span style={{ color:"#C17A55", fontWeight:700, flexShrink:0 }}>{i+1}.</span>
+                {step}
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+    );
+  };
+
+  // ── RENDER ─────────────────────────────────────────────────────────────
+  return (
+    <div style={{ display:"flex", flexDirection:"column", height:"100dvh",
+      fontFamily:"'DM Sans','Helvetica Neue',sans-serif", background:"#FAF7F2",
+      maxWidth:480, margin:"0 auto", position:"relative" }}>
+
+      {/* STATUS BAR AREA */}
+      <div style={{ background:"#1E1E1E", paddingTop:"env(safe-area-inset-top,0px)" }}/>
+
+      {/* TOP BAR */}
+      <div style={{ background:"#1E1E1E", padding:"12px 20px 10px",
+        display:"flex", justifyContent:"space-between", alignItems:"center",
+        flexShrink:0 }}>
+        <div style={{ fontFamily:"Georgia,serif", fontSize:17, color:"white",
+          display:"flex", alignItems:"center", gap:6 }}>
+          <span>🍽</span>
+          <span>Sam & Luisa</span>
+        </div>
+        {/* Person toggle */}
+        <div style={{ display:"flex", background:"rgba(255,255,255,0.1)", borderRadius:8, overflow:"hidden" }}>
+          {["Luisa","Sam"].map(p=>(
+            <button key={p} onClick={()=>setPerson(p)} style={{
+              padding:"5px 14px", border:"none", cursor:"pointer", fontSize:12, fontWeight:700,
+              background:person===p?"#C17A55":"transparent",
+              color:person===p?"white":"rgba(255,255,255,0.5)",
+              transition:"all 0.15s"
+            }}>{p}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* CONTENT */}
+      <div style={{ flex:1, overflow:"hidden", display:"flex", flexDirection:"column" }}>
+        {tab==="plan"     && <PlanTab/>}
+        {tab==="recipes"  && <RecipesTab/>}
+        {tab==="shopping" && <ShoppingTab/>}
+        {tab==="prep"     && <PrepTab/>}
+      </div>
+
+      {/* BOTTOM NAV */}
+      <div style={{ flexShrink:0, background:"white", borderTop:"1px solid #EDE8E0",
+        display:"flex", paddingBottom:"env(safe-area-inset-bottom,0px)",
+        boxShadow:"0 -4px 20px rgba(0,0,0,0.07)" }}>
+        {[
+          ["plan","📅","Plan"],
+          ["recipes","📖","Recipes"],
+          ["shopping","🛒",`Shop${checkedCount>0?` (${checkedCount})`:""}` ],
+          ["prep","🧑‍🍳","Prep"]
+        ].map(([id,icon,label])=>(
+          <button key={id} onClick={()=>setTab(id)} style={{
+            flex:1, padding:"11px 4px 10px", border:"none", cursor:"pointer",
+            background:"transparent", display:"flex", flexDirection:"column",
+            alignItems:"center", gap:3, transition:"all 0.15s"
+          }}>
+            <span style={{ fontSize:20, opacity:tab===id?1:0.45 }}>{icon}</span>
+            <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.08em",
+              textTransform:"uppercase", color:tab===id?"#C17A55":"#AAA" }}>{label}</span>
+            {tab===id && <div style={{ width:20, height:2, borderRadius:1, background:"#C17A55", marginTop:1 }}/>}
+          </button>
+        ))}
+      </div>
+
+      {/* MODALS */}
+      <RecipeSheet meal={recipe} person={person} onClose={()=>setRecipe(null)}/>
+      {picker && (
+        <MealPicker day={picker.day} slot={picker.slot} person={person}
+          onSelect={(name)=>setMeal(picker.day,picker.slot,name)}
+          onClose={()=>setPicker(null)}/>
+      )}
+    </div>
+  );
+}
