@@ -193,13 +193,18 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 <div id="app">
   <div class="topbar">
     <div class="brand">🍽 Sam &amp; Luisa</div>
-    <div class="ptoggle">
-      <button id="btn-luisa" class="active" onclick="setPerson('Luisa')">Luisa</button>
-      <button id="btn-sam" onclick="setPerson('Sam')">Sam</button>
-    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.05em">Both portions combined</div>
   </div>
 
   <div class="content">
+    <div id="tab-week" class="tab-panel">
+      <div class="sticky-hdr" style="padding:14px 16px 10px">
+        <div class="section-title">Week at a Glance</div>
+        <div class="eyebrow" style="margin-top:3px">Tap any meal to see the recipe</div>
+      </div>
+      <div id="week-cal" style="padding:10px 10px 80px;overflow-x:auto"></div>
+    </div>
+
     <div id="tab-plan" class="tab-panel active">
       <div class="sticky-hdr">
         <div class="day-strip" id="day-strip"></div>
@@ -248,6 +253,9 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
   </div>
 
   <div class="bottomnav">
+    <button class="navbtn" id="nav-week" onclick="switchTab('week')">
+      <span class="ni">🗓</span><span class="nl">Week</span><span class="nd"></span>
+    </button>
     <button class="navbtn active" id="nav-plan" onclick="switchTab('plan')">
       <span class="ni">📅</span><span class="nl">Plan</span><span class="nd"></span>
     </button>
@@ -831,9 +839,8 @@ function getDayMacros(day) {
     const real = name.startsWith("← ") ? name.slice(2) : name;
     const m = getMeal(real);
     if (!m) return;
-    const p = state.person;
-    cal += p === "Sam" ? m.calM : m.calF;
-    prot += p === "Sam" ? m.protM : m.protF;
+    cal += m.calM + m.calF;
+    prot += m.protM + m.protF;
   });
   return { cal, prot };
 }
@@ -915,14 +922,93 @@ function switchTab(id) {
   if (id === "recipes")  renderRecipes();
   if (id === "shopping") renderShopping();
   if (id === "prep")     renderPrep();
+  if (id === "week")     renderWeek();
 }
 
-function setPerson(p) {
-  state.person = p;
-  document.getElementById("btn-luisa").classList.toggle("active", p === "Luisa");
-  document.getElementById("btn-sam").classList.toggle("active", p === "Sam");
-  renderPlan();
+function renderWeek() {
+  const dp = getDisplayPlan();
+  const SLOT_EMOJI = {Breakfast:"🌅",Snack:"🍎",Lunch:"🥗",Dinner:"🍽","Eve Snack":"🌙"};
+  const SLOTS = ["Breakfast","Snack","Lunch","Dinner","Eve Snack"];
+  const DAY_SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const DAY_BG = {
+    Monday:"#1E1E1E",Tuesday:"#1E1E1E",Wednesday:"#1E1E1E",
+    Thursday:"#1E1E1E",Friday:"#1E1E1E",
+    Saturday:"#C17A55",Sunday:"#C17A55"
+  };
+
+  // Build 7-column grid
+  let html = `<div style="display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px;min-width:840px">`;
+
+  // Day headers
+  DAYS.forEach((day, i) => {
+    const {cal} = getDayMacros(day);
+    const target = 3900;
+    const ok = cal >= target * 0.88 && cal <= target * 1.12;
+    const isFreeDay = (FREE_SLOTS[day] || []).length > 0;
+    html += `
+      <div style="background:${DAY_BG[day]};border-radius:10px 10px 0 0;padding:10px 10px 8px;text-align:center">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.9)">${DAY_SHORT[i]}</div>
+        <div style="font-size:11px;color:${cal>0?(ok?'#7AE09A':'#F0A070'):'rgba(255,255,255,.3)'};margin-top:3px;font-weight:600">
+          ${cal > 0 ? cal + ' kcal' : isFreeDay ? '🎉 free' : '—'}
+        </div>
+      </div>`;
+  });
+
+  // Slot rows
+  SLOTS.forEach(slot => {
+    DAYS.forEach(day => {
+      const freeSlots = FREE_SLOTS[day] || [];
+      const isFree = freeSlots.includes(slot);
+      const name = dp[day]?.[slot] || "";
+      const isAuto = name.startsWith("← ");
+      const realName = isAuto ? name.slice(2) : name;
+      const meal = getMeal(realName);
+      const col = meal ? CAT_COLOR[meal.cat] : null;
+
+      if (isFree) {
+        html += `<div style="background:#FFF8F0;padding:8px;border:1px solid #F0EAE0;min-height:58px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:11px;color:#C17A55;font-style:italic">🎉 Free</span>
+        </div>`;
+      } else if (name) {
+        html += `<div onclick="openRecipe('${encodeURIComponent(realName)}')"
+          style="background:${col ? col.bg : '#F8F8F8'};padding:7px 8px;border:1px solid rgba(0,0,0,.06);
+          min-height:58px;cursor:pointer;transition:opacity .15s;-webkit-tap-highlight-color:transparent"
+          ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+            color:${col ? col.accent : '#AAA'};margin-bottom:3px">${SLOT_EMOJI[slot]} ${slot}</div>
+          <div style="font-size:11px;font-weight:600;color:#1E1E1E;line-height:1.35;
+            ${isAuto ? 'color:#4F7A62;font-style:italic' : ''}">${meal ? meal.emoji + ' ' : ''}${isAuto ? '← leftover' : realName}</div>
+        </div>`;
+      } else {
+        html += `<div style="background:#F8F8F8;padding:7px 8px;border:1px solid rgba(0,0,0,.04);min-height:58px;display:flex;align-items:center">
+          <span style="font-size:10px;color:#DDD;font-style:italic">${SLOT_EMOJI[slot]} empty</span>
+        </div>`;
+      }
+    });
+  });
+
+  html += `</div>`;
+
+  // Summary row
+  html += `<div style="margin-top:16px;display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px;min-width:840px">`;
+  DAYS.forEach(day => {
+    const {cal, prot} = getDayMacros(day);
+    const freeDay = (FREE_SLOTS[day] || []).length > 0;
+    html += `<div style="background:white;border-radius:0 0 10px 10px;padding:8px;text-align:center;
+      border:1px solid #EDE8E0;border-top:none">
+      ${freeDay && cal === 0
+        ? `<div style="font-size:11px;color:#C17A55;font-weight:600">Free day 🎉</div>`
+        : `<div style="font-size:12px;font-weight:700;color:#1E1E1E">${cal || '—'} kcal</div>
+           <div style="font-size:10px;color:#AAA;margin-top:1px">${prot || '—'}g protein</div>`
+      }
+    </div>`;
+  });
+  html += `</div>`;
+
+  document.getElementById("week-cal").innerHTML = html;
 }
+
+// Person toggle removed — combined view only
 
 // ═══════════════════════════════════════════════════════════════════════════
 // PLAN TAB
@@ -956,9 +1042,8 @@ function renderDayDetail() {
   const day = DAYS[state.activeDay];
   const dp  = getDisplayPlan();
   const slots = dp[day] || {};
-  const p   = state.person;
-  const target = p === "Sam" ? 2200 : 1700;
-  const pTarget = p === "Sam" ? 190 : 125;
+  const target = 3900;  // Sam 2200 + Luisa 1700
+  const pTarget = 315;  // Sam 190 + Luisa 125
   const {cal, prot} = getDayMacros(day);
   const calPct  = Math.min(100, Math.round(cal / target * 100));
   const protPct = Math.min(100, Math.round(prot / pTarget * 100));
@@ -986,7 +1071,7 @@ function renderDayDetail() {
     const isEditLunch = (slot === "Lunch" && ["Monday","Tuesday","Wednesday","Thursday","Friday"].includes(day));
     const editable = !isEditLunch && !isFree;
     const meal = getMeal(isAuto ? name.slice(2) : name);
-    const macros = meal ? `${p==="Sam"?meal.calM:meal.calF} kcal · ${p==="Sam"?meal.protM:meal.protF}g` : "";
+    const macros = meal ? `${meal.calM + meal.calF} kcal · ${meal.protM + meal.protF}g combined` : "";
     const changeBtn = editable && name ? `<button class="slot-change" onclick="openPicker('${day}','${slot}')">Change</button>` : "";
 
     let mealContent = "";
@@ -1055,7 +1140,7 @@ function renderRecipes() {
         <div class="recipe-item-meta">
           <span class="recipe-cat-badge" style="color:${col.accent}">${m.cat}</span>
           <span style="font-size:11px;color:var(--light)">·</span>
-          <span style="font-size:11px;color:var(--light)">${p==="Sam"?m.calM:m.calF} kcal · ${p==="Sam"?m.protM:m.protF}g</span>
+          <span style="font-size:11px;color:var(--light)">${m.calM+m.calF} kcal · ${m.protM+m.protF}g combined</span>
         </div>
       </div>
       <span class="recipe-chevron">›</span>
@@ -1071,11 +1156,64 @@ function openRecipe(encodedName) {
   const name = decodeURIComponent(encodedName);
   const m = getMeal(name);
   if (!m) return;
-  const p = state.person;
   const col = CAT_COLOR[m.cat];
-  const ings = p === "Sam" ? m.ingM : m.ingF;
-  const cal = p === "Sam" ? m.calM : m.calF;
-  const prot = p === "Sam" ? m.protM : m.protF;
+  const cal = m.calM + m.calF;
+  const prot = m.protM + m.protF;
+
+  // Merge Sam + Luisa ingredients, combining quantities for the same item
+  function mergeIngredients(ingM, ingF) {
+    const totals = {};
+    const order = [];
+
+    function parseIng(ing) {
+      const match = ing.match(/^([\d./½¼¾]+)\s*(g|ml|kg)?\s+(.+)/);
+      if (match) {
+        let qty = parseFloat(match[1].replace("½","0.5").replace("¼","0.25").replace("¾","0.75")) || 1;
+        const unit = match[2] || "";
+        const item = match[3].split(",")[0].trim();
+        if (unit === "kg") qty *= 1000;
+        return { item, qty, unit: unit === "kg" ? "g" : unit };
+      } else {
+        return { item: ing.split(",")[0].trim(), qty: 1, unit: "" };
+      }
+    }
+
+    function fmtQty(qty, unit) {
+      if (!unit) return "";
+      if (unit === "g")  return qty >= 1000 ? (qty/1000).toFixed(1)+"kg" : Math.round(qty)+"g";
+      if (unit === "ml") return qty >= 1000 ? (qty/1000).toFixed(1)+"L" : Math.round(qty)+"ml";
+      return Math.round(qty)+"";
+    }
+
+    ingM.forEach(ing => {
+      const {item, qty, unit} = parseIng(ing);
+      const key = item.toLowerCase();
+      if (!totals[key]) { totals[key] = {item, qtyM:0, qtyF:0, unit}; order.push(key); }
+      totals[key].qtyM += qty;
+    });
+
+    ingF.forEach(ing => {
+      const {item, qty, unit} = parseIng(ing);
+      const key = item.toLowerCase();
+      if (!totals[key]) { totals[key] = {item, qtyM:0, qtyF:0, unit}; order.push(key); }
+      totals[key].qtyF += qty;
+    });
+
+    return order.map(k => {
+      const {item, qtyM, qtyF, unit} = totals[k];
+      const total = qtyM + qtyF;
+      const totalStr = fmtQty(total, unit);
+      const samStr   = fmtQty(qtyM, unit);
+      const luisaStr = fmtQty(qtyF, unit);
+      const brackets = (samStr || luisaStr)
+        ? ` <span style="color:#AAA;font-size:12px">(Sam ${samStr || "—"} · Luisa ${luisaStr || "—"})</span>`
+        : "";
+      if (!unit) return `${item}${brackets}`;
+      return `${totalStr} ${item}${brackets}`;
+    });
+  }
+
+  const combined = mergeIngredients(m.ingM, m.ingF);
 
   document.getElementById("recipe-sheet-header").innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1091,11 +1229,11 @@ function openRecipe(encodedName) {
       <div class="macro-chips">
         <div class="macro-chip" style="background:rgba(255,255,255,.7)">
           <div class="macro-chip-val" style="color:${col.accent}">${cal}</div>
-          <div class="macro-chip-lbl">Calories</div>
+          <div class="macro-chip-lbl">Total kcal</div>
         </div>
         <div class="macro-chip" style="background:rgba(255,255,255,.7)">
           <div class="macro-chip-val" style="color:${col.accent}">${prot}g</div>
-          <div class="macro-chip-lbl">Protein</div>
+          <div class="macro-chip-lbl">Total protein</div>
         </div>
         <div class="macro-chip" style="background:rgba(255,255,255,.7)">
           <div class="macro-chip-val" style="color:${col.accent}">⏱</div>
@@ -1103,10 +1241,12 @@ function openRecipe(encodedName) {
         </div>
       </div>
     </div>
-    <div class="person-note">📐 ${p}'s portion — toggle top-right to switch</div>
+    <div style="margin:10px 16px;padding:8px 12px;background:#E6F4EC;border-radius:8px;font-size:11px;color:#4F7A62;font-weight:600">
+      👫 Combined quantities for Sam + Luisa · Dinner tonight + lunch tomorrow
+    </div>
     <div style="padding:0 16px 100px">
-      <div class="eyebrow" style="margin-bottom:10px">Ingredients</div>
-      ${ings.map(ing => `<div class="ing-row"><span class="ing-bullet">·</span>${ing}</div>`).join("")}
+      <div class="eyebrow" style="margin-bottom:10px">Ingredients (both)</div>
+      ${combined.map(ing => `<div class="ing-row"><span class="ing-bullet">·</span><span>${ing}</span></div>`).join("")}
       <div class="eyebrow" style="margin:20px 0 12px">Method</div>
       ${m.steps.map((s,i) => `<div class="method-step">
         <div class="method-num" style="color:${col.accent}">${i+1}</div>
@@ -1159,7 +1299,7 @@ function renderPickerList() {
         <span style="font-size:26px;flex-shrink:0">${m.emoji}</span>
         <div style="flex:1;min-width:0">
           <div style="font-size:14px;font-weight:600;color:var(--charcoal)">${m.name}</div>
-          <div style="font-size:11px;color:var(--light)">${m.cat} · ${p==="Sam"?m.calM:m.calF} kcal · ${p==="Sam"?m.protM:m.protF}g protein</div>
+          <div style="font-size:11px;color:var(--light)">${m.cat} · ${m.calM+m.calF} kcal · ${m.protM+m.protF}g protein (both)</div>
         </div>
         <span style="color:#CCC;font-size:20px">›</span>
       </div>`;
