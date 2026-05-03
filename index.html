@@ -13,125 +13,165 @@
 :root{
   --bg:#FAF7F2;--white:#fff;--charcoal:#1E1E1E;--mid:#666;--light:#AAA;
   --sage:#4F7A62;--sage-lt:#E6F4EC;--terra:#C17A55;--terra-lt:#FEF3E2;
-  --navy:#1A3A5C;--bs:0 2px 12px rgba(0,0,0,.07);
+  --gold:#C9963A;--navy:#1A3A5C;--warm:#F3EDE2;
+  --bs:0 2px 12px rgba(0,0,0,.07);
 }
 html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
   font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;font-size:15px;
   overscroll-behavior:none;-webkit-text-size-adjust:100%}
-#app{display:flex;flex-direction:column;height:100%;height:100dvh;max-width:480px;margin:0 auto;background:var(--bg)}
-
-/* TOP BAR */
-.topbar{background:var(--charcoal);padding:12px 16px 10px;padding-top:calc(12px + env(safe-area-inset-top,0px));
+#app{display:flex;flex-direction:column;height:100%;height:100dvh;
+  max-width:480px;margin:0 auto;background:var(--bg)}
+.topbar{background:var(--charcoal);padding:12px 16px 10px;
+  padding-top:calc(12px + env(safe-area-inset-top,0px));
   display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.brand{font-family:Georgia,serif;font-size:16px;color:#fff}
-.week-selector{display:flex;align-items:center;gap:6px}
-.week-arrow{background:rgba(255,255,255,.12);border:none;color:#fff;width:26px;height:26px;
-  border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
-.week-label{font-size:11px;color:rgba(255,255,255,.8);font-weight:600;text-align:center;min-width:90px}
-.week-sub{font-size:9px;color:rgba(255,255,255,.4);display:block;font-weight:400}
-
-/* TABS */
+.brand{font-family:Georgia,serif;font-size:17px;color:#fff;display:flex;align-items:center;gap:6px}
+.ptoggle{display:flex;background:rgba(255,255,255,.1);border-radius:8px;overflow:hidden}
+.ptoggle button{padding:5px 14px;border:none;cursor:pointer;font-size:12px;font-weight:700;
+  color:rgba(255,255,255,.5);background:transparent;transition:all .15s}
+.ptoggle button.active{background:var(--terra);color:#fff}
 .content{flex:1;overflow:hidden;position:relative}
-.tab-panel{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none;background:var(--bg)}
+.tab-panel{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  display:none;background:var(--bg)}
 .tab-panel.active{display:block}
 .bottomnav{flex-shrink:0;background:#fff;border-top:1px solid #EDE8E0;display:flex;
   padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -4px 20px rgba(0,0,0,.07)}
-.navbtn{flex:1;border:none;background:transparent;cursor:pointer;padding:10px 2px 8px;
+.navbtn{flex:1;border:none;background:transparent;cursor:pointer;padding:10px 4px 8px;
   display:flex;flex-direction:column;align-items:center;gap:2px}
-.navbtn .ni{font-size:18px;opacity:.4;transition:opacity .15s}
-.navbtn .nl{font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--light)}
-.navbtn .nd{width:18px;height:2px;border-radius:1px;background:var(--terra);margin-top:2px;display:none}
+.navbtn .ni{font-size:20px;opacity:.4;transition:opacity .15s}
+.navbtn .nl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--light);transition:color .15s}
+.navbtn .nd{width:20px;height:2px;border-radius:1px;background:var(--terra);margin-top:2px;
+  display:none}
 .navbtn.active .ni{opacity:1}
 .navbtn.active .nl{color:var(--terra)}
 .navbtn.active .nd{display:block}
 
-/* SHARED */
+/* ── SHARED ── */
 .section-title{font-family:Georgia,serif;font-size:20px;color:var(--charcoal)}
 .eyebrow{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--light)}
-.sticky-hdr{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #F0EAE0}
-.pill{display:inline-block;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.1em;
-  padding:4px 11px;cursor:pointer;border:1.5px solid;white-space:nowrap;transition:all .15s}
+.card{background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
+.sticky-hdr{position:sticky;top:0;z-index:10;background:#fff;
+  border-bottom:1px solid #F0EAE0}
+.pill{display:inline-block;border-radius:20px;font-size:10px;font-weight:700;
+  letter-spacing:.1em;padding:4px 11px;cursor:pointer;border:1.5px solid;
+  white-space:nowrap;transition:all .15s}
 
-/* PLAN TAB */
-.day-strip{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #EDE8E0;-webkit-overflow-scrolling:touch}
+/* ── PLAN TAB ── */
+.day-strip{display:flex;overflow-x:auto;background:#fff;
+  border-bottom:1px solid #EDE8E0;-webkit-overflow-scrolling:touch}
 .day-strip::-webkit-scrollbar{display:none}
-.day-btn{flex:0 0 calc(100%/7);border:none;background:transparent;cursor:pointer;padding:10px 2px 0;border-bottom:3px solid transparent;transition:all .15s}
+.day-btn{flex:0 0 calc(100%/7);border:none;background:transparent;cursor:pointer;
+  padding:10px 2px 0;border-bottom:3px solid transparent;transition:all .15s}
 .day-btn.active{background:var(--charcoal);border-bottom-color:var(--terra)}
-.day-btn .dn{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--light)}
+.day-btn .dn{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--light)}
 .day-btn.active .dn{color:#fff}
 .day-btn .dot{width:6px;height:6px;border-radius:50%;margin:4px auto 6px;background:#DDD}
 .day-btn .dot.ok{background:var(--sage)}
 .day-btn .dot.warn{background:var(--terra)}
+
 .day-hdr{padding:14px 16px 10px;background:#fff;border-bottom:1px solid #F0EAE0}
 .macro-bars{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .mbar-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--mid);margin-bottom:4px}
 .mbar-track{height:5px;background:#EDE8E0;border-radius:3px;overflow:hidden}
 .mbar-fill{height:100%;border-radius:3px;transition:width .4s}
+
 .slots{padding:10px 12px;display:flex;flex-direction:column;gap:8px;padding-bottom:80px}
-.slot-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.04)}
-.slot-lbl{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 7px}
-.slot-lbl-left{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#CCC}
-.slot-change{font-size:11px;color:var(--mid);border:1px solid #E8E0D8;background:#fff;border-radius:5px;padding:3px 8px;cursor:pointer}
+.slot-card{background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.04)}
+.slot-lbl{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 14px 7px}
+.slot-lbl-left{display:flex;align-items:center;gap:5px;
+  font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#CCC}
+.slot-change{font-size:11px;color:var(--mid);border:1px solid #E8E0D8;
+  background:#fff;border-radius:5px;padding:3px 8px;cursor:pointer}
 .slot-meal{padding:10px 14px 12px;cursor:pointer;display:flex;gap:10px;align-items:center}
 .slot-meal.auto{background:#F0F8F4}
 .slot-meal-name{font-size:14px;font-weight:600;color:var(--charcoal);line-height:1.3}
 .slot-meal-name.auto{color:var(--sage);font-style:italic}
 .slot-meal-macro{font-size:11px;color:var(--light);margin-top:2px}
-.slot-empty{padding:12px 14px;color:#CCC;font-style:italic;font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;border:none;background:transparent;width:100%;text-align:left}
+.slot-empty{padding:12px 14px;color:#CCC;font-style:italic;font-size:13px;
+  display:flex;align-items:center;gap:6px;cursor:pointer;border:none;
+  background:transparent;width:100%;text-align:left}
 
-/* RECIPES */
-.search-bar{width:100%;padding:10px 14px;border:1px solid #E0DAD0;border-radius:10px;font-size:15px;outline:none;box-sizing:border-box;background:#fff}
-.cat-pills{display:flex;gap:6px;overflow-x:auto;padding:0 0 2px;-webkit-overflow-scrolling:touch}
+/* ── RECIPES TAB ── */
+.search-bar{width:100%;padding:10px 14px;border:1px solid #E0DAD0;border-radius:10px;
+  font-size:15px;outline:none;box-sizing:border-box;background:#fff}
+.cat-pills{display:flex;gap:6px;overflow-x:auto;padding:0 0 2px;
+  -webkit-overflow-scrolling:touch}
 .cat-pills::-webkit-scrollbar{display:none}
 .recipe-list{padding-bottom:80px}
-.recipe-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #F5F0E8;cursor:pointer;background:#fff}
+.recipe-item{display:flex;align-items:center;gap:12px;padding:13px 16px;
+  border-bottom:1px solid #F5F0E8;cursor:pointer;background:#fff;transition:background .1s}
 .recipe-item:active{background:#F8F5F0}
-.recipe-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
-.recipe-item-name{font-size:14px;font-weight:600;color:var(--charcoal);line-height:1.25;margin-bottom:3px}
+.recipe-icon{width:48px;height:48px;border-radius:12px;display:flex;
+  align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.recipe-item-name{font-size:14px;font-weight:600;color:var(--charcoal);
+  line-height:1.25;margin-bottom:3px}
 .recipe-item-meta{display:flex;gap:6px;align-items:center}
 .recipe-cat-badge{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
 .recipe-chevron{color:#CCC;font-size:20px;flex-shrink:0}
 
-/* SHOPPING */
+/* ── SHOPPING TAB ── */
 .progress-bar{height:6px;background:#EDE8E0;border-radius:3px;overflow:hidden;flex:1}
 .progress-fill{height:100%;background:var(--sage);border-radius:3px;transition:width .3s}
-.cat-header{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--light);padding:16px 4px 8px;border-bottom:2px solid #EDE8E0;margin-bottom:4px}
-.shop-item{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid #F5F0E8;cursor:pointer;transition:opacity .2s}
+.cat-header{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--light);padding:16px 4px 8px;border-bottom:2px solid #EDE8E0;margin-bottom:4px}
+.shop-item{display:flex;align-items:center;gap:12px;padding:11px 4px;
+  border-bottom:1px solid #F5F0E8;cursor:pointer;transition:opacity .2s}
 .shop-item.checked{opacity:.45}
-.shop-cb{width:22px;height:22px;border-radius:5px;border:2px solid #CCC;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.shop-cb{width:22px;height:22px;border-radius:5px;border:2px solid #CCC;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .15s}
 .shop-cb.checked{background:var(--sage);border-color:var(--sage)}
+.shop-cb.checked::after{content:'✓';color:#fff;font-size:13px;font-weight:800;line-height:1}
 .shop-name{flex:1;font-size:15px;font-weight:500;color:var(--charcoal)}
 .shop-item.checked .shop-name{text-decoration:line-through}
-.qty-pill{font-size:11px;font-weight:700;color:#777;background:#F0EBE3;padding:3px 9px;border-radius:6px;flex-shrink:0}
+.qty-pill{font-size:11px;font-weight:700;color:#777;background:#F0EBE3;
+  padding:3px 9px;border-radius:6px;flex-shrink:0}
 
-/* PREP */
-.prep-section{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
+/* ── PREP TAB ── */
+.prep-section{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;
+  box-shadow:var(--bs);border:1px solid rgba(0,0,0,.04)}
 .prep-hdr{padding:13px 16px;display:flex;align-items:center;justify-content:space-between}
 .prep-hdr-left{display:flex;align-items:center;gap:10px}
 .prep-hdr-title{font-family:Georgia,serif;font-size:16px;color:#fff}
-.prep-time{font-size:10px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.12);padding:3px 10px;border-radius:12px}
+.prep-time{font-size:10px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.12);
+  padding:3px 10px;border-radius:12px}
 .prep-body{padding:4px 16px 10px}
 .prep-step{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid #F5F0E8}
 .prep-step:last-child{border-bottom:none}
-.step-num{width:26px;height:26px;border-radius:13px;background:var(--charcoal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:13px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-num{width:26px;height:26px;border-radius:13px;background:var(--charcoal);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:Georgia,serif;font-size:13px;font-weight:700;flex-shrink:0;margin-top:1px}
 .step-num.hi{background:var(--terra)}
 .step-title{font-size:13px;font-weight:700;color:var(--charcoal);margin-bottom:3px}
 .step-detail{font-size:12px;color:var(--mid);line-height:1.6}
 .golden-rule{background:var(--charcoal);border-radius:14px;padding:18px;margin-bottom:14px}
 .golden-rule p{font-family:Georgia,serif;font-size:15px;color:#fff;line-height:1.55}
-.tip-box{background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:10px;padding:11px 14px;margin:8px 0 4px;font-size:12px;color:#7A4020;line-height:1.6}
-.dinner-item{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #F5F0E8}
+.tip-box{background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:10px;
+  padding:11px 14px;margin:8px 0 4px;font-size:12px;color:#7A4020;line-height:1.6}
+.dinner-item{display:flex;gap:10px;align-items:flex-start;padding:11px 0;
+  border-bottom:1px solid #F5F0E8}
 .dinner-item:last-child{border-bottom:none}
 .dinner-note{font-size:11px;color:var(--terra);font-weight:600;margin-top:3px}
 
-/* SHEETS */
-.sheet-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
+/* ── SHEETS (modals) ── */
+.sheet-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);
+  display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
 .sheet-overlay.open{opacity:1;pointer-events:all}
-.sheet{width:100%;max-height:92vh;background:#fff;border-radius:20px 20px 0 0;overflow:hidden;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s ease}
+.sheet{width:100%;max-height:90vh;background:#fff;border-radius:20px 20px 0 0;
+  overflow:hidden;display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .3s ease}
 .sheet-overlay.open .sheet{transform:translateY(0)}
-.sheet-handle{width:40px;height:4px;border-radius:2px;background:#DDD;margin:10px auto 0;flex-shrink:0}
+.sheet-handle{width:40px;height:4px;border-radius:2px;background:#DDD;
+  margin:10px auto 0;flex-shrink:0}
 .sheet-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
-.sheet-sticky{position:sticky;top:0;background:#fff;z-index:10;border-bottom:1px solid #F0EAE0;padding:10px 16px;flex-shrink:0}
+.sheet-sticky{position:sticky;top:0;background:#fff;z-index:10;
+  border-bottom:1px solid #F0EAE0;padding:12px 16px 10px;flex-shrink:0}
+
+/* Recipe sheet */
 .recipe-hero{padding:20px 20px 16px;text-align:center}
 .recipe-emoji-big{font-size:56px;display:block;margin-bottom:8px}
 .recipe-h2{font-family:Georgia,serif;font-size:22px;margin-bottom:8px;line-height:1.2}
@@ -140,36 +180,29 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 .macro-chip{flex:1;border-radius:10px;padding:12px 8px;text-align:center}
 .macro-chip-val{font-family:Georgia,serif;font-size:20px;line-height:1}
 .macro-chip-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--light);margin-top:3px}
-.ing-row{display:flex;align-items:baseline;gap:8px;padding:9px 0;border-bottom:1px solid #F5F0E8;font-size:14px;color:#444}
+.person-note{font-size:11px;color:var(--mid);background:#F8F5F0;
+  border-radius:8px;padding:8px 12px;margin:12px 16px}
+.ing-row{display:flex;align-items:baseline;gap:8px;padding:9px 0;
+  border-bottom:1px solid #F5F0E8;font-size:14px;color:#444}
 .ing-bullet{color:var(--sage);font-weight:700;font-size:16px;line-height:.8;flex-shrink:0}
 .method-step{display:flex;gap:12px;margin-bottom:12px;font-size:13px;color:var(--mid);line-height:1.65}
 .method-num{font-family:Georgia,serif;font-size:20px;flex-shrink:0;width:22px;line-height:1;margin-top:1px}
-
-/* WEEK VIEW */
-.week-grid-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 10px 80px}
-.week-grid-wrap::-webkit-scrollbar{display:none}
 </style>
 </head>
 <body>
 <div id="app">
   <div class="topbar">
     <div class="brand">🍽 Sam &amp; Luisa</div>
-    <div class="week-selector">
-      <button class="week-arrow" id="btn-prev-week" onclick="changeWeek(-1)">&#8249;</button>
-      <div class="week-label" id="week-label-top">
-        Week 1<span class="week-sub" id="week-date-top"></span>
-      </div>
-      <button class="week-arrow" id="btn-next-week" onclick="changeWeek(1)">&#8250;</button>
-    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.05em">Both portions combined</div>
   </div>
 
   <div class="content">
     <div id="tab-week" class="tab-panel">
-      <div class="sticky-hdr" style="padding:12px 16px 10px">
-        <div class="section-title" id="week-cal-title">Week at a Glance</div>
-        <div class="eyebrow" style="margin-top:3px" id="week-cal-sub"></div>
+      <div class="sticky-hdr" style="padding:14px 16px 10px">
+        <div class="section-title">Week at a Glance</div>
+        <div class="eyebrow" style="margin-top:3px">Tap any meal to see the recipe</div>
       </div>
-      <div class="week-grid-wrap" id="week-cal"></div>
+      <div id="week-cal" style="padding:10px 10px 80px;overflow-x:auto"></div>
     </div>
 
     <div id="tab-plan" class="tab-panel active">
@@ -195,15 +228,17 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
             <div class="section-title">Shopping List</div>
             <div id="shop-count" class="eyebrow" style="margin-top:2px"></div>
           </div>
-          <button onclick="clearChecked()" style="padding:7px 12px;border:1px solid #E0DAD0;border-radius:8px;background:#fff;font-size:12px;color:var(--mid);cursor:pointer">&#8635; Reset</button>
+          <button onclick="clearChecked()" style="padding:7px 12px;border:1px solid #E0DAD0;
+            border-radius:8px;background:#fff;font-size:12px;color:var(--mid);cursor:pointer">↺ Reset</button>
         </div>
         <div style="display:flex;align-items:center;gap:10px">
           <div class="progress-bar"><div class="progress-fill" id="shop-progress"></div></div>
           <span id="shop-progress-txt" style="font-size:11px;color:var(--light);white-space:nowrap"></span>
         </div>
       </div>
-      <div style="margin:10px 14px 0;padding:10px 12px;background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:10px;font-size:12px;color:#7A4020;line-height:1.55">
-        &#x1F6D2; <strong>Pak'nSave tip:</strong> Rice 5kg ~$8.50 &middot; Oats 1kg ~$3.50 &middot; Chicken ~$13/kg &middot; Mince ~$18.99/kg &middot; Eggs ~$9.59/doz
+      <div style="margin:10px 14px 0;padding:10px 12px;background:var(--terra-lt);
+        border:1px solid #F0D0A0;border-radius:10px;font-size:12px;color:#7A4020;line-height:1.55">
+        🛒 <strong>Pak'nSave tip:</strong> Rice 5kg ~$8.50 · Oats 1kg ~$3.50 · Chicken ~$13/kg · Mince ~$18.99/kg · Eggs ~$9.59/doz
       </div>
       <div id="shop-list" style="padding:0 14px 80px"></div>
     </div>
@@ -211,7 +246,7 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
     <div id="tab-prep" class="tab-panel">
       <div class="sticky-hdr" style="padding:14px 16px 10px">
         <div class="section-title">Meal Prep Guide</div>
-        <div class="eyebrow" style="margin-top:3px">Based on this week's selected meals</div>
+        <div class="eyebrow" style="margin-top:3px">Generated from your selected meals</div>
       </div>
       <div id="prep-content" style="padding:14px 14px 80px"></div>
     </div>
@@ -219,19 +254,19 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
 
   <div class="bottomnav">
     <button class="navbtn" id="nav-week" onclick="switchTab('week')">
-      <span class="ni">&#x1F5D3;</span><span class="nl">Week</span><span class="nd"></span>
+      <span class="ni">🗓</span><span class="nl">Week</span><span class="nd"></span>
     </button>
     <button class="navbtn active" id="nav-plan" onclick="switchTab('plan')">
-      <span class="ni">&#x1F4C5;</span><span class="nl">Plan</span><span class="nd"></span>
+      <span class="ni">📅</span><span class="nl">Plan</span><span class="nd"></span>
     </button>
     <button class="navbtn" id="nav-recipes" onclick="switchTab('recipes')">
-      <span class="ni">&#x1F4D6;</span><span class="nl">Recipes</span><span class="nd"></span>
+      <span class="ni">📖</span><span class="nl">Recipes</span><span class="nd"></span>
     </button>
     <button class="navbtn" id="nav-shopping" onclick="switchTab('shopping')">
-      <span class="ni">&#x1F6D2;</span><span class="nl" id="shop-nav-lbl">Shop</span><span class="nd"></span>
+      <span class="ni">🛒</span><span class="nl" id="shop-nav-lbl">Shop</span><span class="nd"></span>
     </button>
     <button class="navbtn" id="nav-prep" onclick="switchTab('prep')">
-      <span class="ni">&#x1F9D1;&#x200D;&#x1F373;</span><span class="nl">Prep</span><span class="nd"></span>
+      <span class="ni">🧑‍🍳</span><span class="nl">Prep</span><span class="nd"></span>
     </button>
   </div>
 </div>
@@ -250,13 +285,8 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-sticky">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-        <button onclick="closePicker()" style="background:rgba(0,0,0,.07);border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0">&#8249;</button>
-        <div>
-          <div id="picker-title" style="font-family:Georgia,serif;font-size:17px;line-height:1.2"></div>
-          <div id="picker-day" style="font-size:11px;color:var(--light)"></div>
-        </div>
-      </div>
+      <div id="picker-title" style="font-family:Georgia,serif;font-size:17px;margin-bottom:2px"></div>
+      <div id="picker-day" style="font-size:11px;color:var(--light);margin-bottom:10px"></div>
       <input class="search-bar" id="picker-search" placeholder="Search meals…" oninput="renderPickerList()">
       <div class="cat-pills" id="picker-pills" style="margin-top:8px"></div>
     </div>
@@ -264,6 +294,11 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
   </div>
 </div>
 
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════════════════
+</script>
 <script id="data-script">
 const MEALS = [
   // BREAKFASTS
@@ -291,7 +326,13 @@ const MEALS = [
     ingM: ["80g rolled oats","280ml trim milk","25g vanilla protein powder","12g almond butter","10g honey"],
     ingF: ["60g rolled oats","230ml trim milk","20g vanilla protein powder","8g almond butter","8g honey"],
     steps: ["Add oats and protein powder to jar.","Add almond butter directly into the jar.","Pour over milk. Stir well until almond butter loosens and mixes.","Drizzle honey on top. Seal. Refrigerate overnight.","The almond butter will soften and distribute through the oats overnight."] },
-    { id: 6, name: "Bircher Muesli", cat: "Breakfast", emoji: "🍎",
+  { id: 5, name: "Egg Muffins", cat: "Breakfast", emoji: "🧁",
+    calM: 390, protM: 42, calF: 260, protF: 28, time: "Prep Sun",
+    desc: "High-protein egg muffins with chicken, capsicum and cheese. Batch cook Sunday, reheat 60 seconds each morning.",
+    ingM: ["3 eggs","50g cooked chicken, diced","30g shredded cheese","¼ capsicum, diced","Handful baby spinach","Salt and pepper"],
+    ingF: ["2 eggs","30g cooked chicken, diced","15g shredded cheese","¼ capsicum, diced","Handful baby spinach","Salt and pepper"],
+    steps: ["Preheat oven to 180°C. Grease a muffin tin thoroughly.","Whisk eggs with salt and pepper in a bowl.","Stir in chicken, cheese, capsicum and spinach.","Pour evenly into muffin holes — fill to ¾ full.","Bake 18–20 minutes until set and golden on top.","Cool completely before storing in the fridge (up to 5 days). Reheat 60 seconds."] },
+  { id: 6, name: "Bircher Muesli", cat: "Breakfast", emoji: "🍎",
     calM: 410, protM: 32, calF: 310, protF: 24, time: "Prep Sun",
     desc: "Swiss-style soaked oats with grated apple, honey and yoghurt. Creamy and satisfying.",
     ingM: ["70g rolled oats","200ml trim milk","80g Greek yoghurt","1 apple, grated","12g honey","20g vanilla protein powder"],
@@ -504,76 +545,112 @@ const MEALS = [
     ingF: ["1 medium banana"],
     steps: ["Eat 45–60 minutes before a run of 8km or longer.","Provides fast-absorbing carbohydrates for sustained energy.","Combine with a small protein shake for a proper pre-run meal."] },
 
-  
-  { id: 55, name: "Scrambled Eggs on Toast", cat: "Breakfast", emoji: "🍳",
-    calM: 450, protM: 34, calF: 340, protF: 26, time: "10 min",
-    desc: "Soft creamy scrambled eggs cooked slowly in butter on wholegrain toast. The butter makes all the difference — low heat, slow fold.",
-    ingM: ["4 eggs","30ml trim milk","10g butter","2 slices wholegrain bread","40g baby spinach","Salt and pepper"],
-    ingF: ["3 eggs","20ml trim milk","8g butter","2 slices wholegrain bread","30g baby spinach","Salt and pepper"],
-    steps: ["Crack eggs into a bowl. Add milk, salt and pepper. Whisk well.","Toast the bread while you prepare the eggs.","Melt butter in a non-stick pan over LOW heat — this is key, not medium.","Pour in egg mixture. Leave untouched 20 seconds, then gently push from edges to centre with a spatula.","Keep folding slowly until just set but still slightly wet — they finish cooking off the heat.","Remove from heat immediately. Serve on toast with spinach. Eat straight away — make fresh, do not store."] },
+  // ── EXTRA SNACKS & PANTRY OPTIONS ──────────────────────────────────────
+  { id: 40, name: "Apple Slices + Cinnamon", cat: "Snack", emoji: "🍎",
+    calM: 80, protM: 1, calF: 80, protF: 1, time: "No cook",
+    desc: "Sliced apple with cinnamon. Naturally sweet, zero prep, keeps hunger away.",
+    ingM: ["1 apple, sliced","Pinch cinnamon"],
+    ingF: ["1 apple, sliced","Pinch cinnamon"],
+    steps: ["Slice apple into wedges.","Sprinkle cinnamon over slices.","Pack in a container or eat immediately."] },
 
-  { id: 56, name: "Poached Eggs on Toast", cat: "Breakfast", emoji: "🥚",
-    calM: 390, protM: 32, calF: 300, protF: 24, time: "12 min",
-    desc: "Perfectly poached eggs with a runny yolk on wholegrain toast. A splash of white vinegar in the water helps the whites hold together.",
-    ingM: ["4 eggs","2 slices wholegrain bread","40g baby spinach","1 tbsp white vinegar","Salt and pepper"],
-    ingF: ["3 eggs","2 slices wholegrain bread","30g baby spinach","1 tbsp white vinegar","Salt and pepper"],
-    steps: ["Fill a deep saucepan with water, add vinegar. Bring to a gentle simmer — not a rolling boil.","Crack each egg into a small cup or ramekin first.","Stir the water to create a gentle whirlpool. Slide egg into the centre.","Poach 3 minutes for a runny yolk, 4 minutes for firmer. Do one or two at a time.","Remove with a slotted spoon. Drain on paper towel.","Toast bread. Serve eggs on toast with spinach alongside. Season with salt and pepper."] },
+  { id: 41, name: "Trail Mix (Nuts + Dried Fruit)", cat: "Snack", emoji: "🥜",
+    calM: 220, protM: 6, calF: 180, protF: 5, time: "No cook",
+    desc: "Mixed nuts and dried cranberries. Keep a jar in the pantry — the ultimate hunger emergency snack.",
+    ingM: ["20g mixed nuts (almonds, cashews, walnuts)","15g dried cranberries"],
+    ingF: ["15g mixed nuts","10g dried cranberries"],
+    steps: ["Pre-portion into small zip bags on Sunday.","Keep at your desk or in your bag.","One bag = one serve. Do not eat from the main jar."] },
 
-  { id: 57, name: "Fried Eggs on Toast", cat: "Breakfast", emoji: "🍳",
-    calM: 430, protM: 30, calF: 330, protF: 23, time: "8 min",
-    desc: "Crispy-edged fried eggs in olive oil on wholegrain toast. Quick, simple, satisfying. Baste the yolk with hot oil for a perfectly set top.",
-    ingM: ["4 eggs","10ml olive oil","2 slices wholegrain bread","40g baby spinach","Salt and pepper"],
-    ingF: ["3 eggs","8ml olive oil","2 slices wholegrain bread","30g baby spinach","Salt and pepper"],
-    steps: ["Toast bread. Heat olive oil in a non-stick pan over medium heat.","Crack eggs directly into the pan. Season with salt and pepper.","Cook 2 minutes until whites are set and edges are golden and crispy.","Optional: spoon hot oil over the yolk to baste it — sets the top without flipping.","Serve on toast with spinach. Eat immediately."] },,
+  { id: 42, name: "Oat Energy Balls", cat: "Snack", emoji: "🟤",
+    calM: 240, protM: 10, calF: 190, protF: 8, time: "Prep Sun",
+    desc: "No-bake oat balls with honey, almond butter and dark chocolate chips. Make Sunday, snack all week.",
+    ingM: ["80g rolled oats","30g almond butter","20g honey","10g dark chocolate chips","15g vanilla protein powder"],
+    ingF: ["60g rolled oats","20g almond butter","15g honey","8g dark chocolate chips","10g vanilla protein powder"],
+    steps: ["Mix all ingredients in a bowl until fully combined.","If too dry add a tsp water. Too wet add more oats.","Roll into golf-ball-sized balls.","Refrigerate on a lined tray 30 minutes to firm up.","Store in fridge up to 7 days. Makes 8-10 balls."] },
 
-  { id: 58, name: "Nut Bar", cat: "Snack", emoji: "🍫",
-    calM: 200, protM: 8, calF: 200, protF: 8, time: "No cook",
-    desc: "A quality nut bar. RXBar, Larabar or similar. Keep a box in the pantry.",
-    ingM: ["1 nut bar"],
-    ingF: ["1 nut bar"],
-    steps: ["Grab from the pantry.","Eat between meals.","Keep a box of 12 stocked permanently."] },
+  { id: 43, name: "Banana + Almond Butter Rice Cakes", cat: "Snack", emoji: "🍌",
+    calM: 230, protM: 7, calF: 180, protF: 6, time: "No cook",
+    desc: "Rice cakes with almond butter and banana slices. Filling, naturally sweet, under 5 minutes.",
+    ingM: ["2 rice cakes","12g almond butter","half banana sliced"],
+    ingF: ["2 rice cakes","10g almond butter","half banana sliced"],
+    steps: ["Spread almond butter over rice cakes.","Top with sliced banana.","Eat immediately as banana softens the rice cake quickly."] },
 
-  { id: 59, name: "Frooze Balls (2)", cat: "Snack", emoji: "🟢",
-    calM: 160, protM: 4, calF: 160, protF: 4, time: "No cook",
-    desc: "Two frooze balls. Made from dates and nuts. No added sugar.",
-    ingM: ["2 frooze balls"],
-    ingF: ["2 frooze balls"],
-    steps: ["Take 2 from the packet.","Refrigerate once opened. Stays fresh 2 weeks."] },
+  { id: 44, name: "Dark Chocolate + Almonds", cat: "Snack", emoji: "🍫",
+    calM: 200, protM: 5, calF: 160, protF: 4, time: "No cook",
+    desc: "2-3 squares of 70%+ dark chocolate with a small handful of almonds. The pantry treat that does not blow your day.",
+    ingM: ["25g dark chocolate (70%+)","20g almonds"],
+    ingF: ["20g dark chocolate (70%+)","15g almonds"],
+    steps: ["Break chocolate into squares.","Pair with almonds and eat slowly.","Keep 70%+ dark chocolate in the pantry. Lower percentages have too much sugar."] },
 
-  { id: 60, name: "Apple", cat: "Snack", emoji: "🍏",
-    calM: 80, protM: 0, calF: 80, protF: 0, time: "No cook",
-    desc: "A whole apple. Simple, filling, great fibre.",
-    ingM: ["1 apple"],
-    ingF: ["1 apple"],
-    steps: ["Grab from the fruit bowl.","Keep 6-8 apples visible on the bench, not in the fridge."] },
+  { id: 45, name: "Hummus + Veggie Sticks", cat: "Snack", emoji: "🥕",
+    calM: 180, protM: 7, calF: 140, protF: 5, time: "No cook",
+    desc: "Hummus with carrot and cucumber sticks. High fibre, filling, easy to prep ahead.",
+    ingM: ["80g hummus","1 carrot cut into sticks","half cucumber sliced"],
+    ingF: ["60g hummus","1 carrot cut into sticks","half cucumber sliced"],
+    steps: ["Pre-cut carrot and cucumber sticks Sunday, store in water in the fridge — stays crisp all week.","Portion hummus into a small container.","Pack together for a grab-and-go snack."] },
 
-  { id: 61, name: "Mixed Nuts (small handful)", cat: "Snack", emoji: "🥜",
-    calM: 180, protM: 6, calF: 150, protF: 5, time: "No cook",
-    desc: "A small handful of mixed almonds, cashews and walnuts. Pre-portion Sunday.",
-    ingM: ["30g mixed nuts (almonds, cashews, walnuts)"],
-    ingF: ["25g mixed nuts"],
-    steps: ["Portion into small containers Sunday.","Grab and eat between meals."] },
+  { id: 46, name: "Crackers + Cottage Cheese + Tomato", cat: "Snack", emoji: "🧀",
+    calM: 200, protM: 14, calF: 160, protF: 11, time: "No cook",
+    desc: "Wholegrain crackers with cottage cheese and tomato. Savoury, high protein, satisfying.",
+    ingM: ["4 wholegrain crackers","80g cottage cheese","1 tomato sliced","Salt and pepper"],
+    ingF: ["3 wholegrain crackers","60g cottage cheese","1 tomato sliced","Salt and pepper"],
+    steps: ["Spread cottage cheese over each cracker.","Top with a slice of tomato.","Season with salt and pepper. Eat immediately."] },
 
-  { id: 62, name: "Dates + Almond Butter", cat: "Snack", emoji: "🟤",
-    calM: 190, protM: 4, calF: 160, protF: 3, time: "No cook",
-    desc: "Medjool dates stuffed with almond butter. Natural caramel flavour.",
-    ingM: ["3 medjool dates, pitted","15g almond butter"],
-    ingF: ["2 medjool dates, pitted","10g almond butter"],
-    steps: ["Split dates and remove pits.","Fill each with almond butter.","Eat immediately."] },
+  { id: 47, name: "Frozen Berries + Yoghurt Bowl", cat: "Snack", emoji: "🫐",
+    calM: 160, protM: 14, calF: 120, protF: 10, time: "No cook",
+    desc: "Frozen berries straight from the freezer over cold yoghurt. Acts like ice cream. Genuinely feels like dessert.",
+    ingM: ["150g plain Greek yoghurt","80g frozen berries"],
+    ingF: ["120g plain Greek yoghurt","60g frozen berries"],
+    steps: ["Spoon yoghurt into a bowl.","Pour frozen berries directly over the top — do not thaw them.","The berries stay cold and firm like frozen fruit with cream.","Optional: drizzle a little honey over the top."] },
 
-  { id: 63, name: "Medjool Dates (2)", cat: "Snack", emoji: "🟤",
-    calM: 130, protM: 1, calF: 130, protF: 1, time: "No cook",
-    desc: "Two medjool dates. Natural energy hit. Great pre-workout.",
-    ingM: ["2 medjool dates"],
-    ingF: ["2 medjool dates"],
-    steps: ["Remove pits and eat.","Keep a bag in the pantry. They last for weeks."] },
+  // ── HEALTHY DESSERTS ────────────────────────────────────────────────────
+  { id: 48, name: "Baked Cinnamon Apple", cat: "Snack", emoji: "🍎",
+    calM: 130, protM: 1, calF: 110, protF: 1, time: "25 min",
+    desc: "Whole apple baked with cinnamon and honey until soft and caramel-like. Proper dessert feeling for 110 calories.",
+    ingM: ["1 large apple","1 tsp cinnamon","8g honey","Pinch nutmeg"],
+    ingF: ["1 apple","1 tsp cinnamon","5g honey","Pinch nutmeg"],
+    steps: ["Preheat oven to 180C.","Core the apple without peeling. Place in a small baking dish.","Mix cinnamon, nutmeg and honey. Spoon into hollow and over top.","Bake 20-25 minutes until completely soft and caramelised.","Serve warm. A spoonful of Greek yoghurt alongside is excellent."] },
 
-  { id: 64, name: "Banana + Almond Butter", cat: "Snack", emoji: "🍌",
-    calM: 250, protM: 8, calF: 200, protF: 6, time: "No cook",
-    desc: "Banana with almond butter. Classic, filling, satisfying.",
-    ingM: ["1 banana","15g almond butter"],
-    ingF: ["1 banana","10g almond butter"],
-    steps: ["Peel banana.","Dip bites into almond butter.","Eat immediately."] }
+  { id: 49, name: "Chia Seed Pudding", cat: "Snack", emoji: "🫙",
+    calM: 290, protM: 22, calF: 230, protF: 18, time: "Prep Sun",
+    desc: "Chia seeds soaked overnight in milk with vanilla and honey. Sets into a thick creamy pudding. Prep with your oat jars on Sunday.",
+    ingM: ["30g chia seeds","250ml trim milk","15g vanilla protein powder","8g honey"],
+    ingF: ["25g chia seeds","200ml trim milk","12g vanilla protein powder","6g honey"],
+    steps: ["Combine chia seeds, milk, protein powder and honey in a jar.","Stir very well — no clumps of protein powder.","Seal. Refrigerate overnight or minimum 4 hours.","Stir again before eating. Should be thick and pudding-like.","Top with frozen berries or banana slices."] },
+
+  { id: 50, name: "Banana Nice Cream", cat: "Snack", emoji: "🍦",
+    calM: 180, protM: 3, calF: 150, protF: 2, time: "5 min",
+    desc: "Blended frozen banana that becomes exactly like soft-serve ice cream. Zero added sugar. Takes 5 minutes.",
+    ingM: ["2 frozen bananas","Splash trim milk","Pinch cinnamon"],
+    ingF: ["2 frozen bananas","Splash trim milk","Pinch cinnamon"],
+    steps: ["Peel and freeze bananas the night before (minimum 6 hours).","Break into chunks. Add to blender with a splash of milk and cinnamon.","Blend until completely smooth — stop and scrape sides as needed.","Eat immediately for soft-serve, or freeze 30 more minutes for firmer scoop.","Variations: add 1 tsp cocoa for chocolate, or frozen berries for fruity."] },
+
+  { id: 51, name: "No-Bake Oat Cookies", cat: "Snack", emoji: "🍪",
+    calM: 260, protM: 12, calF: 200, protF: 10, time: "Prep Sun",
+    desc: "No-bake cookies made from oats, protein powder, almond butter and honey. Set in fridge. Actually tastes like a cookie.",
+    ingM: ["70g rolled oats","25g vanilla protein powder","20g almond butter","15g honey","20ml trim milk","10g dark chocolate chips"],
+    ingF: ["55g rolled oats","20g vanilla protein powder","15g almond butter","12g honey","15ml trim milk","8g dark chocolate chips"],
+    steps: ["Mix oats, protein powder, almond butter, honey and milk in a bowl.","Fold in chocolate chips.","If too crumbly add milk 1 tsp at a time until mixture holds together.","Shape into flat round cookies on a lined tray.","Refrigerate 1 hour until firm. Makes 6-8 cookies.","Store in fridge up to 7 days. One cookie = one serve."] },
+
+  { id: 52, name: "Protein Chocolate Bark", cat: "Snack", emoji: "🍫",
+    calM: 200, protM: 12, calF: 160, protF: 10, time: "Prep Sun",
+    desc: "Dark chocolate melted with protein powder, topped with nuts and berries then frozen. Break into pieces all week.",
+    ingM: ["40g dark chocolate (70%+)","15g vanilla protein powder","15g mixed nuts chopped","20g frozen berries"],
+    ingF: ["30g dark chocolate (70%+)","10g vanilla protein powder","10g mixed nuts","15g frozen berries"],
+    steps: ["Melt dark chocolate in microwave in 30-second bursts, stirring between each.","Stir in protein powder until smooth.","Spread thinly on a lined tray.","Scatter nuts and berries over the top.","Freeze 20 minutes until set. Break into pieces.","Store in freezer up to 2 weeks. Eat straight from frozen."] },
+
+  { id: 53, name: "Honey Ricotta + Berries", cat: "Snack", emoji: "🍯",
+    calM: 200, protM: 14, calF: 160, protF: 11, time: "No cook",
+    desc: "Light ricotta with honey and berries. Creamy, sweet, feels indulgent but under 200 calories.",
+    ingM: ["150g low-fat ricotta","10g honey","80g frozen berries thawed"],
+    ingF: ["120g low-fat ricotta","8g honey","60g frozen berries thawed"],
+    steps: ["Spoon ricotta into a bowl.","Drizzle honey over the top.","Add thawed berries and stir gently.","Optional: sprinkle chia seeds or crushed walnuts."] },
+
+  { id: 54, name: "Stewed Pears + Cinnamon", cat: "Snack", emoji: "🍐",
+    calM: 120, protM: 1, calF: 100, protF: 1, time: "10 min",
+    desc: "Pears simmered with cinnamon and honey until soft and syrupy. Warm, comforting, naturally sweet. Perfect winter dessert.",
+    ingM: ["2 pears peeled and chopped","1 tsp cinnamon","5g honey","Splash water"],
+    ingF: ["2 pears peeled and chopped","1 tsp cinnamon","5g honey","Splash water"],
+    steps: ["Peel, core and chop pears into chunks.","Place in a small saucepan with cinnamon, honey and a splash of water.","Cook over medium heat 8-10 minutes stirring occasionally until soft.","Serve warm alone or with a spoonful of Greek yoghurt.","Keeps in fridge 4 days. Reheat 60 seconds in microwave."] },
 ];
 
 const CONSOLIDATE = {
@@ -661,211 +738,183 @@ const CONSOLIDATE = {
   "salt and pepper":         { to:null, cat:null },
   "pinch cinnamon":          { to:null, cat:null },
   "pinch sea salt":          { to:null, cat:null },
+  "pinch nutmeg":            { to:null, cat:null },
   "handful ice":             { to:null, cat:null },
+  "splash water":            { to:null, cat:null },
+  "splash trim milk":        { to:null, cat:null },
   "tsp cumin":               { to:"Spices (cumin, paprika, smoked paprika)", cat:"🧂 Pantry", unit:"", fixedQty:0.01 },
-  "white vinegar":           { to:null, cat:null },
-  "tbsp white vinegar":      { to:null, cat:null },
   "tsp smoked paprika":      { to:"Spices (cumin, paprika, smoked paprika)", cat:"🧂 Pantry", unit:"", fixedQty:0.01 },
+  "tsp cinnamon":            { to:null, cat:null },
+  "vanilla extract":         { to:null, cat:null },
+  // ── New ingredients ──
+  "mixed nuts (almonds, cashews, walnuts)": { to:"Mixed nuts",      cat:"🥜 Nuts",    unit:"g" },
+  "mixed nuts":              { to:"Mixed nuts",                      cat:"🥜 Nuts",    unit:"g" },
+  "almonds":                 { to:"Almonds",                        cat:"🥜 Nuts",    unit:"g" },
+  "mixed nuts chopped":      { to:"Mixed nuts",                      cat:"🥜 Nuts",    unit:"g" },
+  "dried cranberries":       { to:"Dried cranberries",              cat:"🍌 Fruit",   unit:"g" },
+  "dark chocolate (70%+)":   { to:"Dark chocolate (70%+)",          cat:"🧂 Pantry",  unit:"g" },
+  "dark chocolate chips":    { to:"Dark chocolate chips",           cat:"🧂 Pantry",  unit:"g" },
+  "dark chocolate":          { to:"Dark chocolate (70%+)",          cat:"🧂 Pantry",  unit:"g" },
+  "low-fat ricotta":         { to:"Ricotta (low-fat)",              cat:"🥛 Dairy",   unit:"g" },
+  "hummus":                  { to:"Hummus",                         cat:"🥛 Dairy",   unit:"g" },
+  "wholegrain crackers":     { to:"Wholegrain crackers",            cat:"🍚 Carbs",   unit:"" },
+  "pears peeled and chopped":{ to:"Pears",                          cat:"🍌 Fruit",   unit:"" },
+  "celery stalks":           { to:"Celery",                         cat:"🥦 Veg",     unit:"" },
+  "tomato sliced":           { to:"Tomato",                         cat:"🥦 Veg",     unit:"" },
 };
 
-const CAT_ORDER = ["🥩 Protein","💪 Supplements","🥛 Dairy","🍚 Carbs","🥦 Veg","🍌 Fruit","🧂 Pantry"];
+const CAT_ORDER = ["🥩 Protein","💪 Supplements","🥛 Dairy","🍚 Carbs","🥜 Nuts","🥦 Veg","🍌 Fruit","🧂 Pantry"];
 </script>
 <script>
-// ═══════════════════════════════════════════════════════
-// WEEK CONFIG — 26 weeks from Mon 5 May 2025
-// ═══════════════════════════════════════════════════════
-var WEEK_START_MS = new Date("2025-05-05T00:00:00").getTime(); // Mon 5 May
-var TOTAL_WEEKS   = 26;
-
-function weekStartDate(weekNum) {
-  // weekNum is 1-based
-  return new Date(WEEK_START_MS + (weekNum - 1) * 7 * 24 * 60 * 60 * 1000);
-}
-
-function formatWeekDate(weekNum) {
-  var d = weekStartDate(weekNum);
-  var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  return "Mon " + d.getDate() + " " + months[d.getMonth()];
-}
-
-function weekPlanKey(weekNum) {
-  return "mp_plan_w" + weekNum;
-}
-
-// ═══════════════════════════════════════════════════════
-// CONSTANTS
-// ═══════════════════════════════════════════════════════
-var DAYS  = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-var SLOTS = ["Breakfast","Snack","Lunch","Dinner","Snack 2","Eve Snack"];
-var SLOT_EMOJI = {Breakfast:"🌅",Snack:"🍎",Lunch:"🥗",Dinner:"🍽","Snack 2":"🥜","Eve Snack":"🌙"};
-var CATEGORIES = ["All","Breakfast","Smoothie","Lunch","Dinner","Snack"];
-
-var PANTRY_STAPLES = [
-  {name:"Mixed nuts", qty:400, unit:"g", cat:"🥜 Nuts"},
-  {name:"Nut bars", qty:4, unit:"", cat:"🥜 Nuts"},
-  {name:"Frooze balls", qty:1, unit:"pack", cat:"🍌 Fruit"},
-  {name:"Dark chocolate (70%+)", qty:100, unit:"g", cat:"🧂 Pantry"},
-  {name:"Almond butter", qty:100, unit:"g", cat:"🧂 Pantry"},
-  {name:"Honey", qty:150, unit:"g", cat:"🧂 Pantry"},
-  {name:"Rice cakes", qty:1, unit:"pack", cat:"🍚 Carbs"},
-  {name:"Medjool dates", qty:6, unit:"", cat:"🍌 Fruit"},
-];
-var AUTO_LUNCH = {Monday:"Sunday",Tuesday:"Monday",Wednesday:"Tuesday",Thursday:"Wednesday",Friday:"Thursday"};
-var FREE_SLOTS = {Saturday:["Lunch","Dinner"],Sunday:["Lunch"]};
-
-var CAT_COLOR = {
-  Breakfast:{bg:"#FEF3E2",accent:"#C17A55"},
-  Smoothie: {bg:"#E6F4EC",accent:"#4F7A62"},
-  Lunch:    {bg:"#E8F0FB",accent:"#3A6A9A"},
-  Dinner:   {bg:"#FCE8E8",accent:"#C04040"},
-  Snack:    {bg:"#F0E8F8",accent:"#7A4A9A"},
-  All:      {bg:"#F5F5F5",accent:"#555"},
-};
-
-var DEFAULT_PLAN = {
-  Monday:    {Breakfast:"Classic Overnight Oats",  Snack:"",             Lunch:"",Dinner:"Garlic Chicken & Rice",          "Snack 2":"","Eve Snack":"Greek Yoghurt + Berries"},
-  Tuesday:   {Breakfast:"Berry Overnight Oats",    Snack:"Protein Shake",Lunch:"",Dinner:"Beef Mince Stir Fry & Rice",     "Snack 2":"","Eve Snack":"Cottage Cheese + Rice Cakes"},
-  Wednesday: {Breakfast:"Scrambled Eggs on Toast", Snack:"",             Lunch:"",Dinner:"Chicken Pasta Bake",             "Snack 2":"","Eve Snack":"Choc Dessert Smoothie"},
-  Thursday:  {Breakfast:"Chocolate Overnight Oats",Snack:"Protein Shake",Lunch:"",Dinner:"Rump Steak & Roast Potatoes",   "Snack 2":"","Eve Snack":"Greek Yoghurt + Honey + Walnuts"},
-  Friday:    {Breakfast:"Honey Almond Overnight Oats",Snack:"",          Lunch:"",Dinner:"Chicken Wraps (Dinner)",         "Snack 2":"","Eve Snack":"Choc Dessert Smoothie"},
-  Saturday:  {Breakfast:"Banana Protein Smoothie", Snack:"Banana",       Lunch:"",Dinner:"",                               "Snack 2":"","Eve Snack":"Protein Shake"},
-  Sunday:    {Breakfast:"Poached Eggs on Toast",   Snack:"Boiled Eggs ×2",Lunch:"",Dinner:"Lemon Herb Chicken & Potatoes","Snack 2":"","Eve Snack":"Greek Yoghurt + Berries"},
-};
-
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════════
-var state = {
+// ═══════════════════════════════════════════════════════════════════════════
+const DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const SLOTS = ["Breakfast","Snack","Lunch","Dinner","Eve Snack"];
+const SLOT_EMOJI = {Breakfast:"🌅",Snack:"🍎",Lunch:"🥗",Dinner:"🍽","Eve Snack":"🌙"};
+const CATEGORIES = ["All","Breakfast","Smoothie","Lunch","Dinner","Snack"];
+const AUTO_LUNCH = {Monday:"Sunday",Tuesday:"Monday",Wednesday:"Tuesday",Thursday:"Wednesday",Friday:"Thursday"};
+const FREE_SLOTS = {Saturday:["Lunch","Dinner"],Sunday:["Lunch"]};
+
+const CAT_COLOR = {
+  Breakfast:{bg:"#FEF3E2",accent:"#C17A55"},Smoothie:{bg:"#E6F4EC",accent:"#4F7A62"},
+  Lunch:{bg:"#E8F0FB",accent:"#3A6A9A"},Dinner:{bg:"#FCE8E8",accent:"#C04040"},
+  Snack:{bg:"#F0E8F8",accent:"#7A4A9A"},All:{bg:"#F5F5F5",accent:"#555"},
+};
+
+const DEFAULT_PLAN = {
+  Monday:    {Breakfast:"Classic Overnight Oats",Snack:"",Lunch:"",Dinner:"Garlic Chicken & Rice","Eve Snack":"Greek Yoghurt + Berries"},
+  Tuesday:   {Breakfast:"Berry Overnight Oats",Snack:"Protein Shake",Lunch:"",Dinner:"Beef Mince Stir Fry & Rice","Eve Snack":"Cottage Cheese + Rice Cakes"},
+  Wednesday: {Breakfast:"Egg Muffins",Snack:"",Lunch:"",Dinner:"Chicken Pasta Bake","Eve Snack":"Choc Dessert Smoothie"},
+  Thursday:  {Breakfast:"Chocolate Overnight Oats",Snack:"Protein Shake",Lunch:"",Dinner:"Rump Steak & Roast Potatoes","Eve Snack":"Greek Yoghurt + Honey + Walnuts"},
+  Friday:    {Breakfast:"Honey Almond Overnight Oats",Snack:"",Lunch:"",Dinner:"Chicken Wraps (Dinner)","Eve Snack":"Choc Dessert Smoothie"},
+  Saturday:  {Breakfast:"Banana Protein Smoothie",Snack:"Banana",Lunch:"",Dinner:"","Eve Snack":"Protein Shake"},
+  Sunday:    {Breakfast:"Egg Muffins",Snack:"Boiled Eggs ×2",Lunch:"",Dinner:"Lemon Herb Chicken & Potatoes","Eve Snack":"Greek Yoghurt + Berries"},
+};
+
+let state = {
   tab: "plan",
+  person: "Luisa",
   activeDay: 0,
   recCat: "All",
   recSearch: "",
   pickerCat: "All",
   pickerDay: null,
   pickerSlot: null,
-  currentWeek: 1,
+  plan: null,
   checked: {},
-  plans: {},  // keyed by week number
 };
 
-// Load persisted state
-try {
-  var sw = parseInt(localStorage.getItem("mp_currentWeek") || "1");
-  state.currentWeek = (sw >= 1 && sw <= TOTAL_WEEKS) ? sw : 1;
-} catch(e) { state.currentWeek = 1; }
-
-try { state.checked = JSON.parse(localStorage.getItem("mp_checked")) || {}; } catch(e) {}
-
-// Load all saved week plans
-for (var w = 1; w <= TOTAL_WEEKS; w++) {
-  try {
-    var saved = localStorage.getItem(weekPlanKey(w));
-    state.plans[w] = saved ? JSON.parse(saved) : null;
-  } catch(e) { state.plans[w] = null; }
-}
-
-function getCurrentPlan() {
-  var wk = state.currentWeek;
-  if (!state.plans[wk]) {
-    // Week 1 starts with default, all others start blank
-    if (wk === 1) {
-      state.plans[wk] = JSON.parse(JSON.stringify(DEFAULT_PLAN));
-    } else {
-      state.plans[wk] = {
-        Monday:    {Breakfast:"",Snack:"",Lunch:"",Dinner:"","Snack 2":"","Eve Snack":""},
-        Tuesday:   {Breakfast:"",Snack:"",Lunch:"",Dinner:"","Snack 2":"","Eve Snack":""},
-        Wednesday: {Breakfast:"",Snack:"",Lunch:"",Dinner:"","Snack 2":"","Eve Snack":""},
-        Thursday:  {Breakfast:"",Snack:"",Lunch:"",Dinner:"","Snack 2":"","Eve Snack":""},
-        Friday:    {Breakfast:"",Snack:"",Lunch:"",Dinner:"","Snack 2":"","Eve Snack":""},
-        Saturday:  {Breakfast:"",Snack:"",Lunch:"",Dinner:"","Snack 2":"","Eve Snack":""},
-        Sunday:    {Breakfast:"",Snack:"",Lunch:"",Dinner:"","Snack 2":"","Eve Snack":""},
-      };
-    }
-  }
-  return state.plans[wk];
-}
+// Load from localStorage
+try { state.plan = JSON.parse(localStorage.getItem("mp_plan")) || JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
+catch { state.plan = JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
+try { state.checked = JSON.parse(localStorage.getItem("mp_checked")) || {}; }
+catch { state.checked = {}; }
 
 function save() {
-  var wk = state.currentWeek;
-  localStorage.setItem(weekPlanKey(wk), JSON.stringify(state.plans[wk]));
-  localStorage.setItem("mp_currentWeek", String(wk));
+  localStorage.setItem("mp_plan", JSON.stringify(state.plan));
   localStorage.setItem("mp_checked", JSON.stringify(state.checked));
 }
 
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // HELPERS
-// ═══════════════════════════════════════════════════════
-function getMeal(name) {
-  for (var i = 0; i < MEALS.length; i++) { if (MEALS[i].name === name) return MEALS[i]; }
-  return null;
-}
+// ═══════════════════════════════════════════════════════════════════════════
+function getMeal(name) { return MEALS.find(m => m.name === name); }
 
 function getDisplayPlan() {
-  var plan = getCurrentPlan();
-  var p = JSON.parse(JSON.stringify(plan));
-  Object.keys(AUTO_LUNCH).forEach(function(day) {
-    var prev = AUTO_LUNCH[day];
-    var d = plan[prev] && plan[prev].Dinner;
-    p[day].Lunch = d ? "\u2190 " + d : "";
+  const p = JSON.parse(JSON.stringify(state.plan));
+  Object.entries(AUTO_LUNCH).forEach(([day, prev]) => {
+    const d = state.plan[prev]?.Dinner;
+    p[day].Lunch = d ? "← " + d : "";
   });
   return p;
 }
 
-function getMacrosForPerson(mealName, person) {
-  var real = (mealName && mealName.indexOf("\u2190 ") === 0) ? mealName.slice(2) : mealName;
-  var m = getMeal(real);
-  if (!m) return {cal:0, prot:0};
-  return person === "Sam" ? {cal:m.calM, prot:m.protM} : {cal:m.calF, prot:m.protF};
-}
-
-function getDayMacrosBoth(day) {
-  var dp = getDisplayPlan();
-  var freeSlots = FREE_SLOTS[day] || [];
-  var samCal=0, samProt=0, luisaCal=0, luisaProt=0;
-  Object.keys(dp[day] || {}).forEach(function(slot) {
-    if (freeSlots.indexOf(slot) >= 0) return;
-    var name = dp[day][slot];
-    if (!name) return;
-    var sm = getMacrosForPerson(name, "Sam");
-    var lm = getMacrosForPerson(name, "Luisa");
-    samCal   += sm.cal;   samProt   += sm.prot;
-    luisaCal += lm.cal;   luisaProt += lm.prot;
+function getDayMacros(day) {
+  const dp = getDisplayPlan();
+  let cal = 0, prot = 0;
+  const freeSlots = FREE_SLOTS[day] || [];
+  Object.entries(dp[day] || {}).forEach(([slot, name]) => {
+    if (!name || freeSlots.includes(slot)) return;
+    const real = name.startsWith("← ") ? name.slice(2) : name;
+    const m = getMeal(real);
+    if (!m) return;
+    cal += m.calM + m.calF;
+    prot += m.protM + m.protF;
   });
-  return {samCal:samCal, samProt:samProt, luisaCal:luisaCal, luisaProt:luisaProt,
-          cal: samCal+luisaCal, prot: samProt+luisaProt};
+  return { cal, prot };
 }
 
-// ═══════════════════════════════════════════════════════
-// WEEK NAVIGATION
-// ═══════════════════════════════════════════════════════
-function changeWeek(dir) {
-  var nw = state.currentWeek + dir;
-  if (nw < 1 || nw > TOTAL_WEEKS) return;
-  state.currentWeek = nw;
-  save();
-  updateWeekLabel();
-  if (state.tab === "plan")     renderPlan();
-  if (state.tab === "week")     renderWeek();
-  if (state.tab === "shopping") renderShopping();
-  if (state.tab === "prep")     renderPrep();
+// ═══════════════════════════════════════════════════════════════════════════
+// SHOPPING LIST BUILDER
+// ═══════════════════════════════════════════════════════════════════════════
+function buildShoppingList() {
+  const totals = {};
+  function resolveKey(rawName) {
+    const lower = rawName.toLowerCase().trim();
+    if (CONSOLIDATE[lower]) return CONSOLIDATE[lower];
+    for (const [k, v] of Object.entries(CONSOLIDATE)) {
+      if (lower.includes(k) || k.includes(lower)) return v;
+    }
+    return null;
+  }
+  function addIng(ings) {
+    ings.forEach(ing => {
+      const match = ing.match(/^([\d./½¼¾]+)\s*(g|ml|kg)?\s+(.+)/);
+      let rawQty, unit, rawName;
+      if (match) {
+        rawQty = parseFloat(match[1].replace("½","0.5").replace("¼","0.25").replace("¾","0.75")) || 1;
+        unit = match[2] || "";
+        rawName = match[3].split(",")[0].trim();
+      } else { rawQty = 1; unit = ""; rawName = ing.split(",")[0].trim(); }
+      const rule = resolveKey(rawName);
+      if (rule && rule.to === null) return;
+      const canon = rule ? rule.to : rawName;
+      const cat   = rule ? rule.cat : "🧂 Pantry";
+      const u     = rule ? (rule.unit || unit) : unit;
+      const qty   = rule?.fixedQty !== undefined ? rule.fixedQty : rawQty;
+      const fQty  = unit === "kg" ? qty * 1000 : qty;
+      const fUnit = unit === "kg" ? "g" : u;
+      const key   = canon.toLowerCase();
+      if (!totals[key]) totals[key] = { name: canon, qty: 0, unit: fUnit, cat };
+      totals[key].qty += fQty;
+    });
+  }
+  Object.entries(state.plan).forEach(([day, slots]) => {
+    const freeSlots = FREE_SLOTS[day] || [];
+    Object.entries(slots).forEach(([slot, name]) => {
+      if (!name || name.startsWith("← ") || freeSlots.includes(slot)) return;
+      const m = getMeal(name);
+      if (!m) return;
+      addIng(m.ingM);
+      addIng(m.ingF);
+    });
+  });
+  const items = Object.values(totals).filter(i => i.qty > 0.05);
+  items.sort((a, b) => {
+    const ai = CAT_ORDER.indexOf(a.cat), bi = CAT_ORDER.indexOf(b.cat);
+    if (ai !== bi) return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
+    return a.name.localeCompare(b.name);
+  });
+  return items;
 }
 
-function updateWeekLabel() {
-  var wk = state.currentWeek;
-  document.getElementById("week-label-top").childNodes[0].textContent = "Week " + wk;
-  document.getElementById("week-date-top").textContent = formatWeekDate(wk);
-  document.getElementById("btn-prev-week").disabled = wk <= 1;
-  document.getElementById("btn-next-week").disabled = wk >= TOTAL_WEEKS;
-  document.getElementById("btn-prev-week").style.opacity = wk <= 1 ? "0.3" : "1";
-  document.getElementById("btn-next-week").style.opacity = wk >= TOTAL_WEEKS ? "0.3" : "1";
+function fmtQty(qty, unit) {
+  if (unit === "g")  return qty >= 1000 ? (qty/1000).toFixed(qty>=2000?0:1)+"kg" : Math.ceil(qty)+"g";
+  if (unit === "ml") return qty >= 1000 ? (qty/1000).toFixed(1)+"L" : Math.ceil(qty)+"ml";
+  if (unit === "cloves") return Math.ceil(qty)+" clove"+(qty>1?"s":"");
+  if (unit === "sprigs") return Math.ceil(qty)+" sprig"+(qty>1?"s":"");
+  if (unit === "pack")   return Math.ceil(qty)+" pack";
+  if (qty > 1) return "×"+Math.ceil(qty);
+  return "";
 }
 
-// ═══════════════════════════════════════════════════════
-// TAB SWITCHING
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════════
 function switchTab(id) {
-  document.querySelectorAll(".tab-panel").forEach(function(t) { t.classList.remove("active"); });
-  document.querySelectorAll(".navbtn").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelectorAll(".tab-panel").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".navbtn").forEach(b => b.classList.remove("active"));
   document.getElementById("tab-" + id).classList.add("active");
   document.getElementById("nav-" + id).classList.add("active");
   state.tab = id;
@@ -876,189 +925,199 @@ function switchTab(id) {
   if (id === "week")     renderWeek();
 }
 
-// ═══════════════════════════════════════════════════════
+function renderWeek() {
+  const dp = getDisplayPlan();
+  const SLOT_EMOJI = {Breakfast:"🌅",Snack:"🍎",Lunch:"🥗",Dinner:"🍽","Eve Snack":"🌙"};
+  const SLOTS = ["Breakfast","Snack","Lunch","Dinner","Eve Snack"];
+  const DAY_SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const DAY_BG = {
+    Monday:"#1E1E1E",Tuesday:"#1E1E1E",Wednesday:"#1E1E1E",
+    Thursday:"#1E1E1E",Friday:"#1E1E1E",
+    Saturday:"#C17A55",Sunday:"#C17A55"
+  };
+
+  // Build 7-column grid
+  let html = `<div style="display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px;min-width:840px">`;
+
+  // Day headers
+  DAYS.forEach((day, i) => {
+    const {cal} = getDayMacros(day);
+    const target = 3900;
+    const ok = cal >= target * 0.88 && cal <= target * 1.12;
+    const isFreeDay = (FREE_SLOTS[day] || []).length > 0;
+    html += `
+      <div style="background:${DAY_BG[day]};border-radius:10px 10px 0 0;padding:10px 10px 8px;text-align:center">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.9)">${DAY_SHORT[i]}</div>
+        <div style="font-size:11px;color:${cal>0?(ok?'#7AE09A':'#F0A070'):'rgba(255,255,255,.3)'};margin-top:3px;font-weight:600">
+          ${cal > 0 ? cal + ' kcal' : isFreeDay ? '🎉 free' : '—'}
+        </div>
+      </div>`;
+  });
+
+  // Slot rows
+  SLOTS.forEach(slot => {
+    DAYS.forEach(day => {
+      const freeSlots = FREE_SLOTS[day] || [];
+      const isFree = freeSlots.includes(slot);
+      const name = dp[day]?.[slot] || "";
+      const isAuto = name.startsWith("← ");
+      const realName = isAuto ? name.slice(2) : name;
+      const meal = getMeal(realName);
+      const col = meal ? CAT_COLOR[meal.cat] : null;
+
+      if (isFree) {
+        html += `<div style="background:#FFF8F0;padding:8px;border:1px solid #F0EAE0;min-height:58px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:11px;color:#C17A55;font-style:italic">🎉 Free</span>
+        </div>`;
+      } else if (name) {
+        html += `<div onclick="openRecipe('${encodeURIComponent(realName)}')"
+          style="background:${col ? col.bg : '#F8F8F8'};padding:7px 8px;border:1px solid rgba(0,0,0,.06);
+          min-height:58px;cursor:pointer;transition:opacity .15s;-webkit-tap-highlight-color:transparent"
+          ontouchstart="this.style.opacity='.7'" ontouchend="this.style.opacity='1'">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+            color:${col ? col.accent : '#AAA'};margin-bottom:3px">${SLOT_EMOJI[slot]} ${slot}</div>
+          <div style="font-size:11px;font-weight:600;color:#1E1E1E;line-height:1.35;
+            ${isAuto ? 'color:#4F7A62;font-style:italic' : ''}">${meal ? meal.emoji + ' ' : ''}${isAuto ? '← leftover' : realName}</div>
+        </div>`;
+      } else {
+        html += `<div style="background:#F8F8F8;padding:7px 8px;border:1px solid rgba(0,0,0,.04);min-height:58px;display:flex;align-items:center">
+          <span style="font-size:10px;color:#DDD;font-style:italic">${SLOT_EMOJI[slot]} empty</span>
+        </div>`;
+      }
+    });
+  });
+
+  html += `</div>`;
+
+  // Summary row
+  html += `<div style="margin-top:16px;display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px;min-width:840px">`;
+  DAYS.forEach(day => {
+    const {cal, prot} = getDayMacros(day);
+    const freeDay = (FREE_SLOTS[day] || []).length > 0;
+    html += `<div style="background:white;border-radius:0 0 10px 10px;padding:8px;text-align:center;
+      border:1px solid #EDE8E0;border-top:none">
+      ${freeDay && cal === 0
+        ? `<div style="font-size:11px;color:#C17A55;font-weight:600">Free day 🎉</div>`
+        : `<div style="font-size:12px;font-weight:700;color:#1E1E1E">${cal || '—'} kcal</div>
+           <div style="font-size:10px;color:#AAA;margin-top:1px">${prot || '—'}g protein</div>`
+      }
+    </div>`;
+  });
+  html += `</div>`;
+
+  document.getElementById("week-cal").innerHTML = html;
+}
+
+// Person toggle removed — combined view only
+
+// ═══════════════════════════════════════════════════════════════════════════
 // PLAN TAB
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 function renderPlan() {
   renderDayStrip();
   renderDayDetail();
 }
 
 function renderDayStrip() {
-  var html = "";
-  DAYS.forEach(function(d, i) {
-    var mac = getDayMacrosBoth(d);
-    var ok = mac.samCal >= 1936 && mac.samCal <= 2464 && mac.luisaCal >= 1496 && mac.luisaCal <= 1904;
-    var dotCls = mac.cal > 0 ? (ok ? " ok" : " warn") : "";
-    var activeCls = i === state.activeDay ? " active" : "";
-    html += "<button class=\"day-btn" + activeCls + "\" onclick=\"setDay(" + i + ")\">";
-    html += "<div class=\"dn\">" + d.slice(0,3) + "</div>";
-    html += "<div class=\"dot" + dotCls + "\"></div>";
-    html += "</button>";
-  });
-  document.getElementById("day-strip").innerHTML = html;
+  const strip = document.getElementById("day-strip");
+  strip.innerHTML = DAYS.map((d, i) => {
+    const {cal} = getDayMacros(d);
+    const target = state.person === "Sam" ? 2200 : 1700;
+    const ok = cal >= target * 0.88 && cal <= target * 1.12;
+    const dotClass = cal > 0 ? (ok ? "ok" : "warn") : "";
+    return `<button class="day-btn${i === state.activeDay ? " active" : ""}" onclick="setDay(${i})">
+      <div class="dn">${d.slice(0,3)}</div>
+      <div class="dot${dotClass ? " "+dotClass : ""}"></div>
+    </button>`;
+  }).join("");
 }
 
 function setDay(i) {
   state.activeDay = i;
   renderPlan();
+  document.getElementById("tab-plan").querySelector(".sticky-hdr").nextElementSibling.scrollTop = 0;
 }
 
 function renderDayDetail() {
-  var day = DAYS[state.activeDay];
-  var dp  = getDisplayPlan();
-  var slots = dp[day] || {};
-  var mac = getDayMacrosBoth(day);
+  const day = DAYS[state.activeDay];
+  const dp  = getDisplayPlan();
+  const slots = dp[day] || {};
+  const target = 3900;  // Sam 2200 + Luisa 1700
+  const pTarget = 315;  // Sam 190 + Luisa 125
+  const {cal, prot} = getDayMacros(day);
+  const calPct  = Math.min(100, Math.round(cal / target * 100));
+  const protPct = Math.min(100, Math.round(prot / pTarget * 100));
 
-  var calPctS = Math.min(100, Math.round(mac.samCal / 2200 * 100));
-  var calPctL = Math.min(100, Math.round(mac.luisaCal / 1700 * 100));
+  document.getElementById("day-hdr").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+      <div style="font-family:Georgia,serif;font-size:22px">${day}</div>
+      <div style="font-size:12px;color:var(--mid)">
+        <span style="color:${calPct>=88&&calPct<=112?"var(--sage)":"var(--terra)"};font-weight:700">${cal||"—"}</span> / ${target} kcal
+      </div>
+    </div>
+    <div class="macro-bars">
+      ${[["Calories",cal,target,calPct,"var(--sage)","kcal"],["Protein",prot,pTarget,protPct,"var(--navy)","g"]].map(([lbl,v,t,pct,clr,u])=>`
+        <div>
+          <div class="mbar-lbl"><span>${lbl}</span><span style="font-weight:700;color:var(--charcoal)">${v||0}${u}</span></div>
+          <div class="mbar-track"><div class="mbar-fill" style="width:${pct}%;background:${pct>=88?clr:"var(--terra)"}"></div></div>
+        </div>`).join("")}
+    </div>`;
 
-  var hdr = "<div style=\"display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px\">";
-  hdr += "<div style=\"font-family:Georgia,serif;font-size:22px\">" + day + "</div>";
-  hdr += "<div style=\"font-size:11px;color:var(--mid)\">";
-  hdr += "<span style=\"color:" + (calPctS>=88&&calPctS<=112?"var(--sage)":"var(--terra)") + ";font-weight:700\">S:" + (mac.samCal||"—") + "</span>";
-  hdr += " &middot; ";
-  hdr += "<span style=\"color:" + (calPctL>=88&&calPctL<=112?"var(--sage)":"var(--terra)") + ";font-weight:700\">L:" + (mac.luisaCal||"—") + "</span>";
-  hdr += " kcal</div></div>";
-  hdr += "<div class=\"macro-bars\">";
-  hdr += "<div><div class=\"mbar-lbl\"><span>Sam</span><span style=\"font-weight:700;color:var(--charcoal)\">" + (mac.samCal||0) + " / 2200 kcal</span></div><div class=\"mbar-track\"><div class=\"mbar-fill\" style=\"width:" + calPctS + "%;background:" + (calPctS>=88?"var(--sage)":"var(--terra)") + "\"></div></div></div>";
-  hdr += "<div><div class=\"mbar-lbl\"><span>Luisa</span><span style=\"font-weight:700;color:var(--charcoal)\">" + (mac.luisaCal||0) + " / 1700 kcal</span></div><div class=\"mbar-track\"><div class=\"mbar-fill\" style=\"width:" + calPctL + "%;background:" + (calPctL>=88?"var(--sage)":"var(--terra)") + "\"></div></div></div>";
-  hdr += "</div>";
-  document.getElementById("day-hdr").innerHTML = hdr;
+  const slotsEl = document.getElementById("slots");
+  slotsEl.innerHTML = SLOTS.map(slot => {
+    const name = slots[slot] || "";
+    const isAuto = name.startsWith("← ");
+    const isFree = (FREE_SLOTS[day] || []).includes(slot);
+    const isEditLunch = (slot === "Lunch" && ["Monday","Tuesday","Wednesday","Thursday","Friday"].includes(day));
+    const editable = !isEditLunch && !isFree;
+    const meal = getMeal(isAuto ? name.slice(2) : name);
+    const macros = meal ? `${meal.calM + meal.calF} kcal · ${meal.protM + meal.protF}g combined` : "";
+    const changeBtn = editable && name ? `<button class="slot-change" onclick="openPicker('${day}','${slot}')">Change</button>` : "";
 
-  var slotsHtml = "";
-  SLOTS.forEach(function(slot) {
-    var name = slots[slot] || "";
-    var isAuto = name.indexOf("\u2190 ") === 0;
-    var isFree = (FREE_SLOTS[day] || []).indexOf(slot) >= 0;
-    var isAutoLunch = (slot === "Lunch" && ["Monday","Tuesday","Wednesday","Thursday","Friday"].indexOf(day) >= 0);
-    var editable = !isAutoLunch && !isFree;
-    var realName = isAuto ? name.slice(2) : name;
-    var meal = getMeal(realName);
-    var smac = meal ? getMacrosForPerson(realName,"Sam") : null;
-    var lmac = meal ? getMacrosForPerson(realName,"Luisa") : null;
-    var macStr = smac ? "S:" + smac.cal + "  L:" + lmac.cal + " kcal" : "";
-
-    // Use data attributes to avoid any quoting/escaping issues with slot names
-    var changeBtn = (editable && name)
-      ? "<button class=\"slot-change\" data-day=\"" + day + "\" data-slot=\"" + slot + "\" onclick=\"slotChange(this)\">Change</button>"
-      : "";
-
-    var lbl = "<div class=\"slot-lbl\"" + (!name ? " style=\"border-bottom:none\"" : "") + ">";
-    lbl += "<div class=\"slot-lbl-left\">" + (SLOT_EMOJI[slot]||"") + " " + slot + "</div>" + changeBtn + "</div>";
-
-    var body = "";
+    let mealContent = "";
     if (isFree) {
-      body = "<div class=\"slot-meal\" style=\"background:#FFF8F0;cursor:default\"><span style=\"font-size:28px;flex-shrink:0\">&#x1F389;</span><div><div class=\"slot-meal-name\" style=\"color:var(--terra)\">Free day &mdash; enjoy!</div><div class=\"slot-meal-macro\">Not tracked</div></div></div>";
+      mealContent = `<div class="slot-meal" style="background:#FFF8F0;cursor:default">
+        <span style="font-size:28px;flex-shrink:0">🎉</span>
+        <div>
+          <div class="slot-meal-name" style="color:#C17A55">Free day — enjoy!</div>
+          <div class="slot-meal-macro">Unplanned · no tracking</div>
+        </div>
+      </div>`;
     } else if (name) {
-      if (editable) {
-        body = "<div class=\"slot-meal" + (isAuto?" auto":"") + "\" data-day=\"" + day + "\" data-slot=\"" + slot + "\" onclick=\"slotChange(this)\">";
-      } else if (meal) {
-        body = "<div class=\"slot-meal" + (isAuto?" auto":"") + "\" data-meal=\"" + encodeURIComponent(realName) + "\" onclick=\"slotView(this)\">";
-      } else {
-        body = "<div class=\"slot-meal" + (isAuto?" auto":"") + "\">";
-      }
-      if (meal) body += "<span style=\"font-size:28px;flex-shrink:0\">" + meal.emoji + "</span>";
-      body += "<div><div class=\"slot-meal-name" + (isAuto?" auto":"") + "\">" + name + "</div>";
-      if (macStr && !isAuto) body += "<div class=\"slot-meal-macro\">" + macStr + "</div>";
-      body += "</div></div>";
-    } else if (editable) {
-      body = "<div class=\"slot-meal\" data-day=\"" + day + "\" data-slot=\"" + slot + "\" onclick=\"slotChange(this)\" style=\"cursor:pointer;padding:12px 14px;display:flex;gap:10px;align-items:center\">";
-      body += "<span style=\"font-size:20px;color:#DDD\">+</span>";
-      body += "<span style=\"color:#CCC;font-style:italic;font-size:13px\">Add " + slot.toLowerCase() + "</span></div>";
-    }
-
-    slotsHtml += "<div class=\"slot-card\">" + lbl + body + "</div>";
-  });
-  document.getElementById("slots").innerHTML = slotsHtml;
-}
-
-function slotChange(el) {
-  var day  = el.getAttribute("data-day");
-  var slot = el.getAttribute("data-slot");
-  openPicker(day, slot);
-}
-
-function slotView(el) {
-  var meal = el.getAttribute("data-meal");
-  if (meal) openRecipe(meal);
-}
-
-// ═══════════════════════════════════════════════════════
-// WEEK CALENDAR VIEW
-// ═══════════════════════════════════════════════════════
-function renderWeek() {
-  var wk = state.currentWeek;
-  document.getElementById("week-cal-title").textContent = "Week " + wk + " at a Glance";
-  document.getElementById("week-cal-sub").textContent = formatWeekDate(wk) + " \u2014 " + (wk < TOTAL_WEEKS ? formatWeekDate(wk+1).replace("Mon","Sun").replace(/ \d+/, function(m){ return " "+(parseInt(m)+6); }) : "");
-
-  var dp = getDisplayPlan();
-  var DAY_SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-  var html = "<div style=\"display:grid;grid-template-columns:repeat(7,minmax(110px,1fr));gap:6px;min-width:770px\">";
-
-  // Day headers with split cals
-  DAYS.forEach(function(day, i) {
-    var mac = getDayMacrosBoth(day);
-    var isFreeDay = (FREE_SLOTS[day] || []).length > 0;
-    var bg = (day==="Saturday"||day==="Sunday") ? "#C17A55" : "#1E1E1E";
-    html += "<div style=\"background:" + bg + ";border-radius:10px 10px 0 0;padding:9px 8px;text-align:center\">";
-    html += "<div style=\"font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.9)\">" + DAY_SHORT[i] + "</div>";
-    if (isFreeDay && mac.cal === 0) {
-      html += "<div style=\"font-size:10px;color:rgba(255,255,255,.5);margin-top:3px\">&#x1F389; free</div>";
-    } else if (mac.samCal > 0 || mac.luisaCal > 0) {
-      html += "<div style=\"font-size:9px;color:#7AE09A;margin-top:3px;line-height:1.4\">S:" + mac.samCal + "</div>";
-      html += "<div style=\"font-size:9px;color:#F0C070;line-height:1.4\">L:" + mac.luisaCal + "</div>";
+      const clickFn = editable ? `openPicker('${day}','${slot}')` : meal ? `openRecipe('${encodeURIComponent(meal.name)}')` : "";
+      mealContent = `<div class="slot-meal${isAuto?" auto":""}" onclick="${clickFn}">
+        ${meal ? `<span style="font-size:28px;flex-shrink:0">${meal.emoji}</span>` : ""}
+        <div>
+          <div class="slot-meal-name${isAuto?" auto":""}">${name}</div>
+          ${macros && !isAuto ? `<div class="slot-meal-macro">${macros}</div>` : ""}
+        </div>
+      </div>`;
     } else {
-      html += "<div style=\"font-size:10px;color:rgba(255,255,255,.3);margin-top:3px\">&mdash;</div>";
+      mealContent = `<button class="slot-empty" onclick="openPicker('${day}','${slot}')">
+        <span style="font-size:20px;color:#DDD">+</span> Add ${slot.toLowerCase()}
+      </button>`;
     }
-    html += "</div>";
-  });
 
-  // Meal rows per slot
-  SLOTS.forEach(function(slot) {
-    DAYS.forEach(function(day) {
-      var freeSlots = FREE_SLOTS[day] || [];
-      var isFree = freeSlots.indexOf(slot) >= 0;
-      var name = dp[day] && dp[day][slot] ? dp[day][slot] : "";
-      var isAuto = name.indexOf("\u2190 ") === 0;
-      var realName = isAuto ? name.slice(2) : name;
-      var meal = getMeal(realName);
-      var col = meal ? CAT_COLOR[meal.cat] : null;
-
-      html += "<div style=\"border:1px solid rgba(0,0,0,.06);min-height:52px;\">";
-      if (isFree) {
-        html += "<div style=\"background:#FFF8F0;height:100%;min-height:52px;display:flex;align-items:center;justify-content:center;padding:4px\"><span style=\"font-size:10px;color:var(--terra);font-style:italic\">&#x1F389; Free</span></div>";
-      } else if (name) {
-        var onclick = meal ? "openRecipe('" + encodeURIComponent(realName) + "')" : "";
-        html += "<div onclick=\"" + onclick + "\" style=\"background:" + (col?col.bg:"#F8F8F8") + ";padding:5px 7px;cursor:" + (meal?"pointer":"default") + ";height:100%;min-height:52px\">";
-        html += "<div style=\"font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:" + (col?col.accent:"#AAA") + ";margin-bottom:2px\">" + SLOT_EMOJI[slot] + " " + slot + "</div>";
-        html += "<div style=\"font-size:10px;font-weight:600;color:" + (isAuto?"var(--sage)":"#1E1E1E") + ";line-height:1.3;font-style:" + (isAuto?"italic":"normal") + "\">";
-        if (meal) html += meal.emoji + " ";
-        html += (isAuto ? "\u2190 leftover" : realName) + "</div>";
-        html += "</div>";
-      } else {
-        html += "<div style=\"background:#F8F8F8;height:100%;min-height:52px;display:flex;align-items:center;padding:5px 7px\"><span style=\"font-size:9px;color:#DDD\">" + SLOT_EMOJI[slot] + " &mdash;</span></div>";
-      }
-      html += "</div>";
-    });
-  });
-
-  html += "</div>";
-  document.getElementById("week-cal").innerHTML = html;
+    return `<div class="slot-card">
+      <div class="slot-lbl" style="${!name?"border-bottom:none":""}">
+        <div class="slot-lbl-left"><span>${SLOT_EMOJI[slot]}</span> ${slot}</div>
+        ${changeBtn}
+      </div>
+      ${mealContent}
+    </div>`;
+  }).join("");
 }
 
-// ═══════════════════════════════════════════════════════
-// RECIPE LIST TAB
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+// RECIPES TAB
+// ═══════════════════════════════════════════════════════════════════════════
 function renderCatPills(containerId, activeCat, onClickFn) {
-  var el = document.getElementById(containerId);
-  var html = "";
-  CATEGORIES.forEach(function(c) {
-    var col = CAT_COLOR[c];
-    var active = c === activeCat;
-    html += "<span class=\"pill\" style=\"background:" + (active?col.accent:"#fff") + ";color:" + (active?"#fff":col.accent) + ";border-color:" + col.accent + "\" onclick=\"" + onClickFn + "('" + c + "')\">" + c + "</span>";
-  });
-  el.innerHTML = html;
+  const el = document.getElementById(containerId);
+  el.innerHTML = CATEGORIES.map(c => {
+    const col = CAT_COLOR[c];
+    const active = c === activeCat;
+    return `<span class="pill" style="background:${active?col.accent:"#fff"};color:${active?"#fff":col.accent};border-color:${col.accent}" onclick="${onClickFn}('${c}')">${c}</span>`;
+  }).join("");
 }
 
 function setRecipeCat(c) { state.recCat = c; renderRecipes(); }
@@ -1066,136 +1125,150 @@ function setPickerCat(c) { state.pickerCat = c; renderPickerList(); }
 
 function renderRecipes() {
   renderCatPills("cat-pills", state.recCat, "setRecipeCat");
-  var search = (document.getElementById("recipe-search") ? document.getElementById("recipe-search").value : "").toLowerCase();
-  var html = "";
-  MEALS.forEach(function(m) {
-    if ((state.recCat !== "All" && m.cat !== state.recCat)) return;
-    if (search && m.name.toLowerCase().indexOf(search) < 0) return;
-    var col = CAT_COLOR[m.cat];
-    var cal = m.calM + m.calF;
-    var prot = m.protM + m.protF;
-    html += "<div class=\"recipe-item\" onclick=\"openRecipe('" + encodeURIComponent(m.name) + "')\">";
-    html += "<div class=\"recipe-icon\" style=\"background:" + col.bg + "\">" + m.emoji + "</div>";
-    html += "<div style=\"flex:1;min-width:0\">";
-    html += "<div class=\"recipe-item-name\">" + m.name + "</div>";
-    html += "<div class=\"recipe-item-meta\"><span class=\"recipe-cat-badge\" style=\"color:" + col.accent + "\">" + m.cat + "</span><span style=\"font-size:11px;color:var(--light)\">&middot;</span><span style=\"font-size:11px;color:var(--light)\">" + cal + " kcal &middot; " + prot + "g combined</span></div>";
-    html += "</div><span class=\"recipe-chevron\">&rsaquo;</span></div>";
-  });
-  if (!html) html = "<div style=\"text-align:center;padding:60px 20px;color:var(--light)\"><div style=\"font-size:36px;margin-bottom:8px\">&#x1F50D;</div>No recipes found</div>";
-  document.getElementById("recipe-list").innerHTML = html;
+  const search = (document.getElementById("recipe-search")?.value || "").toLowerCase();
+  const filtered = MEALS.filter(m =>
+    (state.recCat === "All" || m.cat === state.recCat) &&
+    m.name.toLowerCase().includes(search)
+  );
+  const p = state.person;
+  document.getElementById("recipe-list").innerHTML = filtered.map(m => {
+    const col = CAT_COLOR[m.cat];
+    return `<div class="recipe-item" onclick="openRecipe('${encodeURIComponent(m.name)}')">
+      <div class="recipe-icon" style="background:${col.bg}">${m.emoji}</div>
+      <div style="flex:1;min-width:0">
+        <div class="recipe-item-name">${m.name}</div>
+        <div class="recipe-item-meta">
+          <span class="recipe-cat-badge" style="color:${col.accent}">${m.cat}</span>
+          <span style="font-size:11px;color:var(--light)">·</span>
+          <span style="font-size:11px;color:var(--light)">${m.calM+m.calF} kcal · ${m.protM+m.protF}g combined</span>
+        </div>
+      </div>
+      <span class="recipe-chevron">›</span>
+    </div>`;
+  }).join("") || `<div style="text-align:center;padding:60px 20px;color:var(--light)">
+    <div style="font-size:36px;margin-bottom:8px">🔍</div>No recipes found</div>`;
 }
 
-// ═══════════════════════════════════════════════════════
-// RECIPE SHEET — merged ingredients with Sam/Luisa split
-// ═══════════════════════════════════════════════════════
-function mergeIngredients(ingM, ingF, isDouble) {
-  var mult = isDouble ? 2 : 1;
-  var totals = {};
-  var order = [];
-
-  function parseIng(ing) {
-    var match = ing.match(/^([\d./]+)\s*(g|ml|kg|tbsp|tsp|slices)?\s+(.+)/);
-    if (match) {
-      var qty = parseFloat(match[1]) || 1;
-      var unit = match[2] || "";
-      var item = match[3].split(",")[0].trim();
-      if (unit === "kg") { qty *= 1000; unit = "g"; }
-      return {item:item, qty:qty, unit:unit};
-    }
-    return {item:ing.split(",")[0].trim(), qty:1, unit:""};
-  }
-
-  function fmtQ(qty, unit) {
-    if (!unit) return "";
-    if (unit==="g")  return qty>=1000 ? (qty/1000).toFixed(1)+"kg" : Math.round(qty)+"g";
-    if (unit==="ml") return qty>=1000 ? (qty/1000).toFixed(1)+"L"  : Math.round(qty)+"ml";
-    return Math.round(qty)+(unit==="slices"?" slices":unit==="tbsp"?" tbsp":unit==="tsp"?" tsp":"");
-  }
-
-  ingM.forEach(function(ing) {
-    var p = parseIng(ing); var k = p.item.toLowerCase();
-    if (!totals[k]) { totals[k]={item:p.item,qtyM:0,qtyF:0,unit:p.unit}; order.push(k); }
-    totals[k].qtyM += p.qty;
-  });
-  ingF.forEach(function(ing) {
-    var p = parseIng(ing); var k = p.item.toLowerCase();
-    if (!totals[k]) { totals[k]={item:p.item,qtyM:0,qtyF:0,unit:p.unit}; order.push(k); }
-    totals[k].qtyF += p.qty;
-  });
-
-  return order.map(function(k) {
-    var t = totals[k];
-    var total = (t.qtyM + t.qtyF) * mult;
-    var samAmt = t.qtyM * mult;
-    var luisaAmt = t.qtyF * mult;
-    var totalStr = fmtQ(total, t.unit);
-    var samStr = fmtQ(samAmt, t.unit);
-    var luisaStr = fmtQ(luisaAmt, t.unit);
-    var x2tag = isDouble ? " <span style=\"color:#C04040;font-size:11px;font-weight:700\">x2</span>" : "";
-    var sub = (samStr||luisaStr) ? " <span style=\"color:#AAA;font-size:12px\">(Sam " + (samStr||"\u2014") + " \u00B7 Luisa " + (luisaStr||"\u2014") + ")</span>" : "";
-    var prefix = totalStr ? totalStr + " " : "";
-    return prefix + t.item + x2tag + sub;
-  });
-}
-
+// ═══════════════════════════════════════════════════════════════════════════
+// RECIPE SHEET
+// ═══════════════════════════════════════════════════════════════════════════
 function openRecipe(encodedName) {
-  var name = decodeURIComponent(encodedName);
-  var m = getMeal(name);
+  const name = decodeURIComponent(encodedName);
+  const m = getMeal(name);
   if (!m) return;
-  var col = CAT_COLOR[m.cat];
-  var isDouble = m.cat === "Dinner";
-  var mult = isDouble ? 2 : 1;
-  var cal  = (m.calM + m.calF) * mult;
-  var prot = (m.protM + m.protF) * mult;
-  var combined = mergeIngredients(m.ingM, m.ingF, isDouble);
+  const col = CAT_COLOR[m.cat];
+  const cal = m.calM + m.calF;
+  const prot = m.protM + m.protF;
 
-  document.getElementById("recipe-sheet-header").innerHTML =
-    "<div style=\"display:flex;align-items:center;justify-content:space-between\">" +
-      "<div style=\"font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:" + col.accent + "\">" + m.cat + " \u00B7 " + m.time + "</div>" +
-      "<button onclick=\"closeRecipeSheetBtn()\" style=\"border:none;background:rgba(0,0,0,.08);border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:15px\">\u00D7</button>" +
-    "</div>";
+  // Merge Sam + Luisa ingredients, combining quantities for the same item
+  function mergeIngredients(ingM, ingF) {
+    const totals = {};
+    const order = [];
 
-  var bannerBg  = isDouble ? "#FCE8E8" : "#E6F4EC";
-  var bannerClr = isDouble ? "#C04040" : "#4F7A62";
-  var bannerTxt = isDouble
-    ? "\uD83C\uDF7D Dinner amounts x2 \u2014 tonight + tomorrow's lunch for both"
-    : "\uD83D\uDC6B Combined quantities for Sam + Luisa";
+    function parseIng(ing) {
+      const match = ing.match(/^([\d./½¼¾]+)\s*(g|ml|kg)?\s+(.+)/);
+      if (match) {
+        let qty = parseFloat(match[1].replace("½","0.5").replace("¼","0.25").replace("¾","0.75")) || 1;
+        const unit = match[2] || "";
+        const item = match[3].split(",")[0].trim();
+        if (unit === "kg") qty *= 1000;
+        return { item, qty, unit: unit === "kg" ? "g" : unit };
+      } else {
+        return { item: ing.split(",")[0].trim(), qty: 1, unit: "" };
+      }
+    }
 
-  var ingsHtml = combined.map(function(ing) {
-    return "<div class=\"ing-row\"><span class=\"ing-bullet\">\u00B7</span><span>" + ing + "</span></div>";
-  }).join("");
+    function fmtQty(qty, unit) {
+      if (!unit) return "";
+      if (unit === "g")  return qty >= 1000 ? (qty/1000).toFixed(1)+"kg" : Math.round(qty)+"g";
+      if (unit === "ml") return qty >= 1000 ? (qty/1000).toFixed(1)+"L" : Math.round(qty)+"ml";
+      return Math.round(qty)+"";
+    }
 
-  var stepsHtml = m.steps.map(function(s, i) {
-    return "<div class=\"method-step\"><div class=\"method-num\" style=\"color:" + col.accent + "\">" + (i+1) + "</div><div>" + s.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>") + "</div></div>";
-  }).join("");
+    ingM.forEach(ing => {
+      const {item, qty, unit} = parseIng(ing);
+      const key = item.toLowerCase();
+      if (!totals[key]) { totals[key] = {item, qtyM:0, qtyF:0, unit}; order.push(key); }
+      totals[key].qtyM += qty;
+    });
 
-  document.getElementById("recipe-sheet-body").innerHTML =
-    "<div class=\"recipe-hero\" style=\"background:" + col.bg + "\">" +
-      "<span class=\"recipe-emoji-big\">" + m.emoji + "</span>" +
-      "<h2 class=\"recipe-h2\">" + m.name + "</h2>" +
-      "<p class=\"recipe-desc\">" + m.desc + "</p>" +
-      "<div class=\"macro-chips\">" +
-        "<div class=\"macro-chip\" style=\"background:rgba(255,255,255,.7)\"><div class=\"macro-chip-val\" style=\"color:" + col.accent + "\">" + cal + "</div><div class=\"macro-chip-lbl\">Total kcal</div></div>" +
-        "<div class=\"macro-chip\" style=\"background:rgba(255,255,255,.7)\"><div class=\"macro-chip-val\" style=\"color:" + col.accent + "\">" + prot + "g</div><div class=\"macro-chip-lbl\">Total protein</div></div>" +
-        "<div class=\"macro-chip\" style=\"background:rgba(255,255,255,.7)\"><div class=\"macro-chip-val\" style=\"color:" + col.accent + "\">\u23F1</div><div class=\"macro-chip-lbl\">" + m.time + "</div></div>" +
-      "</div>" +
-    "</div>" +
-    "<div style=\"margin:10px 16px;padding:8px 12px;background:" + bannerBg + ";border-radius:8px;font-size:11px;color:" + bannerClr + ";font-weight:600\">" + bannerTxt + "</div>" +
-    "<div style=\"padding:0 16px 100px\">" +
-      "<div class=\"eyebrow\" style=\"margin-bottom:10px\">Ingredients (both)</div>" + ingsHtml +
-      "<div class=\"eyebrow\" style=\"margin:20px 0 12px\">Method</div>" + stepsHtml +
-    "</div>";
+    ingF.forEach(ing => {
+      const {item, qty, unit} = parseIng(ing);
+      const key = item.toLowerCase();
+      if (!totals[key]) { totals[key] = {item, qtyM:0, qtyF:0, unit}; order.push(key); }
+      totals[key].qtyF += qty;
+    });
+
+    return order.map(k => {
+      const {item, qtyM, qtyF, unit} = totals[k];
+      const total = qtyM + qtyF;
+      const totalStr = fmtQty(total, unit);
+      const samStr   = fmtQty(qtyM, unit);
+      const luisaStr = fmtQty(qtyF, unit);
+      const brackets = (samStr || luisaStr)
+        ? ` <span style="color:#AAA;font-size:12px">(Sam ${samStr || "—"} · Luisa ${luisaStr || "—"})</span>`
+        : "";
+      if (!unit) return `${item}${brackets}`;
+      return `${totalStr} ${item}${brackets}`;
+    });
+  }
+
+  const combined = mergeIngredients(m.ingM, m.ingF);
+
+  document.getElementById("recipe-sheet-header").innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:${col.accent}">${m.cat} · ${m.time}</div>
+      <button onclick="closeRecipeSheetBtn()" style="border:none;background:rgba(0,0,0,.08);border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:15px">×</button>
+    </div>`;
+
+  document.getElementById("recipe-sheet-body").innerHTML = `
+    <div class="recipe-hero" style="background:${col.bg}">
+      <span class="recipe-emoji-big">${m.emoji}</span>
+      <h2 class="recipe-h2">${m.name}</h2>
+      <p class="recipe-desc">${m.desc}</p>
+      <div class="macro-chips">
+        <div class="macro-chip" style="background:rgba(255,255,255,.7)">
+          <div class="macro-chip-val" style="color:${col.accent}">${cal}</div>
+          <div class="macro-chip-lbl">Total kcal</div>
+        </div>
+        <div class="macro-chip" style="background:rgba(255,255,255,.7)">
+          <div class="macro-chip-val" style="color:${col.accent}">${prot}g</div>
+          <div class="macro-chip-lbl">Total protein</div>
+        </div>
+        <div class="macro-chip" style="background:rgba(255,255,255,.7)">
+          <div class="macro-chip-val" style="color:${col.accent}">⏱</div>
+          <div class="macro-chip-lbl">${m.time}</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin:10px 16px;padding:8px 12px;background:#E6F4EC;border-radius:8px;font-size:11px;color:#4F7A62;font-weight:600">
+      👫 Combined quantities for Sam + Luisa · Dinner tonight + lunch tomorrow
+    </div>
+    <div style="padding:0 16px 100px">
+      <div class="eyebrow" style="margin-bottom:10px">Ingredients (both)</div>
+      ${combined.map(ing => `<div class="ing-row"><span class="ing-bullet">·</span><span>${ing}</span></div>`).join("")}
+      <div class="eyebrow" style="margin:20px 0 12px">Method</div>
+      ${m.steps.map((s,i) => `<div class="method-step">
+        <div class="method-num" style="color:${col.accent}">${i+1}</div>
+        <div>${s.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")}</div>
+      </div>`).join("")}
+    </div>`;
 
   document.getElementById("recipe-sheet-overlay").classList.add("open");
   document.body.style.overflow = "hidden";
 }
 
-function closeRecipeSheet(e) { if (e.target===document.getElementById("recipe-sheet-overlay")) closeRecipeSheetBtn(); }
-function closeRecipeSheetBtn() { document.getElementById("recipe-sheet-overlay").classList.remove("open"); document.body.style.overflow=""; }
+function closeRecipeSheet(e) {
+  if (e.target === document.getElementById("recipe-sheet-overlay")) closeRecipeSheetBtn();
+}
+function closeRecipeSheetBtn() {
+  document.getElementById("recipe-sheet-overlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
 
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // MEAL PICKER SHEET
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 function openPicker(day, slot) {
   state.pickerDay = day;
   state.pickerSlot = slot;
@@ -1206,277 +1279,236 @@ function openPicker(day, slot) {
   renderPickerList();
   document.getElementById("picker-overlay").classList.add("open");
   document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("picker-search").focus(), 300);
 }
 
 function renderPickerList() {
   renderCatPills("picker-pills", state.pickerCat, "setPickerCat");
-  var search = (document.getElementById("picker-search") ? document.getElementById("picker-search").value : "").toLowerCase();
-  var html = "<div style=\"display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #F0EAE0;cursor:pointer;color:var(--light);font-size:13px\" onclick=\"pickMeal('')\"><span style=\"font-size:18px\">\u2715</span> Clear this slot</div>";
-  MEALS.forEach(function(m) {
-    if (state.pickerCat !== "All" && m.cat !== state.pickerCat) return;
-    if (search && m.name.toLowerCase().indexOf(search) < 0) return;
-    var col = CAT_COLOR[m.cat];
-    html += "<div style=\"display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F8F4F0;cursor:pointer\" onclick=\"pickMeal('" + encodeURIComponent(m.name) + "')\" ontouchstart=\"this.style.background='#F8F5F0'\" ontouchend=\"this.style.background=''\">";
-    html += "<span style=\"font-size:26px;flex-shrink:0\">" + m.emoji + "</span>";
-    html += "<div style=\"flex:1;min-width:0\"><div style=\"font-size:14px;font-weight:600;color:var(--charcoal)\">" + m.name + "</div>";
-    html += "<div style=\"font-size:11px;color:var(--light)\">" + m.cat + " \u00B7 S:" + m.calM + " L:" + m.calF + " kcal</div></div>";
-    html += "<span style=\"color:#CCC;font-size:20px\">&rsaquo;</span></div>";
-  });
-  document.getElementById("picker-list").innerHTML = html;
+  const search = (document.getElementById("picker-search")?.value || "").toLowerCase();
+  const filtered = MEALS.filter(m =>
+    (state.pickerCat === "All" || m.cat === state.pickerCat) &&
+    m.name.toLowerCase().includes(search)
+  );
+  const p = state.person;
+  document.getElementById("picker-list").innerHTML =
+    `<div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #F0EAE0;cursor:pointer;color:var(--light);font-size:13px" onclick="pickMeal('')">
+      <span style="font-size:18px">✕</span> Clear this slot</div>` +
+    filtered.map(m => {
+      const col = CAT_COLOR[m.cat];
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F8F4F0;cursor:pointer" onclick="pickMeal('${encodeURIComponent(m.name)}')" ontouchstart="this.style.background='#F8F5F0'" ontouchend="this.style.background=''">
+        <span style="font-size:26px;flex-shrink:0">${m.emoji}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:var(--charcoal)">${m.name}</div>
+          <div style="font-size:11px;color:var(--light)">${m.cat} · ${m.calM+m.calF} kcal · ${m.protM+m.protF}g protein (both)</div>
+        </div>
+        <span style="color:#CCC;font-size:20px">›</span>
+      </div>`;
+    }).join("");
 }
 
 function pickMeal(encodedName) {
-  var name = encodedName ? decodeURIComponent(encodedName) : "";
-  var day = state.pickerDay;
-  var slot = state.pickerSlot;
-  getCurrentPlan()[day][slot] = name;
+  const name = encodedName ? decodeURIComponent(encodedName) : "";
+  const {pickerDay: day, pickerSlot: slot} = state;
+  state.plan[day][slot] = name;
   save();
   closePicker();
   renderPlan();
+  // Update shopping / prep if visible
   if (state.tab === "shopping") renderShopping();
-  if (state.tab === "prep")     renderPrep();
-  if (state.tab === "week")     renderWeek();
+  if (state.tab === "prep") renderPrep();
 }
 
 function closePicker(e) {
-  if (!e || e.target === document.getElementById("picker-overlay") || !e.target) {
+  if (!e || e.target === document.getElementById("picker-overlay")) {
     document.getElementById("picker-overlay").classList.remove("open");
     document.body.style.overflow = "";
   }
 }
 
-// ═══════════════════════════════════════════════════════
-// SHOPPING LIST
-// ═══════════════════════════════════════════════════════
-function buildShoppingList() {
-  var plan = getCurrentPlan();
-  var totals = {};
+// ═══════════════════════════════════════════════════════════════════════════
+// SHOPPING TAB
+// ═══════════════════════════════════════════════════════════════════════════
+function clearChecked() { state.checked = {}; save(); renderShopping(); }
 
-  function resolveKey(rawName) {
-    var lower = rawName.toLowerCase().trim();
-    if (CONSOLIDATE[lower]) return CONSOLIDATE[lower];
-    var keys = Object.keys(CONSOLIDATE);
-    for (var i=0;i<keys.length;i++) {
-      var k = keys[i];
-      if (lower.indexOf(k)>=0 || k.indexOf(lower)>=0) return CONSOLIDATE[k];
+function renderShopping() {
+  const items = buildShoppingList();
+  const total = items.length;
+  const done = items.filter(i => state.checked[i.name.toLowerCase()]).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById("shop-count").textContent = total + " items · Sam + Luisa combined · tap to tick off";
+  document.getElementById("shop-progress").style.width = pct + "%";
+  document.getElementById("shop-progress-txt").textContent = done + "/" + total;
+  document.getElementById("shop-nav-lbl").textContent = done > 0 ? `Shop (${done})` : "Shop";
+
+  let html = "";
+  let lastCat = null;
+  items.forEach(item => {
+    const key = item.name.toLowerCase();
+    const checked = !!state.checked[key];
+    if (item.cat !== lastCat) {
+      html += `<div class="cat-header">${item.cat}</div>`;
+      lastCat = item.cat;
     }
-    return null;
-  }
-
-  function addIng(ings, multiplier) {
-    ings.forEach(function(ing) {
-      var match = ing.match(/^([\d./]+)\s*(g|ml|kg)?\s+(.+)/);
-      var rawQty, unit, rawName;
-      if (match) {
-        rawQty = parseFloat(match[1]) || 1;
-        unit = match[2] || "";
-        rawName = match[3].split(",")[0].trim();
-      } else { rawQty=1; unit=""; rawName=ing.split(",")[0].trim(); }
-      var rule = resolveKey(rawName);
-      if (rule && rule.to === null) return;
-      var canon = rule ? rule.to : rawName;
-      var cat   = rule ? rule.cat : "\uD83E\uDDC2 Pantry";
-      var u     = rule ? (rule.unit || unit) : unit;
-      var qty   = (rule && rule.fixedQty !== undefined) ? rule.fixedQty : rawQty;
-      var fQty  = (unit==="kg" ? qty*1000 : qty) * (multiplier||1);
-      var fUnit = unit==="kg" ? "g" : u;
-      var key   = canon.toLowerCase();
-      if (!totals[key]) totals[key]={name:canon,qty:0,unit:fUnit,cat:cat};
-      totals[key].qty += fQty;
-    });
-  }
-
-  var freeMap = FREE_SLOTS;
-  Object.keys(plan).forEach(function(day) {
-    var freeSlots = freeMap[day] || [];
-    Object.keys(plan[day]).forEach(function(slot) {
-      if (freeSlots.indexOf(slot)>=0) return;
-      var name = plan[day][slot];
-      if (!name || name.indexOf("\u2190 ")===0) return;
-      var m = getMeal(name);
-      if (!m) return;
-      var mult = (m.cat === "Dinner") ? 2 : 1;
-      addIng(m.ingM, mult);
-      addIng(m.ingF, mult);
-    });
+    const qty = fmtQty(item.qty, item.unit);
+    html += `<div class="shop-item${checked?" checked":""}" onclick="toggleCheck('${key.replace(/'/g,"\\'")}')">
+      <div class="shop-cb${checked?" checked":""}"></div>
+      <div class="shop-name">${item.name}</div>
+      ${qty ? `<div class="qty-pill">${qty}</div>` : ""}
+    </div>`;
   });
-
-  var items = Object.keys(totals).filter(function(k){ return totals[k].qty>0.05; }).map(function(k){ return totals[k]; });
-  PANTRY_STAPLES.forEach(function(s) {
-    var found = items.some(function(i){ return i.name.toLowerCase()===s.name.toLowerCase(); });
-    if (!found) items.push({name:s.name, qty:s.qty, unit:s.unit, cat:s.cat});
-  });
-
-  items.sort(function(a,b){
-    var ai=CAT_ORDER.indexOf(a.cat), bi=CAT_ORDER.indexOf(b.cat);
-    if(ai!==bi) return (ai<0?99:ai)-(bi<0?99:bi);
-    return a.name.localeCompare(b.name);
-  });
-  return items;
+  if (!html) html = `<div style="text-align:center;padding:60px 0;color:var(--light)"><div style="font-size:40px;margin-bottom:8px">🛒</div>Select meals in Plan tab first</div>`;
+  document.getElementById("shop-list").innerHTML = html;
 }
 
-function fmtQty(qty, unit) {
-  if (unit==="g")  return qty>=1000?(qty/1000).toFixed(qty>=2000?0:1)+"kg":Math.ceil(qty)+"g";
-  if (unit==="ml") return qty>=1000?(qty/1000).toFixed(1)+"L":Math.ceil(qty)+"ml";
-  if (unit==="cloves") return Math.ceil(qty)+" clove"+(qty>1?"s":"");
-  if (unit==="sprigs") return Math.ceil(qty)+" sprig"+(qty>1?"s":"");
-  if (unit==="slices") return Math.ceil(qty)+" slices";
-  if (unit==="pack")   return Math.ceil(qty)+" pack";
-  if (qty>1) return "x"+Math.ceil(qty);
-  return "";
-}
-
-function clearChecked() { state.checked={}; save(); renderShopping(); }
-
-function handleShopTap(el) {
-  var key = el.getAttribute("data-key");
+function toggleCheck(key) {
   state.checked[key] = !state.checked[key];
   save();
   renderShopping();
 }
 
-function renderShopping() {
-  var items = buildShoppingList();
-  var total = items.length;
-  var done  = items.filter(function(i){ return state.checked[i.name.toLowerCase()]; }).length;
-  var pct   = total ? Math.round(done/total*100) : 0;
-
-  document.getElementById("shop-count").textContent = total + " items \u00B7 Sam + Luisa combined \u00B7 tap to tick off";
-  document.getElementById("shop-progress").style.width = pct + "%";
-  document.getElementById("shop-progress-txt").textContent = done + "/" + total;
-  document.getElementById("shop-nav-lbl").textContent = done>0 ? "Shop ("+done+")" : "Shop";
-
-  var html = "";
-  var lastCat = null;
-  items.forEach(function(item) {
-    var key = item.name.toLowerCase();
-    var checked = !!state.checked[key];
-    if (item.cat !== lastCat) {
-      html += "<div class=\"cat-header\">" + item.cat + "</div>";
-      lastCat = item.cat;
-    }
-    var qty = fmtQty(item.qty, item.unit);
-    var cCls = checked ? " checked" : "";
-    html += "<div class=\"shop-item" + cCls + "\" data-key=\"" + key.replace(/"/g,"&quot;") + "\" onclick=\"handleShopTap(this)\">";
-    html += "<div class=\"shop-cb" + cCls + "\"></div>";
-    if (checked) { var el = html.lastIndexOf("shop-cb"); }
-    html += "<div class=\"shop-name\">" + item.name + "</div>";
-    if (qty) html += "<div class=\"qty-pill\">" + qty + "</div>";
-    html += "</div>";
-  });
-  if (!html) html = "<div style=\"text-align:center;padding:60px 0;color:var(--light)\"><div style=\"font-size:40px;margin-bottom:8px\">&#x1F6D2;</div>Select meals in Plan tab first</div>";
-  document.getElementById("shop-list").innerHTML = html;
-
-  // Add checkmark via DOM after render (avoids innerHTML re-issues)
-  document.querySelectorAll(".shop-cb.checked").forEach(function(el) {
-    if (!el.textContent) el.textContent = "\u2713";
-  });
-}
-
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // PREP TAB
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 function renderPrep() {
-  var plan = getCurrentPlan();
-  var allSelected = [];
-  var seen = {};
-  Object.keys(plan).forEach(function(day) {
-    Object.keys(plan[day]).forEach(function(slot) {
-      var name = plan[day][slot];
-      if (name && !seen[name]) { seen[name]=true; allSelected.push(name); }
+  const allSelected = [];
+  const seen = new Set();
+  Object.values(state.plan).forEach(slots => {
+    Object.values(slots).forEach(name => {
+      if (name && !name.startsWith("← ") && !seen.has(name)) {
+        seen.add(name); allSelected.push(name);
+      }
     });
   });
 
-  function ofCat(cat) { return allSelected.filter(function(n){ var m=getMeal(n); return m&&m.cat===cat; }); }
-  var oatMeals = ofCat("Breakfast").filter(function(n){ return n.indexOf("Oats")>=0||n.indexOf("Bircher")>=0; });
-  var dinners  = ofCat("Dinner");
-  var smoothies= ofCat("Smoothie");
-  var hasBoiled= allSelected.indexOf("Boiled Eggs \xD72")>=0;
+  const ofCat = (cat) => allSelected.filter(n => getMeal(n)?.cat === cat);
+  const oatMeals    = ofCat("Breakfast").filter(n => n.includes("Oats") || n.includes("Bircher"));
+  const dinners     = ofCat("Dinner");
+  const smoothies   = ofCat("Smoothie");
+  const hasEggMuff  = allSelected.includes("Egg Muffins");
+  const hasBoiled   = allSelected.includes("Boiled Eggs ×2");
 
-  var riceS=0, riceL=0;
-  Object.keys(plan).forEach(function(day) {
-    Object.keys(plan[day]).forEach(function(slot) {
-      var name = plan[day][slot];
-      if (!name) return;
-      var m = getMeal(name);
+  // Calculate rice totals
+  let riceS = 0, riceL = 0;
+  Object.values(state.plan).forEach(slots => {
+    Object.values(slots).forEach(name => {
+      if (!name || name.startsWith("← ")) return;
+      const m = getMeal(name);
       if (!m) return;
-      function parseRice(ings) {
-        for (var i=0;i<ings.length;i++) {
-          if (ings[i].toLowerCase().indexOf("dry white rice")>=0) {
-            var mt=ings[i].match(/^([\d.]+)\s*g/);
+      const parseRice = (ings) => {
+        for (const ing of ings) {
+          if (ing.toLowerCase().includes("dry white rice")) {
+            const mt = ing.match(/^([\d.]+)\s*g/);
             if (mt) return parseFloat(mt[1]);
           }
         }
         return 0;
-      }
+      };
       riceS += parseRice(m.ingM);
       riceL += parseRice(m.ingF);
     });
   });
 
-  function step(num, title, detail, hi) {
-    return "<div class=\"prep-step\"><div class=\"step-num" + (hi?" hi":"") + "\">" + num + "</div><div><div class=\"step-title\">" + title + "</div><div class=\"step-detail\">" + detail + "</div></div></div>";
-  }
-  function section(icon, title, time, bg, body) {
-    return "<div class=\"prep-section\"><div class=\"prep-hdr\" style=\"background:" + bg + "\"><div class=\"prep-hdr-left\"><span style=\"font-size:22px\">" + icon + "</span><span class=\"prep-hdr-title\">" + title + "</span></div>" + (time?"<span class=\"prep-time\">"+time+"</span>":"") + "</div><div class=\"prep-body\">" + body + "</div></div>";
-  }
+  const step = (num, title, detail, hi=false) =>
+    `<div class="prep-step">
+      <div class="step-num${hi?" hi":""}">${num}</div>
+      <div><div class="step-title">${title}</div><div class="step-detail">${detail}</div></div>
+    </div>`;
 
-  var html = "<div class=\"golden-rule\"><div style=\"font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;color:var(--terra);margin-bottom:8px\">The golden rule</div><p>Cook double at every dinner. Package the second portion immediately. That's tomorrow's lunch \u2014 done.</p></div>";
+  const section = (icon, title, time, bg, body) =>
+    `<div class="prep-section">
+      <div class="prep-hdr" style="background:${bg}">
+        <div class="prep-hdr-left"><span style="font-size:22px">${icon}</span><span class="prep-hdr-title">${title}</span></div>
+        ${time?`<span class="prep-time">${time}</span>`:""}
+      </div>
+      <div class="prep-body">${body}</div>
+    </div>`;
 
-  var riceDetail = (riceS+riceL)>0
-    ? "Sam ~" + Math.ceil(riceS) + "g \u00B7 Luisa ~" + Math.ceil(riceL) + "g \u00B7 Total: " + Math.ceil(riceS+riceL) + "g dry. Cook in one big pot. Portion while warm."
-    : "No rice dinners this week \u2014 skip.";
+  let html = "";
 
-  html += section("☀️","Sunday Prep","60\u201390 min","#4F7A62",
-    step(1,"Cook all week's rice",riceDetail) +
-    step(2,"Overnight oat jars (" + oatMeals.length + " selected)",
-      oatMeals.length>0 ? "Selected: " + oatMeals.join(", ") + ". Add oats + protein + honey to jars, pour over milk, seal. Done in 8 min."
-      : "No overnight oats selected \u2014 skip.") +
-    step(3,"Boiled eggs for snacks",
-      hasBoiled ? "Hard boil 6\u20138 eggs (8 min from boiling). Ice bath. Store UNPEELED \u2014 stays fresh 7 days." : "Not selected \u2014 skip.", hasBoiled) +
-    step(4,"Marinate & portion chicken","Divide into meal-size bags: soy+garlic, lemon+dijon+thyme, plain. Label and refrigerate.") +
-    step(5,"Pre-measure dry ingredients","Weigh oats, protein, cocoa, chia into zip bags. Removes all weekday decisions.")
+  // Golden rule
+  html += `<div class="golden-rule"><div style="font-size:9px;letter-spacing:.25em;text-transform:uppercase;font-weight:700;color:var(--terra);margin-bottom:8px">The golden rule</div>
+    <p>Cook double at every dinner. Package the second portion immediately. That's tomorrow's lunch — done.</p></div>`;
+
+  // Sunday prep
+  const riceDetail = (riceS + riceL) > 0
+    ? `Sam needs ~${Math.ceil(riceS)}g · Luisa needs ~${Math.ceil(riceL)}g · Total: ${Math.ceil(riceS+riceL)}g dry. Cook in one big pot. Portion into containers while warm.`
+    : "No rice dinners this week — cook a small batch for lunch bowls if needed.";
+
+  const oatDetail = oatMeals.length > 0
+    ? `Selected: ${oatMeals.join(", ")}. Line up jars, add dry ingredients (oats + protein + honey), pour over milk, seal. Done in 8 min.`
+    : "No overnight oats selected — skip.";
+
+  html += section("☀️","Sunday Prep","60–90 min","#4F7A62",
+    step(1,"Cook all the week's rice",riceDetail) +
+    step(2,`Overnight oat jars (${oatMeals.length} selected)`, oatDetail) +
+    step(3,"Egg muffins",hasEggMuff
+      ? "180°C · whisk eggs + chicken + capsicum + spinach + cheese · fill muffin tin · bake 18–20 min · cool completely before storing"
+      : "Not selected this week — skip.",hasEggMuff) +
+    step(4,"Boiled eggs for snacks",hasBoiled
+      ? "8 min from boiling, ice bath immediately, store UNPEELED — stays fresh 7 days"
+      : "Not selected this week — skip.",hasBoiled) +
+    step(5,"Marinate & portion chicken","Divide into meal-size bags: soy+garlic, lemon+dijon+thyme, plain. Label and refrigerate.") +
+    step(6,"Pre-measure dry ingredients (5 min)","Weigh oats, protein powder, cocoa, chia into zip bags. Labels each with the meal name. Removes all weekday decisions.")
   );
 
-  html += section("🌙","Wednesday Top-Up","20\u201330 min","#3A6A9A",
-    step(1,"Check and top up rice","If fewer than 3 portions left, cook 400g more. Covers Thu\u2013Sun.") +
-    step(2,oatMeals.length>0?"Prep more oat jars":"Breakfast check",
-      oatMeals.length>0 ? "Same method as Sunday. Covers Thu, Fri, Sat breakfasts." : "Check what's in the fridge.") +
-    step(3,"Defrost protein for Thu\u2013Sun","Move chicken/mince from freezer \u2192 fridge. 2 minutes now saves 30 Thursday night.")
+  // Wednesday top-up
+  html += section("🌙","Wednesday Top-Up","20–30 min","#3A6A9A",
+    step(1,"Check and top up rice","If fewer than 3 portions left, cook 400g more dry rice. Covers Thu–Sun.") +
+    step(2,oatMeals.length > 0 ? `Prep ${Math.min(3,oatMeals.length)} more oat jars` : "Breakfast check",
+      oatMeals.length > 0 ? "Same method as Sunday. Covers Thu, Fri, Sat breakfasts." : "Check what's available for the second half of the week.") +
+    step(3,"Defrost protein for Thu–Sun","Move chicken/mince from freezer → fridge now. Takes 2 minutes today, saves 30 minutes Thursday night.")
   );
 
-  var dinnerBody = dinners.length===0
-    ? "<div style=\"padding:12px 0;font-size:13px;color:var(--light);font-style:italic\">No dinners selected \u2014 go to Plan tab</div>"
-    : dinners.map(function(name) {
-        var m = getMeal(name);
+  // This week's dinners
+  const dinnerBody = dinners.length === 0
+    ? `<div style="padding:12px 0;font-size:13px;color:var(--light);font-style:italic">No dinners selected — go to Plan tab</div>`
+    : dinners.map(name => {
+        const m = getMeal(name);
         if (!m) return "";
-        return "<div class=\"dinner-item\"><span style=\"font-size:24px;flex-shrink:0\">" + m.emoji + "</span><div style=\"flex:1;min-width:0\"><div style=\"font-size:14px;font-weight:700;color:var(--charcoal)\">" + m.name + "</div><div style=\"font-size:11px;color:var(--light);margin:2px 0\">\u23F1 " + m.time + " \u00B7 S: " + m.calM + "kcal " + m.protM + "g \u00B7 L: " + m.calF + "kcal " + m.protF + "g</div><div class=\"dinner-note\">Cook double \u2192 pack both lunch containers before sitting down</div></div></div>";
+        return `<div class="dinner-item">
+          <span style="font-size:24px;flex-shrink:0">${m.emoji}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:700;color:var(--charcoal)">${m.name}</div>
+            <div style="font-size:11px;color:var(--light);margin:2px 0">⏱ ${m.time} · S: ${m.calM}kcal ${m.protM}g · L: ${m.calF}kcal ${m.protF}g</div>
+            <div class="dinner-note">Cook double → pack both lunch containers before sitting down</div>
+          </div>
+        </div>`;
       }).join("");
   html += section("🍽","This Week's Dinners","","#C04040",dinnerBody);
 
-  if (smoothies.length>0) {
-    var smBody = "<div class=\"tip-box\">\uD83D\uDCA1 Pre-bag dry ingredients Sunday. Each smoothie takes 90 sec \u2014 add milk and blend.</div>" +
-      smoothies.map(function(name){
-        var m=getMeal(name); if(!m) return "";
-        return "<div class=\"dinner-item\"><span style=\"font-size:24px;flex-shrink:0\">" + m.emoji + "</span><div><div style=\"font-size:14px;font-weight:700;color:var(--charcoal)\">" + m.name + "</div><div style=\"font-size:11px;color:var(--light)\">" + m.ingF.slice(0,3).join(" \u00B7 ") + "</div></div></div>";
+  // Smoothies
+  if (smoothies.length > 0) {
+    const smoothieBody = `<div class="tip-box">💡 Pre-bag dry ingredients Sunday (protein + cocoa). Each smoothie takes 90 seconds — add milk and blend.</div>` +
+      smoothies.map(name => {
+        const m = getMeal(name);
+        if (!m) return "";
+        return `<div class="dinner-item">
+          <span style="font-size:24px;flex-shrink:0">${m.emoji}</span>
+          <div><div style="font-size:14px;font-weight:700;color:var(--charcoal)">${m.name}</div>
+          <div style="font-size:11px;color:var(--light)">${m.ingF.slice(0,3).join(" · ")}</div></div>
+        </div>`;
       }).join("");
-    html += section("🥤","Smoothies (no cook)","","#7A4A9A",smBody);
+    html += section("🥤","Smoothies (no cook)","","#7A4A9A",smoothieBody);
   }
 
-  html += "<div style=\"background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:14px;padding:18px;margin-bottom:8px\"><div style=\"font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--terra);margin-bottom:10px\">Every dinner night</div>" +
-    ["Cook full double portion \u2014 Sam's larger + Luisa's smaller serve in one pan.",
-     "Plate your dinners. Then immediately pack the second portions into labelled containers.",
-     "Into the fridge before you sit down to eat. Non-negotiable.",
-     "Both lunches done. Zero decision-making tomorrow."
-    ].map(function(s,i){ return "<div style=\"display:flex;gap:10px;margin-bottom:8px;font-size:13px;color:#444;line-height:1.6\"><span style=\"color:var(--terra);font-weight:700;flex-shrink:0\">"+(i+1)+".</span>"+s+"</div>"; }).join("") + "</div>";
+  // Nightly reminder
+  html += `<div style="background:var(--terra-lt);border:1px solid #F0D0A0;border-radius:14px;padding:18px;margin-bottom:8px">
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--terra);margin-bottom:10px">Every dinner night</div>
+    ${["Cook full double portion — Sam's larger + Luisa's smaller serve in one pan.",
+       "Plate your dinners. Then immediately pack the second portions into labelled containers.",
+       "Into the fridge before you sit down to eat. Non-negotiable.",
+       "Both lunches done. Zero decision-making tomorrow."
+    ].map((s,i)=>`<div style="display:flex;gap:10px;margin-bottom:8px;font-size:13px;color:#444;line-height:1.6">
+      <span style="color:var(--terra);font-weight:700;flex-shrink:0">${i+1}.</span>${s}</div>`).join("")}
+  </div>`;
 
   document.getElementById("prep-content").innerHTML = html;
 }
 
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════════════════
-updateWeekLabel();
+// ═══════════════════════════════════════════════════════════════════════════
 renderPlan();
 renderRecipes();
 </script>
