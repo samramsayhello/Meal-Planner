@@ -320,8 +320,15 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-sticky">
-      <div id="picker-title" style="font-family:Georgia,serif;font-size:17px;margin-bottom:2px"></div>
-      <div id="picker-day" style="font-size:11px;color:var(--light);margin-bottom:10px"></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <button onclick="closePicker()" style="display:flex;align-items:center;gap:4px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:700;color:var(--terra);padding:4px 0;flex-shrink:0">
+          <span style="font-size:18px;line-height:1">‹</span> Back
+        </button>
+        <div style="flex:1;min-width:0">
+          <div id="picker-title" style="font-family:Georgia,serif;font-size:17px;line-height:1.2"></div>
+          <div id="picker-day" style="font-size:11px;color:var(--light)"></div>
+        </div>
+      </div>
       <input class="search-bar" id="picker-search" placeholder="Search meals…" oninput="renderPickerList()">
       <div class="cat-pills" id="picker-pills" style="margin-top:8px"></div>
     </div>
@@ -938,17 +945,17 @@ function getDisplayPlan() {
 
 function getDayMacros(day) {
   const dp = getDisplayPlan();
-  let cal = 0, prot = 0;
+  let calS = 0, protS = 0, calF = 0, protF = 0;
   const freeSlots = FREE_SLOTS[day] || [];
   Object.entries(dp[day] || {}).forEach(([slot, name]) => {
     if (!name || freeSlots.includes(slot)) return;
     const real = name.startsWith("← ") ? name.slice(2) : name;
     const m = getMeal(real);
     if (!m) return;
-    cal += m.calM + m.calF;
-    prot += m.protM + m.protF;
+    calS  += m.calM;  protS += m.protM;
+    calF  += m.calF;  protF += m.protF;
   });
-  return { cal, prot };
+  return { cal: calS + calF, prot: protS + protF, calS, protS, calF, protF };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1067,16 +1074,19 @@ function renderWeek() {
 
   // Day headers
   DAYS.forEach((day, i) => {
-    const {cal} = getDayMacros(day);
-    const target = 3900;
-    const ok = cal >= target * 0.88 && cal <= target * 1.12;
+    const {calS, calF} = getDayMacros(day);
     const isFreeDay = (FREE_SLOTS[day] || []).length > 0;
+    const samOk = calS > 0 && calS >= 2200*0.88 && calS <= 2200*1.12;
+    const luiOk = calF > 0 && calF >= 1700*0.88 && calF <= 1700*1.12;
+    const anyData = calS > 0 || calF > 0;
     html += `
-      <div style="background:${DAY_BG[day]};border-radius:10px 10px 0 0;padding:10px 10px 8px;text-align:center">
-        <div style="font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.9)">${DAY_SHORT[i]}</div>
-        <div style="font-size:11px;color:${cal>0?(ok?'#7AE09A':'#F0A070'):'rgba(255,255,255,.3)'};margin-top:3px;font-weight:600">
-          ${cal > 0 ? cal + ' kcal' : isFreeDay ? '🎉 free' : '—'}
-        </div>
+      <div style="background:${DAY_BG[day]};border-radius:10px 10px 0 0;padding:8px 6px 7px;text-align:center">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:4px">${DAY_SHORT[i]}</div>
+        ${isFreeDay && !anyData
+          ? `<div style="font-size:10px;color:rgba(255,255,255,.4)">🎉 free</div>`
+          : `<div style="font-size:10px;color:${samOk?'#7AE09A':'#F0A070'};font-weight:600">S ${calS||'—'}</div>
+             <div style="font-size:10px;color:${luiOk?'#7AE09A':'#F0A070'};font-weight:600">L ${calF||'—'}</div>`
+        }
       </div>`;
   });
 
@@ -1118,14 +1128,15 @@ function renderWeek() {
   // Summary row
   html += `<div style="margin-top:16px;display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px;min-width:840px">`;
   DAYS.forEach(day => {
-    const {cal, prot} = getDayMacros(day);
+    const {calS, protS, calF, protF} = getDayMacros(day);
     const freeDay = (FREE_SLOTS[day] || []).length > 0;
-    html += `<div style="background:white;border-radius:0 0 10px 10px;padding:8px;text-align:center;
+    const anyData = calS > 0 || calF > 0;
+    html += `<div style="background:white;border-radius:0 0 10px 10px;padding:8px 6px;text-align:center;
       border:1px solid #EDE8E0;border-top:none">
-      ${freeDay && cal === 0
-        ? `<div style="font-size:11px;color:#C17A55;font-weight:600">Free day 🎉</div>`
-        : `<div style="font-size:12px;font-weight:700;color:#1E1E1E">${cal || '—'} kcal</div>
-           <div style="font-size:10px;color:#AAA;margin-top:1px">${prot || '—'}g protein</div>`
+      ${freeDay && !anyData
+        ? `<div style="font-size:11px;color:#C17A55;font-weight:600">Free 🎉</div>`
+        : `<div style="font-size:10px;color:#3A6A9A;font-weight:700">S ${calS||'—'} · ${protS||'—'}g</div>
+           <div style="font-size:10px;color:#C17A55;font-weight:700;margin-top:2px">L ${calF||'—'} · ${protF||'—'}g</div>`
       }
     </div>`;
   });
@@ -1147,10 +1158,12 @@ function renderPlan() {
 function renderDayStrip() {
   const strip = document.getElementById("day-strip");
   strip.innerHTML = DAYS.map((d, i) => {
-    const {cal} = getDayMacros(d);
-    const target = state.person === "Sam" ? 2200 : 1700;
-    const ok = cal >= target * 0.88 && cal <= target * 1.12;
-    const dotClass = cal > 0 ? (ok ? "ok" : "warn") : "";
+    const {calS, calF} = getDayMacros(d);
+    const samOk  = calS > 0 && calS >= 2200*0.88 && calS <= 2200*1.12;
+    const luiOk  = calF > 0 && calF >= 1700*0.88 && calF <= 1700*1.12;
+    const anyData = calS > 0 || calF > 0;
+    const allOk  = anyData && samOk && luiOk;
+    const dotClass = anyData ? (allOk ? "ok" : "warn") : "";
     return `<button class="day-btn${i === state.activeDay ? " active" : ""}" onclick="setDay(${i})">
       <div class="dn">${d.slice(0,3)}</div>
       <div class="dot${dotClass ? " "+dotClass : ""}"></div>
@@ -1168,25 +1181,51 @@ function renderDayDetail() {
   const day = DAYS[state.activeDay];
   const dp  = getDisplayPlan();
   const slots = dp[day] || {};
-  const target = 3900;  // Sam 2200 + Luisa 1700
-  const pTarget = 315;  // Sam 190 + Luisa 125
-  const {cal, prot} = getDayMacros(day);
-  const calPct  = Math.min(100, Math.round(cal / target * 100));
-  const protPct = Math.min(100, Math.round(prot / pTarget * 100));
+  const SAM_CAL = 2200, SAM_PROT = 190;
+  const LUI_CAL = 1700, LUI_PROT = 125;
+  const {calS, protS, calF, protF} = getDayMacros(day);
+  const calSPct  = Math.min(100, Math.round(calS  / SAM_CAL  * 100));
+  const calFPct  = Math.min(100, Math.round(calF  / LUI_CAL  * 100));
+  const protSPct = Math.min(100, Math.round(protS / SAM_PROT * 100));
+  const protFPct = Math.min(100, Math.round(protF / LUI_PROT * 100));
+
+  function bar(val, target, pct, colour) {
+    const ok = pct >= 88 && pct <= 112;
+    return `<div style="flex:1">
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mid);margin-bottom:3px">
+        <span style="font-weight:700;color:${ok?colour:'var(--terra)'};">${val||0}</span>
+        <span style="color:#CCC">/${target}</span>
+      </div>
+      <div class="mbar-track"><div class="mbar-fill" style="width:${pct}%;background:${ok?colour:'var(--terra)'}"></div></div>
+    </div>`;
+  }
 
   document.getElementById("day-hdr").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
-      <div style="font-family:Georgia,serif;font-size:22px">${day}</div>
-      <div style="font-size:12px;color:var(--mid)">
-        <span style="color:${calPct>=88&&calPct<=112?"var(--sage)":"var(--terra)"};font-weight:700">${cal||"—"}</span> / ${target} kcal
+    <div style="font-family:Georgia,serif;font-size:22px;margin-bottom:10px">${day}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+      <div style="background:#F5F8FF;border-radius:10px;padding:10px 12px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#3A6A9A;margin-bottom:6px">🧔 Sam</div>
+        <div style="display:flex;gap:6px;margin-bottom:6px">
+          ${bar(calS, SAM_CAL, calSPct, 'var(--sage)')}
+          ${bar(protS, SAM_PROT, protSPct, 'var(--navy)')}
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#AAA">
+          <span>kcal</span><span>protein g</span>
+        </div>
       </div>
-    </div>
-    <div class="macro-bars">
-      ${[["Calories",cal,target,calPct,"var(--sage)","kcal"],["Protein",prot,pTarget,protPct,"var(--navy)","g"]].map(([lbl,v,t,pct,clr,u])=>`
-        <div>
-          <div class="mbar-lbl"><span>${lbl}</span><span style="font-weight:700;color:var(--charcoal)">${v||0}${u}</span></div>
-          <div class="mbar-track"><div class="mbar-fill" style="width:${pct}%;background:${pct>=88?clr:"var(--terra)"}"></div></div>
-        </div>`).join("")}
+
+      <div style="background:#FEF6F2;border-radius:10px;padding:10px 12px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#C17A55;margin-bottom:6px">👩 Luisa</div>
+        <div style="display:flex;gap:6px;margin-bottom:6px">
+          ${bar(calF, LUI_CAL, calFPct, 'var(--sage)')}
+          ${bar(protF, LUI_PROT, protFPct, 'var(--navy)')}
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#AAA">
+          <span>kcal</span><span>protein g</span>
+        </div>
+      </div>
+
     </div>`;
 
   const slotsEl = document.getElementById("slots");
@@ -1197,7 +1236,7 @@ function renderDayDetail() {
     const isEditLunch = (slot === "Lunch" && ["Monday","Tuesday","Wednesday","Thursday","Friday"].includes(day));
     const editable = !isEditLunch && !isFree;
     const meal = getMeal(isAuto ? name.slice(2) : name);
-    const macros = meal ? `${meal.calM + meal.calF} kcal · ${meal.protM + meal.protF}g combined` : "";
+    const macros = meal ? `Sam ${meal.calM}kcal ${meal.protM}g · Luisa ${meal.calF}kcal ${meal.protF}g` : "";
     const changeBtn = editable && name ? `<button class="slot-change" onclick="openPicker('${day}','${slot}')">Change</button>` : "";
 
     let mealContent = "";
