@@ -57,6 +57,27 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
   letter-spacing:.1em;padding:4px 11px;cursor:pointer;border:1.5px solid;
   white-space:nowrap;transition:all .15s}
 
+/* ── WEEK SELECTOR ── */
+.week-bar{background:var(--charcoal);padding:6px 14px 8px;
+  padding-top:0;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.week-bar label{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.45);white-space:nowrap}
+.week-select-wrap{flex:1;position:relative}
+.week-select-wrap::after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  color:var(--terra);font-size:12px;pointer-events:none}
+#week-selector{width:100%;appearance:none;-webkit-appearance:none;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;color:#fff;font-size:12px;font-weight:700;
+  padding:6px 28px 6px 10px;cursor:pointer;outline:none}
+.week-save-btn{padding:6px 14px;background:var(--terra);border:none;border-radius:8px;
+  color:#fff;font-size:11px;font-weight:800;letter-spacing:.05em;cursor:pointer;
+  white-space:nowrap;transition:opacity .15s;flex-shrink:0}
+.week-save-btn:active{opacity:.7}
+.week-save-btn.saved{background:var(--sage)}
+.week-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;
+  background:rgba(255,255,255,.12);color:rgba(255,255,255,.5);white-space:nowrap}
+.week-badge.has-data{background:rgba(79,122,98,.35);color:#7AE09A}
+
 /* ── PLAN TAB ── */
 .day-strip{display:flex;overflow-x:auto;background:#fff;
   border-bottom:1px solid #EDE8E0;-webkit-overflow-scrolling:touch}
@@ -196,6 +217,16 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
     <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.05em">Both portions combined</div>
   </div>
 
+  <!-- Week Selector Bar -->
+  <div class="week-bar" id="week-bar">
+    <label>WEEK</label>
+    <div class="week-select-wrap">
+      <select id="week-selector" onchange="onWeekChange()"></select>
+    </div>
+    <span class="week-badge" id="week-badge">unsaved</span>
+    <button class="week-save-btn" id="week-save-btn" onclick="saveCurrentWeek()">Save Week</button>
+  </div>
+
   <div class="content">
     <div id="tab-week" class="tab-panel">
       <div class="sticky-hdr" style="padding:14px 16px 10px">
@@ -239,6 +270,10 @@ html,body{height:100%;height:100dvh;overflow:hidden;background:var(--charcoal);
       <div style="margin:10px 14px 0;padding:10px 12px;background:var(--terra-lt);
         border:1px solid #F0D0A0;border-radius:10px;font-size:12px;color:#7A4020;line-height:1.55">
         🛒 <strong>Pak'nSave tip:</strong> Rice 5kg ~$8.50 · Oats 1kg ~$3.50 · Chicken ~$13/kg · Mince ~$18.99/kg · Eggs ~$9.59/doz
+      </div>
+      <div style="margin:8px 14px 0;padding:9px 12px;background:#E6F4EC;
+        border:1px solid #B0D8C0;border-radius:10px;font-size:11px;color:#2F6045;line-height:1.55">
+        ×2 <strong>Cook-once rule applied:</strong> Dinners that feed next-day lunch are counted double — buy once, cook once, eat twice.
       </div>
       <div id="shop-list" style="padding:0 14px 80px"></div>
     </div>
@@ -792,6 +827,11 @@ const DEFAULT_PLAN = {
   Sunday:    {Breakfast:"Egg Muffins",Snack:"Boiled Eggs ×2",Lunch:"",Dinner:"Lemon Herb Chicken & Potatoes","Eve Snack":"Greek Yoghurt + Berries"},
 };
 
+// ── 26-WEEK MULTI-PLAN SYSTEM ──────────────────────────────────────────────
+// Storage: "mp_week_{n}_plan" and "mp_week_{n}_checked" (n = 1..26)
+// Active working plan (unsaved) lives in state.plan / state.checked
+// Week badge shows saved/unsaved per week
+
 let state = {
   tab: "plan",
   person: "Luisa",
@@ -803,18 +843,84 @@ let state = {
   pickerSlot: null,
   plan: null,
   checked: {},
+  currentWeek: 1,   // 1-26
+  weekDirty: false, // unsaved changes for this week
 };
 
-// Load from localStorage
-try { state.plan = JSON.parse(localStorage.getItem("mp_plan")) || JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
-catch { state.plan = JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
-try { state.checked = JSON.parse(localStorage.getItem("mp_checked")) || {}; }
-catch { state.checked = {}; }
+function weekPlanKey(w)    { return `mp_week_${w}_plan`; }
+function weekCheckedKey(w) { return `mp_week_${w}_checked`; }
+
+function loadWeek(w) {
+  try { state.plan    = JSON.parse(localStorage.getItem(weekPlanKey(w)))    || JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
+  catch { state.plan  = JSON.parse(JSON.stringify(DEFAULT_PLAN)); }
+  try { state.checked = JSON.parse(localStorage.getItem(weekCheckedKey(w))) || {}; }
+  catch { state.checked = {}; }
+  state.currentWeek = w;
+  state.weekDirty   = false;
+}
+
+function saveCurrentWeek() {
+  const w = state.currentWeek;
+  localStorage.setItem(weekPlanKey(w),    JSON.stringify(state.plan));
+  localStorage.setItem(weekCheckedKey(w), JSON.stringify(state.checked));
+  state.weekDirty = false;
+  updateWeekBadge();
+  // Flash the button
+  const btn = document.getElementById("week-save-btn");
+  btn.textContent = "Saved ✓";
+  btn.classList.add("saved");
+  setTimeout(() => { btn.textContent = "Save Week"; btn.classList.remove("saved"); }, 1500);
+}
 
 function save() {
-  localStorage.setItem("mp_plan", JSON.stringify(state.plan));
-  localStorage.setItem("mp_checked", JSON.stringify(state.checked));
+  // Called on every small change — marks dirty but doesn't auto-save across weeks
+  state.weekDirty = true;
+  updateWeekBadge();
 }
+
+function hasWeekData(w) {
+  return !!localStorage.getItem(weekPlanKey(w));
+}
+
+function updateWeekBadge() {
+  const badge = document.getElementById("week-badge");
+  if (!badge) return;
+  if (hasWeekData(state.currentWeek) && !state.weekDirty) {
+    badge.textContent = "saved";
+    badge.className = "week-badge has-data";
+  } else if (state.weekDirty) {
+    badge.textContent = "unsaved";
+    badge.className = "week-badge";
+  } else {
+    badge.textContent = "empty";
+    badge.className = "week-badge";
+  }
+}
+
+function buildWeekSelector() {
+  const sel = document.getElementById("week-selector");
+  sel.innerHTML = Array.from({length:26},(_,i)=>{
+    const w = i+1;
+    const has = hasWeekData(w);
+    return `<option value="${w}"${w===state.currentWeek?" selected":""}>${has?"✓ ":"  "}Week ${w}</option>`;
+  }).join("");
+  updateWeekBadge();
+}
+
+function onWeekChange() {
+  const newWeek = parseInt(document.getElementById("week-selector").value);
+  if (newWeek === state.currentWeek) return;
+  loadWeek(newWeek);
+  state.activeDay = 0;
+  buildWeekSelector();
+  renderPlan();
+  if (state.tab === "shopping") renderShopping();
+  if (state.tab === "prep")     renderPrep();
+  if (state.tab === "week")     renderWeek();
+}
+
+// Initial load
+loadWeek(1);
 
 // ═══════════════════════════════════════════════════════════════════════════
 // HELPERS
@@ -848,8 +954,26 @@ function getDayMacros(day) {
 // ═══════════════════════════════════════════════════════════════════════════
 // SHOPPING LIST BUILDER
 // ═══════════════════════════════════════════════════════════════════════════
+// KEY LOGIC: If a dinner auto-populates as next day's lunch (Mon→Sun, Tue→Mon...),
+// we must cook DOUBLE — so that meal's ingredients count ×2 in shopping.
+// AUTO_LUNCH maps: {dayThatEatsLeftovers → dayThatCookedDinner}
+// So if Sunday's Dinner becomes Monday's Lunch, Sunday Dinner ingredients × 2.
+// Build a Set of days whose dinners get doubled.
+function getDinnerDoubleDays() {
+  // AUTO_LUNCH = {Monday:"Sunday", Tuesday:"Monday", ...}
+  // Value = the day that cooked dinner. That day's dinner gets doubled.
+  const doubled = new Set();
+  Object.entries(AUTO_LUNCH).forEach(([, prevDay]) => {
+    // Check that the previous day actually has a dinner set
+    if (state.plan[prevDay]?.Dinner) doubled.add(prevDay);
+  });
+  return doubled;
+}
+
 function buildShoppingList() {
   const totals = {};
+  const doubledDays = getDinnerDoubleDays();
+
   function resolveKey(rawName) {
     const lower = rawName.toLowerCase().trim();
     if (CONSOLIDATE[lower]) return CONSOLIDATE[lower];
@@ -858,7 +982,7 @@ function buildShoppingList() {
     }
     return null;
   }
-  function addIng(ings) {
+  function addIng(ings, multiplier) {
     ings.forEach(ing => {
       const match = ing.match(/^([\d./½¼¾]+)\s*(g|ml|kg)?\s+(.+)/);
       let rawQty, unit, rawName;
@@ -877,7 +1001,7 @@ function buildShoppingList() {
       const fUnit = unit === "kg" ? "g" : u;
       const key   = canon.toLowerCase();
       if (!totals[key]) totals[key] = { name: canon, qty: 0, unit: fUnit, cat };
-      totals[key].qty += fQty;
+      totals[key].qty += fQty * multiplier;
     });
   }
   Object.entries(state.plan).forEach(([day, slots]) => {
@@ -886,8 +1010,10 @@ function buildShoppingList() {
       if (!name || name.startsWith("← ") || freeSlots.includes(slot)) return;
       const m = getMeal(name);
       if (!m) return;
-      addIng(m.ingM);
-      addIng(m.ingF);
+      // Dinner on a day that feeds next day's auto-lunch → cook double
+      const multiplier = (slot === "Dinner" && doubledDays.has(day)) ? 2 : 1;
+      addIng(m.ingM, multiplier);
+      addIng(m.ingF, multiplier);
     });
   });
   const items = Object.values(totals).filter(i => i.qty > 0.05);
@@ -1160,8 +1286,19 @@ function openRecipe(encodedName) {
   const cal = m.calM + m.calF;
   const prot = m.protM + m.protF;
 
+  // Detect if this dinner needs ×2 cook (i.e., it feeds next-day lunch)
+  const doubledDays = getDinnerDoubleDays();
+  let isDoubledDinner = false;
+  if (m.cat === "Dinner") {
+    // Check if any doubled day's dinner matches this meal
+    Object.entries(state.plan).forEach(([day, slots]) => {
+      if (doubledDays.has(day) && slots.Dinner === name) isDoubledDinner = true;
+    });
+  }
+  const mealMultiplier = isDoubledDinner ? 2 : 1;
+
   // Merge Sam + Luisa ingredients, combining quantities for the same item
-  function mergeIngredients(ingM, ingF) {
+  function mergeIngredients(ingM, ingF, mult) {
     const totals = {};
     const order = [];
 
@@ -1189,14 +1326,14 @@ function openRecipe(encodedName) {
       const {item, qty, unit} = parseIng(ing);
       const key = item.toLowerCase();
       if (!totals[key]) { totals[key] = {item, qtyM:0, qtyF:0, unit}; order.push(key); }
-      totals[key].qtyM += qty;
+      totals[key].qtyM += qty * mult;
     });
 
     ingF.forEach(ing => {
       const {item, qty, unit} = parseIng(ing);
       const key = item.toLowerCase();
       if (!totals[key]) { totals[key] = {item, qtyM:0, qtyF:0, unit}; order.push(key); }
-      totals[key].qtyF += qty;
+      totals[key].qtyF += qty * mult;
     });
 
     return order.map(k => {
@@ -1213,7 +1350,7 @@ function openRecipe(encodedName) {
     });
   }
 
-  const combined = mergeIngredients(m.ingM, m.ingF);
+  const combined = mergeIngredients(m.ingM, m.ingF, mealMultiplier);
 
   document.getElementById("recipe-sheet-header").innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1242,7 +1379,9 @@ function openRecipe(encodedName) {
       </div>
     </div>
     <div style="margin:10px 16px;padding:8px 12px;background:#E6F4EC;border-radius:8px;font-size:11px;color:#4F7A62;font-weight:600">
-      👫 Combined quantities for Sam + Luisa · Dinner tonight + lunch tomorrow
+      ${isDoubledDinner
+        ? "×2 Cook double tonight — dinner + tomorrow's lunch packed. Quantities below are for BOTH."
+        : "👫 Combined quantities for Sam + Luisa"}
     </div>
     <div style="padding:0 16px 100px">
       <div class="eyebrow" style="margin-bottom:10px">Ingredients (both)</div>
@@ -1313,6 +1452,7 @@ function pickMeal(encodedName) {
   save();
   closePicker();
   renderPlan();
+  buildWeekSelector(); // refresh ✓ marks
   // Update shopping / prep if visible
   if (state.tab === "shopping") renderShopping();
   if (state.tab === "prep") renderPrep();
@@ -1509,6 +1649,7 @@ function renderPrep() {
 // ═══════════════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════════════
+buildWeekSelector();
 renderPlan();
 renderRecipes();
 </script>
